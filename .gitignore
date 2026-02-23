@@ -30,3 +30,6 @@ forge*changelog.txt
 
 # data generated
 /src/generated/resources/.cache
+/common/src/generated/resources/.cache
+/fabric/src/generated/resources/.cache
+/neoforge/src/generated/resources/.cache

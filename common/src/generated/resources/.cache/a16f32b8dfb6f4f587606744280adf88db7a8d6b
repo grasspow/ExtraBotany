@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-02T11:28:29.065698476	ExtraBotany/ExtraBotanyDynamicRegistryProvider
+// 1.21.1	2026-02-23T15:29:36.124005953	ExtraBotany/ExtraBotanyDynamicRegistryProvider
 65619a8a3a28a7b894d659dd58e3a3bee0b8eecd data/extrabotany/damage_type/general_armor_piercing.json
-e86dbbe3b486062630f3d912b69f1aa117bb38f5 data/extrabotany/damage_type/critical.json
 5523b527fac1c25dc33b7b425c2ee329a9c1329e data/extrabotany/damage_type/magic_armor_piercing.json
+e86dbbe3b486062630f3d912b69f1aa117bb38f5 data/extrabotany/damage_type/critical.json

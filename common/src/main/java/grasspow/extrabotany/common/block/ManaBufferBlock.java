@@ -39,8 +39,9 @@ public class ManaBufferBlock extends BotaniaWaterloggedBlock implements EntityBl
         return variant.equals(Variant.DEFAULT) ? Shapes.MANA_BUFFER : Shapes.QUANTUM_MANA_BUFFER;
     }
 
+    @Nullable
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide()) return null;
         return createTickerHelper(type, ExtraBotanyBlockEntities.MANA_BUFFER, ManaBufferBlockEntity::serverTick);
     }

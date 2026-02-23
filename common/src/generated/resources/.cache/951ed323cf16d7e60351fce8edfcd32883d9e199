@@ -1,10 +1,10 @@
-// 1.21.1	2025-11-02T11:28:29.061261864	ExtraBotany/Tags for minecraft:block
-efd2457ec0712c532b8440dd3803f361013f7dd4 data/botania/tags/block/misc_special_flowers.json
+// 1.21.1	2026-02-23T15:29:36.117565834	ExtraBotany/Tags for minecraft:block
 2bfa8f41f80795d1d1e4b05cd7e06d700fc0969e data/botania/tags/block/functional_special_flowers.json
 5a2409fcfb3858d6f12ee9ed8f695459416d9487 data/minecraft/tags/block/mineable/pickaxe.json
-7e660d7eb859ee482614ce4828e335cac88ba9fb data/botania/tags/block/special_floating_flowers.json
-3916938692a676b41a0a280d04d24ef9bc3eb115 data/extrabotany/tags/block/photonium_blocks.json
-3108b13c38a8e15edf29772ff688c14ed7fab6ae data/extrabotany/tags/block/shadowium_blocks.json
 dfcbc466cfbc1b4aa30379620f11ff688114cadd data/botania/tags/block/generating_special_flowers.json
-5524a1d5bcfefa8aefb25782d8cbbf368e831d07 data/minecraft/tags/block/beacon_base_blocks.json
 8362eed11840faf2b38b0a1970d3b164c85b9e53 data/extrabotany/tags/block/orichalcos_blocks.json
+3916938692a676b41a0a280d04d24ef9bc3eb115 data/extrabotany/tags/block/photonium_blocks.json
+efd2457ec0712c532b8440dd3803f361013f7dd4 data/botania/tags/block/misc_special_flowers.json
+5524a1d5bcfefa8aefb25782d8cbbf368e831d07 data/minecraft/tags/block/beacon_base_blocks.json
+7e660d7eb859ee482614ce4828e335cac88ba9fb data/botania/tags/block/special_floating_flowers.json
+3108b13c38a8e15edf29772ff688c14ed7fab6ae data/extrabotany/tags/block/shadowium_blocks.json

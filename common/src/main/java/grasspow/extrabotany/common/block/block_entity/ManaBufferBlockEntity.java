@@ -7,11 +7,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.UnknownNullability;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.KeyLocked;
 import vazkii.botania.api.mana.ManaPool;
 import vazkii.botania.api.mana.spark.SparkAttachable;
-import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.block.block_entity.BotaniaBlockEntity;
 import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
 
@@ -35,7 +35,6 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
     private boolean sendPacket = false;
     private int ticks = 0;
 
-    private ManaBufferBlock.Variant variant;
     private int manaCap = -1;
     private int mana;
     private int speed = 0;
@@ -50,61 +49,12 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
         return speed;
     }
 
-    @Override
-    public Level getManaReceiverLevel() {
-        return getLevel();
-    }
-
-    @Override
-    public BlockPos getManaReceiverPos() {
-        return getBlockPos();
-    }
-
-    @Override
-    public int getCurrentMana() {
-        return getBlockState().getBlock() instanceof ManaBufferBlock ? mana : 0;
-    }
-
-    @Override
-    public boolean isFull() {
-        return getCurrentMana() >= getMaxMana();
-    }
-
-    @Override
-    public boolean isOutputtingPower() {
-        return false;
-    }
-
-    public int getMaxMana() {
-        return manaCap;
-    }
-
-    @Override
-    public void receiveMana(int mana) {
-        int old = this.mana;
-        this.mana = Math.max(0, Math.min(getCurrentMana() + mana, getMaxMana()));
-        if (old != this.mana) {
-            setChanged();
-            markDispatchable();
-        }
-    }
-
-    @Override
-    public void markDispatchable() {
-        sendPacket = true;
-    }
-
-    @Override
-    public boolean canReceiveManaFromBursts() {
-        return true;
-    }
-
     private void initManaCapAndSpeed() {
         if (getMaxMana() == -1) {
-            manaCap = ((ManaBufferBlock) getBlockState().getBlock()).variant == ManaBufferBlock.Variant.DEFAULT ? MAX_MANA : MAX_MANA_QUANTUM;
+            manaCap = ((ManaBufferBlock) getBlockState().getBlock()).variant.equals(ManaBufferBlock.Variant.DEFAULT) ? MAX_MANA : MAX_MANA_QUANTUM;
         }
         if (getSpeed() == 0) {
-            speed = ((ManaBufferBlock) (getBlockState().getBlock())).variant.equals(ManaBufferBlock.Variant.DEFAULT) ? SPEED : SPEED_QUANTUM;
+            speed = ((ManaBufferBlock) getBlockState().getBlock()).variant.equals(ManaBufferBlock.Variant.DEFAULT) ? SPEED : SPEED_QUANTUM;
         }
     }
 
@@ -117,7 +67,7 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
         }
         if (!self.isFull()) {
             for (BlockPos o : INPUTS) {
-                if (level.getBlockEntity(pos.offset(o)) instanceof ManaPool pool && pool.getCurrentMana() >= 0) {
+                if (level.getBlockEntity(pos.offset(o)) instanceof ManaPool pool && !(pool instanceof ManaBufferBlockEntity) && pool.getCurrentMana() >= 0) {
                     int manaToGet = Math.min(speed, pool.getCurrentMana());
                     int space = Math.max(0, self.getMaxMana() - self.getCurrentMana());
                     int current = Math.min(space, manaToGet);
@@ -136,8 +86,26 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
                 self.receiveMana(-current);
             }
         }
-        VanillaPacketDispatcher.dispatchTEToNearbyPlayers(self);
         self.ticks++;
+    }
+
+    @Override
+    public void receiveMana(int mana) {
+        int old = this.mana;
+        this.mana = Math.max(0, Math.min(getCurrentMana() + mana, getMaxMana()));
+        if (old != this.mana) {
+            setChanged();
+            markDispatchable();
+        }
+    }
+
+    @Override
+    public void writePacketNBT(CompoundTag cmp, HolderLookup.Provider registries) {
+        cmp.putInt(TAG_MANA, getCurrentMana());
+        cmp.putInt(TAG_SPEED, getSpeed());
+        cmp.putInt(TAG_MANA_CAP, getMaxMana());
+        cmp.putString(TAG_INPUT_KEY, inputKey);
+        cmp.putString(TAG_OUTPUT_KEY, outputKey);
     }
 
     @Override
@@ -153,16 +121,42 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
         if (cmp.contains(TAG_OUTPUT_KEY)) {
             inputKey = cmp.getString(TAG_OUTPUT_KEY);
         }
-        setChanged();
     }
 
     @Override
-    public void writePacketNBT(CompoundTag cmp, HolderLookup.Provider registries) {
-        cmp.putInt(TAG_MANA, getCurrentMana());
-        cmp.putInt(TAG_SPEED, getSpeed());
-        cmp.putInt(TAG_MANA_CAP, getMaxMana());
-        cmp.putString(TAG_INPUT_KEY, inputKey);
-        cmp.putString(TAG_OUTPUT_KEY, outputKey);
+    public boolean canReceiveManaFromBursts() {
+        return true;
+    }
+
+    @Override
+    public boolean isFull() {
+        return getCurrentMana() >= getMaxMana();
+    }
+
+    @Override
+    public boolean isOutputtingPower() {
+        return false;
+    }
+
+    @Override
+    @UnknownNullability
+    public Level getManaReceiverLevel() {
+        return getLevel();
+    }
+
+    @Override
+    public BlockPos getManaReceiverPos() {
+        return getBlockPos();
+    }
+
+    @Override
+    public int getCurrentMana() {
+        return getBlockState().getBlock() instanceof ManaBufferBlock ? mana : 0;
+    }
+
+    @Override
+    public int getMaxMana() {
+        return manaCap;
     }
 
     @Override
@@ -187,13 +181,12 @@ public class ManaBufferBlockEntity extends BotaniaBlockEntity implements ManaPoo
 
     @Override
     public int getAvailableSpaceForMana() {
-        int space = Math.max(0, getMaxMana() - getCurrentMana());
-        if (space > 0) {
-            return space;
-        } else if (level.getBlockState(worldPosition.below()).is(BotaniaBlocks.manaVoid)) {
-            return getMaxMana();
-        } else {
-            return 0;
-        }
+        return Math.max(0, getMaxMana() - getCurrentMana());
     }
+
+    @Override
+    public void markDispatchable() {
+        sendPacket = true;
+    }
+
 }
