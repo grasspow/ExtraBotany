@@ -9,11 +9,10 @@ import net.minecraft.world.item.ItemStack;
 
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 
-public class PotatoChipsPack implements CustomPacketPayload {
+public record PotatoChipsPack() implements CustomPacketPayload {
     public static final PotatoChipsPack INSTANCE = new PotatoChipsPack();
     public static final Type<PotatoChipsPack> ID = new Type<>(exbotRL("pc"));
-
-    public static final StreamCodec<ByteBuf, PotatoChipsPack> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+	public static final StreamCodec<ByteBuf, PotatoChipsPack> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
     public Type<? extends CustomPacketPayload> type() {

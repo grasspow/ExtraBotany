@@ -1,6 +1,5 @@
 package grasspow.extrabotany.fabric.xplat;
 
-import grasspow.extrabotany.api.ExtraBotanyAPI;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -31,11 +30,5 @@ public class FabricClientXplatImpl implements ClientXplatAbstractions {
     @Override
     public boolean isPhysicalClient() {
         return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
-    }
-
-    @Override
-    public String getExtraBotanyVersion() {
-        return FabricLoader.getInstance().getModContainer(ExtraBotanyAPI.MODID).orElseThrow()
-				.getMetadata().getVersion().getFriendlyString();
     }
 }

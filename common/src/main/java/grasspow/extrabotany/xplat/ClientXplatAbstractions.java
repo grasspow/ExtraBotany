@@ -21,7 +21,5 @@ public interface ClientXplatAbstractions {
 
     boolean isPhysicalClient();
 
-    String getExtraBotanyVersion();
-
     ClientXplatAbstractions INSTANCE = ServiceUtil.findService(ClientXplatAbstractions.class, null);
 }

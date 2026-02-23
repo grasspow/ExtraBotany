@@ -1,9 +1,9 @@
 package grasspow.extrabotany.neoforge.network;
 
-import grasspow.extrabotany.network.client.PotatoChipsPack;
-import grasspow.extrabotany.network.server.BuddhistChangePack;
-import grasspow.extrabotany.network.server.FlamescionStrengthenPack;
-import grasspow.extrabotany.network.server.LeftClickPack;
+import grasspow.extrabotany.common.network.client.PotatoChipsPack;
+import grasspow.extrabotany.common.network.server.BuddhistChangePack;
+import grasspow.extrabotany.common.network.server.FlamescionStrengthenPack;
+import grasspow.extrabotany.common.network.server.LeftClickPack;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;

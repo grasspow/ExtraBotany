@@ -1,4 +1,4 @@
-package grasspow.extrabotany.neoforge.client;
+package grasspow.extrabotany.neoforge.xplat;
 
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -23,10 +23,5 @@ public class NeoForgeClientXplatImpl implements ClientXplatAbstractions {
     @Override
     public boolean isPhysicalClient() {
         return false;
-    }
-
-    @Override
-    public String getExtraBotanyVersion() {
-        return "";
     }
 }

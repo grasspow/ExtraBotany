@@ -12,6 +12,7 @@ import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
 import grasspow.extrabotany.common.block.block_entity.PedestalBlockEntity;
 import grasspow.extrabotany.common.component.ExtraBotanyDataComponents;
 import grasspow.extrabotany.common.crafting.ExtraBotanyRecipeTypes;
+import grasspow.extrabotany.common.effect.brew.ExtraBotanyBrews;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.ContributorListHandler;
 import grasspow.extrabotany.common.handler.ExtraBotanySounds;
@@ -28,15 +29,19 @@ import grasspow.extrabotany.common.item.equipment.weapon.*;
 import grasspow.extrabotany.common.item.misc.RewardBagItem;
 import grasspow.extrabotany.common.lib.LibBlockNames;
 import grasspow.extrabotany.common.lib.LibMisc;
+import grasspow.extrabotany.common.network.server.BuddhistChangePack;
 import grasspow.extrabotany.neoforge.network.NeoForgePacketHandler;
+import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import grasspow.extrabotany.xplat.XplatAbstractions;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -49,9 +54,13 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import org.lwjgl.glfw.GLFW;
 import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.BotaniaRegistries;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.common.handler.EquipmentHandler;
@@ -118,6 +127,8 @@ public class NeoForgeCommonInitializer {
         bind(event, Registries.RECIPE_SERIALIZER, ExtraBotanyRecipeTypes::submitRecipeSerializers);
 
         bind(event, Registries.ENTITY_TYPE, ExtraBotanyEntities::registerEntities);
+        
+        bind(event, BotaniaRegistries.BREWS, ExtraBotanyBrews::submitRegistrations);
 
         bind(event, Registries.TRIGGER_TYPE, ExtraBotanyCriteriaTriggers::init);
 
@@ -159,6 +170,18 @@ public class NeoForgeCommonInitializer {
     }
 
     private void registerEvents() {
+        IEventBus bus = NeoForge.EVENT_BUS;
+
+        bus.addListener((InputEvent.Key event) -> {
+            Player player = Minecraft.getInstance().player;
+            if (player == null)
+                return;
+            if (event.getAction() == GLFW.GLFW_PRESS && event.getKey() == GLFW.GLFW_KEY_LEFT_CONTROL) {
+                if (!BuddhistRelicsItem.relicShift(player.getMainHandItem()).isEmpty()) {
+                    ClientXplatAbstractions.INSTANCE.sendToServer(BuddhistChangePack.INSTANCE);
+                }
+            }
+        });
     }
 
     private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
