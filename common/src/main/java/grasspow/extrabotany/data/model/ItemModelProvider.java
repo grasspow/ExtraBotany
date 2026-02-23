@@ -4,6 +4,9 @@ import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Pair;
 import grasspow.extrabotany.api.ExtraBotanyAPI;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
+import grasspow.extrabotany.common.item.brew.BaseBrewItemEX;
+import grasspow.extrabotany.common.item.brew.CocktailItem;
+import grasspow.extrabotany.common.item.brew.InfiniteWineItem;
 import grasspow.extrabotany.common.lib.LibEntityNames;
 import grasspow.extrabotany.common.lib.LibItemNames;
 import grasspow.extrabotany.common.lib.LibMisc;
@@ -54,22 +57,24 @@ public class ItemModelProvider implements DataProvider {
     public ItemModelProvider(PackOutput packOutput) {
         this.packOutput = packOutput;
     }
+
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
         Set<Item> items = BuiltInRegistries.ITEM.stream().filter(i -> LibMisc.MOD_ID.equals(BuiltInRegistries.ITEM.getKey(i).getNamespace()))
                 .collect(Collectors.toSet());
         Map<ResourceLocation, Supplier<JsonElement>> map = new HashMap<>();
-		registerItemBlocks(takeAll(items, i -> i instanceof BlockItem).stream().map(i -> (BlockItem) i).collect(Collectors.toSet()), map::put);
-		registerItemOverrides(items, map::put);
-		registerItems(items, map::put);PackOutput.PathProvider modelPathProvider = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models");
-		List<CompletableFuture<?>> output = new ArrayList<>();
+        registerItemBlocks(takeAll(items, i -> i instanceof BlockItem).stream().map(i -> (BlockItem) i).collect(Collectors.toSet()), map::put);
+        registerItemOverrides(items, map::put);
+        registerItems(items, map::put);
+        PackOutput.PathProvider modelPathProvider = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models");
+        List<CompletableFuture<?>> output = new ArrayList<>();
 
-		for (Map.Entry<ResourceLocation, Supplier<JsonElement>> e : map.entrySet()) {
-			ResourceLocation id = e.getKey();
-			output.add(DataProvider.saveStable(cache, e.getValue().get(), modelPathProvider.json(id)));
-		}
+        for (Map.Entry<ResourceLocation, Supplier<JsonElement>> e : map.entrySet()) {
+            ResourceLocation id = e.getKey();
+            output.add(DataProvider.saveStable(cache, e.getValue().get(), modelPathProvider.json(id)));
+        }
 
-		return CompletableFuture.allOf(output.toArray(CompletableFuture[]::new));
+        return CompletableFuture.allOf(output.toArray(CompletableFuture[]::new));
     }
 
     private void registerItemBlocks(Set<BlockItem> itemBlocks, BiConsumer<ResourceLocation, Supplier<JsonElement>> consumer) {
@@ -96,29 +101,29 @@ public class ItemModelProvider implements DataProvider {
 
     private static void registerItemOverrides(Set<Item> items, BiConsumer<ResourceLocation, Supplier<JsonElement>> consumer) {
         OverrideHolder cocktailOverrides = new OverrideHolder();
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i < CocktailItem.DEFAULT_USES_COCKTAIL; i++) {
             ResourceLocation overrideModel = ModelLocationUtils.getModelLocation(ExtraBotanyItems.cocktail, "_" + i);
             GENERATED_1.create(overrideModel,
-                    TextureMapping.layer0(exbotRL("item/" + LibItemNames.EMPTY_BOTTLE)).put(LAYER1, overrideModel),
+                    TextureMapping.layer0(ExtraBotanyItems.emptyBottle).put(LAYER1, overrideModel),
                     consumer);
-            cocktailOverrides.add(overrideModel, Pair.of(exbotRL("swigs_taken"), (double) i ));
+            cocktailOverrides.add(overrideModel, Pair.of(exbotRL("swigs_taken"), (double) i / (BaseBrewItemEX.DEFAULT_USES_COCKTAIL - 1)));
         }
         GENERATED_OVERRIDES_1.create(ModelLocationUtils.getModelLocation(ExtraBotanyItems.cocktail),
-                TextureMapping.layer0(exbotRL("item/" + LibItemNames.EMPTY_BOTTLE)).put(LAYER1, TextureMapping.getItemTexture(ExtraBotanyItems.cocktail, "_1")),
+                TextureMapping.layer0(ExtraBotanyItems.emptyBottle).put(LAYER1, TextureMapping.getItemTexture(ExtraBotanyItems.cocktail, "_0")),
                 cocktailOverrides,
                 consumer);
         items.remove(ExtraBotanyItems.cocktail);
 
         OverrideHolder infiniteWineOverrides = new OverrideHolder();
-        for (int i = 1; i <= 12; i++) {
-            ResourceLocation overrideModel = ModelLocationUtils.getModelLocation(ExtraBotanyItems.infiniteWine, "_" + (i / 2 + i % 2));
+        for (int i = 1; i < InfiniteWineItem.DEFAULT_USES_INFINITE_WINE; i++) {
+            ResourceLocation overrideModel = ModelLocationUtils.getModelLocation(ExtraBotanyItems.infiniteWine, "_" + i);
             GENERATED_1.create(overrideModel,
                     TextureMapping.layer0(exbotRL("item/" + LibItemNames.INFINITE_WINE)).put(LAYER1, overrideModel),
                     consumer);
-            infiniteWineOverrides.add(overrideModel, Pair.of(exbotRL("swigs_taken"), (double) i ));
+            infiniteWineOverrides.add(overrideModel, Pair.of(exbotRL("swigs_taken"), (double) i / (BaseBrewItemEX.DEFAULT_USES_INFINITE_WINE - 1)));
         }
         GENERATED_OVERRIDES_1.create(ModelLocationUtils.getModelLocation(ExtraBotanyItems.infiniteWine),
-                TextureMapping.layer0(exbotRL("item/" + LibItemNames.INFINITE_WINE)).put(LAYER1, TextureMapping.getItemTexture(ExtraBotanyItems.infiniteWine, "_1")),
+                TextureMapping.layer0(ExtraBotanyItems.infiniteWine).put(LAYER1, TextureMapping.getItemTexture(ExtraBotanyItems.infiniteWine, "_0")),
                 infiniteWineOverrides,
                 consumer);
         items.remove(ExtraBotanyItems.infiniteWine);
@@ -130,8 +135,8 @@ public class ItemModelProvider implements DataProvider {
         items.remove(ExtraBotanyItems.flamescionWeapon);
         items.remove(ExtraBotanyItems.fallnaught);
 
-        takeAll(items,ExtraBotanyItems.splashGrenade).forEach(i -> GENERATED_1.create(ModelLocationUtils.getModelLocation(i),
-                TextureMapping.layer0(TextureMapping.getItemTexture(i)).put(LAYER1, TextureMapping.getItemTexture(i, "_1")),consumer));
+        takeAll(items, ExtraBotanyItems.splashGrenade).forEach(i -> GENERATED_1.create(ModelLocationUtils.getModelLocation(i),
+                TextureMapping.layer0(TextureMapping.getItemTexture(i)).put(LAYER1, TextureMapping.getItemTexture(i, "_1")), consumer));
         takeAll(items,
                 //hammer
                 ExtraBotanyItems.elementiumHammer,
@@ -158,7 +163,7 @@ public class ItemModelProvider implements DataProvider {
                 consumer);
         items.remove(ExtraBotanyItems.firstFractal);
         takeAll(items, i -> true).forEach(i -> ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(i), TextureMapping.layer0(i), consumer));
-    
+
     }
 
     private void registerIcons(BiConsumer<ResourceLocation, Supplier<JsonElement>> consumer) {
@@ -196,18 +201,18 @@ public class ItemModelProvider implements DataProvider {
     }
 
     @SafeVarargs
-	public static <T> Collection<T> takeAll(Set<? extends T> src, T... items) {
-		List<T> ret = Arrays.asList(items);
-		for (T item : items) {
-			if (!src.contains(item)) {
+    public static <T> Collection<T> takeAll(Set<? extends T> src, T... items) {
+        List<T> ret = Arrays.asList(items);
+        for (T item : items) {
+            if (!src.contains(item)) {
                 ExtraBotanyAPI.LOGGER.warn("Item {} not found in set", item);
-			}
-		}
-		if (!src.removeAll(ret)) {
+            }
+        }
+        if (!src.removeAll(ret)) {
             ExtraBotanyAPI.LOGGER.warn("takeAll array didn't yield anything ({})", Arrays.toString(items));
-		}
-		return ret;
-	}
+        }
+        return ret;
+    }
 
     public static <T> Collection<T> takeAll(Set<T> src, Predicate<T> pred) {
         List<T> ret = new ArrayList<>();

@@ -3,6 +3,7 @@ package grasspow.extrabotany.client.render;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -24,28 +25,31 @@ public final class ColorHandler {
     }
 
     public static void submitItems(ItemHandlerConsumer items) {
-        items.register((s, t) ->
+        items.register((stack, tintIndex) ->
         {
-            if (t != 1) {
+            if (tintIndex != 1) {
                 return -1;
             }
 
-            Brew brew = ((BrewItem) s.getItem()).getBrew(s);
+            Brew brew = ((BrewItem) stack.getItem()).getBrew(stack);
             if (brew == BotaniaBrews.fallbackBrew) {
-                return 0xC6000E;
+                return 0xFFC6000E;
             }
-            int color = brew.getColor(s);
-            double speed = 0.2;
-            int add = (int) (Math.sin(ClientTickHandler.getEntityTicksInGame() * speed) * 24);
 
-            int r = Math.max(0, Math.min(255, (color >> 16 & 0xFF) + add));
-            int g = Math.max(0, Math.min(255, (color >> 8 & 0xFF) + add));
-            int b = Math.max(0, Math.min(255, (color & 0xFF) + add));
+			int add = (int) (Mth.sin(ClientTickHandler.getUiAnimationTicks() * 0.2f) * 24);
 
-            return r << 16 | g << 8 | b;
+			return addToColor(brew.getColor(stack), add);
         }, ExtraBotanyItems.splashGrenade, ExtraBotanyItems.cocktail, ExtraBotanyItems.infiniteWine);
 
         items.register((s, t) -> t == 1 ? Mth.hsvToRgb(ClientTickHandler.getEntityTicksInGame() * 2 % 360 / 360F, 0.25F, 1F) : -1, ExtraBotanyItems.universalPetal);
+    }
+
+    private static int addToColor(int color, int add) {
+        int r = Mth.clamp(FastColor.ARGB32.red(color) + add, 0, 255);
+        int g = Mth.clamp(FastColor.ARGB32.green(color) + add, 0, 255);
+        int b = Mth.clamp(FastColor.ARGB32.blue(color) + add, 0, 255);
+
+        return FastColor.ARGB32.color(r, g, b);
     }
 
     private ColorHandler() {

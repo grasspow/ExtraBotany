@@ -21,14 +21,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.common.item.brew.BaseBrewItem;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 public class BaseBrewItemEX extends BaseBrewItem {
-    public static final int DEFAULT_USES_INFINITE_WINE = 8;
+    public static final int DEFAULT_USES_COCKTAIL = 8;
+    public static final int DEFAULT_USES_INFINITE_WINE = 12;
     private final float multiplier;
     private final int amplifier;
 
@@ -38,10 +38,9 @@ public class BaseBrewItemEX extends BaseBrewItem {
         this.amplifier = amplifier;
     }
 
-    @NotNull
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity living) {
-        if (!world.isClientSide) {
+        if (!world.isClientSide && getSwigsLeft(stack) >= 1) {
             for (MobEffectInstance effect : getBrew(stack).getPotionEffects(stack)) {
                 MobEffectInstance newEffect = new MobEffectInstance(effect.getEffect(), (int) (effect.getDuration() * multiplier), effect.getAmplifier() + amplifier, true, true);
                 if (effect.getEffect().value().isInstantenous()) {
@@ -56,7 +55,7 @@ public class BaseBrewItemEX extends BaseBrewItem {
 
             int swigs = getSwigsLeft(stack);
             if (living instanceof Player player && !player.getAbilities().instabuild) {
-                if (swigs >= 1 && !stack.is(ExtraBotanyItems.infiniteWine)) {
+                if (swigs <= 1 && !stack.is(ExtraBotanyItems.infiniteWine)) {
                     ItemStack result = getBaseStack();
                     if (!player.getInventory().add(result)) {
                         return result;

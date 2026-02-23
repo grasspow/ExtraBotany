@@ -169,7 +169,7 @@ public class ExtraBotanyItems {
 //    public static final Item RECORD_HERRSCHER = make(LibItemNames.RECORD_HERRSCHER,nonStackable().rarity(Rarity.EPIC).jukeboxPlayable(ExtraBotanySounds.SALVATION.get()));
 
     // brew
-    public static final Item cocktail = make(LibItemNames.COCKTAIL, CocktailItem::new, nonStackable().component(BotaniaDataComponents.MAX_USES, BaseBrewItemEX.DEFAULT_USES_INFINITE_WINE));
+    public static final Item cocktail = make(LibItemNames.COCKTAIL, CocktailItem::new, nonStackable().component(BotaniaDataComponents.MAX_USES, BaseBrewItemEX.DEFAULT_USES_COCKTAIL));
     public static final Item infiniteWine = make(LibItemNames.INFINITE_WINE, InfiniteWineItem::new, nonStackable().component(BotaniaDataComponents.MAX_USES, BaseBrewItemEX.DEFAULT_USES_INFINITE_WINE));
     public static final Item splashGrenade = make(LibItemNames.SPLASH_GRENADE, SplashGrenadeItem::new, stackTo32());
 

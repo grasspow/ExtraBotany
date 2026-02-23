@@ -78,6 +78,10 @@ dependencies {
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
+
+    compileOnly("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-neoforge") { transitive = false }
+    runtimeOnly("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-neoforge") { transitive = false }
+
     compileOnly("org.jetbrains:annotations:26.1.0")
 }
 

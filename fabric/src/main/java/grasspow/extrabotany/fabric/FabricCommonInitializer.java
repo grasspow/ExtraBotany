@@ -101,7 +101,7 @@ public class FabricCommonInitializer implements ModInitializer {
                         .title(Component.translatable("itemGroup.extrabotany").withStyle((style -> style.withColor(ChatFormatting.WHITE))))
                         .hideTitle()
                         .icon(() -> new ItemStack(ExtraBotanyItems.pylon))
-                        .backgroundTexture(ResourceLocation.withDefaultNamespace("textures/gui/container/creative_inventory/tab_extrabotany.png"))
+                        .backgroundTexture(exbotRL("textures/gui/tab_extrabotany.png"))
                         .build()
         );
         ItemGroupEvents.modifyEntriesEvent(ExtraBotanyRegistries.EXBOT_TAB_KEY)

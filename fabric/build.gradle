@@ -70,10 +70,6 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_api_version"
 
     modImplementation("vazkii.botania:botania-fabric-1.21.1:$botania_version")
-    {
-//        my computer cannot connect to modrinth, dame!
-        exclude group: "maven.modrinth", module: "here-be-no-dragons"
-    }
 
     modImplementation "vazkii.patchouli:Patchouli:${patchouli_version}-FABRIC"
 
@@ -88,6 +84,9 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}"
 
     modImplementation("dev.emi:trinkets:${trinkets_version}") { transitive = false }
+
+    modCompileOnly("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-fabric") { transitive = false }
+    modLocalRuntime("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-fabric") { transitive = false }
 
     compileOnly("org.jetbrains:annotations:26.1.0")
 }

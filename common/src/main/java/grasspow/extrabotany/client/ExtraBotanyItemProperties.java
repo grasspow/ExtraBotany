@@ -12,12 +12,16 @@ import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 
 public class ExtraBotanyItemProperties {
     public static void init(TriConsumer<ItemLike, ResourceLocation, ClampedItemPropertyFunction> consumer) {
+        //brew
         ClampedItemPropertyFunction brewGetter = (stack, world, entity, seed) -> {
-			BaseBrewItem item = ((BaseBrewItem) stack.getItem());
-			return item.getSwigs(stack) - item.getSwigsLeft(stack);
+            BaseBrewItem item = ((BaseBrewItem) stack.getItem());
+            int swigsLeft = item.getSwigsLeft(stack) - 1;
+            int totalSwigs = item.getSwigs(stack) - 1;
+            return swigsLeft == totalSwigs ? 0.0F : Math.nextUp((totalSwigs - swigsLeft) / (float) totalSwigs);
         };
         consumer.accept(ExtraBotanyItems.cocktail, exbotRL("swigs_taken"), brewGetter);
         consumer.accept(ExtraBotanyItems.infiniteWine, exbotRL("swigs_taken"), brewGetter);
+
         ClampedItemPropertyFunction pulling = (stack, worldIn, entity, seed) -> entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
         ClampedItemPropertyFunction pull = (stack, worldIn, entity, seed) -> {
             if (entity == null) {

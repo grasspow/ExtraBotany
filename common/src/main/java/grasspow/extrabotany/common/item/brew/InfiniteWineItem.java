@@ -2,6 +2,8 @@ package grasspow.extrabotany.common.item.brew;
 
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,12 +20,21 @@ public class InfiniteWineItem extends BaseBrewItemEX {
     private static final int MANA_PER_DAMAGE = 12000;
 
     public InfiniteWineItem(Properties builder) {
-        super(builder,16, 1.5f, 1, ()-> ExtraBotanyItems.emptyBottle);
+        super(builder, 16, 1.5f, 1, () -> ExtraBotanyItems.emptyBottle);
     }
 
     public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null) {
         };
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack useItem = player.getMainHandItem();
+        if (useItem.getItem() instanceof InfiniteWineItem && getSwigsLeft(useItem) == 0) {
+            return InteractionResultHolder.fail(useItem);
+        }
+        return super.use(world, player, hand);
     }
 
     @Override

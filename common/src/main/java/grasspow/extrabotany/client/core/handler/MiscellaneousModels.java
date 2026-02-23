@@ -1,8 +1,12 @@
 package grasspow.extrabotany.client.core.handler;
 
+import grasspow.extrabotany.api.ExtraBotanyAPI;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +30,33 @@ public class MiscellaneousModels {
     public BakedModel[] coreGodWingsModel = new BakedModel[4];
     public BakedModel coreGodModel;
 
+    //neoforge
+    public void onModelBake(ModelBakery loader, Map<ModelResourceLocation, BakedModel> map) {
+		if (!registeredModels) {
+			ExtraBotanyAPI.LOGGER.error("Additional models failed to register! Aborting baking models to avoid early crashing.");
+			return;
+		}
+		afterBakeModifiers.forEach((resourceLocation, afterBakeModifier) -> map
+				.computeIfPresent(new ModelResourceLocation(resourceLocation, ""),
+						(resourceLoc, bakedModel) -> afterBakeModifier.apply(bakedModel)));
+		modelConsumers.forEach((resourceLocation, bakedModelConsumer) -> bakedModelConsumer
+				.accept(map.get(new ModelResourceLocation(resourceLocation, "standalone"))));
+	}
+
+    // Fabric
+	public BakedModel modifyModelAfterbake(BakedModel bakedModel, @Nullable ResourceLocation id) {
+		if (id == null) {
+			return bakedModel;
+		}
+		modelConsumers.getOrDefault(id, model -> {}).accept(bakedModel);
+		return afterBakeModifiers.getOrDefault(stripBlockPrefix(id), Function.identity()).apply(bakedModel);
+	}
+
+    private ResourceLocation stripBlockPrefix(ResourceLocation id) {
+        String path = id.getPath();
+        return ResourceLocation.fromNamespaceAndPath(id.getNamespace(), path.startsWith("block/") ? path.substring(6) : path);
+    }
+
     public void onModelRegister(ResourceManager rm, Consumer<ResourceLocation> consumer) {
 		modelConsumers.keySet().forEach(consumer);
 
@@ -34,10 +65,6 @@ public class MiscellaneousModels {
         }
     }
 
-    public BakedModel modifyModelAfterbake(BakedModel bakedModel, ResourceLocation id) {
-		modelConsumers.getOrDefault(id, model -> {}).accept(bakedModel);
-		return afterBakeModifiers.getOrDefault(id, Function.identity()).apply(bakedModel);
-	}
 
     private MiscellaneousModels() {
         afterBakeModifiers = new HashMap<>();

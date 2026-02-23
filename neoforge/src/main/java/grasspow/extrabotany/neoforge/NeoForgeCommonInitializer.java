@@ -30,9 +30,11 @@ import grasspow.extrabotany.common.lib.LibBlockNames;
 import grasspow.extrabotany.common.lib.LibMisc;
 import grasspow.extrabotany.neoforge.network.NeoForgePacketHandler;
 import grasspow.extrabotany.xplat.XplatAbstractions;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -71,9 +73,9 @@ import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 
 
 @Mod(LibMisc.MOD_ID)
-public class ForgeCommonInitializer {
+public class NeoForgeCommonInitializer {
 
-    public ForgeCommonInitializer(IEventBus modBus, ModContainer modContainer) {
+    public NeoForgeCommonInitializer(IEventBus modBus, ModContainer modContainer) {
         ExtraBotanyAPI.LOGGER.debug("API instances: {}",
                 List.of(ExtraBotanyAPI.instance(), XplatAbstractions.instance()));
         NeoForgeExtraBotanyConfig.setup(modContainer);
@@ -121,9 +123,10 @@ public class ForgeCommonInitializer {
 
         bind(event, Registries.CREATIVE_MODE_TAB, consumer -> consumer.accept(
                 CreativeModeTab.builder()
-//                        .title(Component.translatable("itemGroup.extrabotany").withStyle(style -> style.withColor(ChatFormatting.WHITE)))
+                        .title(Component.translatable("itemGroup.extrabotany").withStyle(style -> style.withColor(ChatFormatting.WHITE)))
+                        .hideTitle()
                         .icon(() -> new ItemStack(ExtraBotanyItems.pylon))
-                        .backgroundTexture(ResourceLocation.withDefaultNamespace("textures/gui/container/creative_inventory/tab_extrabotany.png"))
+                        .backgroundTexture(exbotRL("textures/gui/tab_extrabotany.png"))
                         .build(),
                 ExtraBotanyRegistries.EXBOT_TAB_KEY.location()));
     }

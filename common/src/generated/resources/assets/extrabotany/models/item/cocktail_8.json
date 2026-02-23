@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "extrabotany:item/empty_bottle",
-    "layer1": "extrabotany:item/cocktail_8"
-  }
-}
