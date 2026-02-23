@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "extrabotany:shadowium"
+    },
+    "L": {
+      "item": "extrabotany:photonium"
+    },
+    "S": {
+      "item": "extrabotany:spirit"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DSL",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:the_chaos"
+  }
+}

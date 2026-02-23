@@ -1,0 +1,33 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "tag": "botania:petals/green"
+    },
+    {
+      "tag": "botania:petals/pink"
+    },
+    {
+      "tag": "botania:petals/pink"
+    },
+    {
+      "tag": "botania:petals/white"
+    },
+    {
+      "tag": "botania:petals/white"
+    },
+    {
+      "tag": "extrabotany:runes/mana"
+    },
+    {
+      "item": "extrabotany:spirit"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "extrabotany:annoying_flower"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

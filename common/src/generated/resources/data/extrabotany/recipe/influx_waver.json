@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "extrabotany:aerialite"
+    },
+    "L": {
+      "item": "botania:life_essence"
+    },
+    "O": {
+      "item": "extrabotany:the_origin"
+    },
+    "T": {
+      "item": "botania:thunder_sword"
+    }
+  },
+  "pattern": [
+    "  A",
+    "LO ",
+    "TL "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:influx_waver"
+  }
+}

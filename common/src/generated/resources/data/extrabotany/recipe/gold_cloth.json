@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "botania:manaweave_cloth"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "L": {
+      "item": "botania:life_essence"
+    }
+  },
+  "pattern": [
+    "LCL",
+    "CGC",
+    "LCL"
+  ],
+  "result": {
+    "count": 4,
+    "id": "extrabotany:gold_cloth"
+  }
+}

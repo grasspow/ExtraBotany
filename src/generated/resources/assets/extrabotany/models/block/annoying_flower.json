@@ -1,7 +1,0 @@
-{
-  "parent": "extrabotany:block/shapes/cross",
-  "render_type": "cutout",
-  "textures": {
-    "cross": "extrabotany:block/annoying_flower"
-  }
-}

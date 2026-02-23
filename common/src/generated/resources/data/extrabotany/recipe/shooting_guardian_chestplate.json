@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "extrabotany:aerialite_ingots"
+    },
+    "R": {
+      "tag": "extrabotany:runes/spring"
+    },
+    "S": {
+      "item": "botania:manasteel_chestplate"
+    },
+    "T": {
+      "item": "botania:dreamwood_twig"
+    }
+  },
+  "pattern": [
+    "TRT",
+    "ASA",
+    " A "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:shooting_guardian_chestplate"
+  }
+}

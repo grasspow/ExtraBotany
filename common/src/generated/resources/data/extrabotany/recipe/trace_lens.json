@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "botania:lens_normal"
+    },
+    {
+      "tag": "extrabotany:runes/greed"
+    },
+    {
+      "item": "botania:mana_powder"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:trace_lens"
+  }
+}

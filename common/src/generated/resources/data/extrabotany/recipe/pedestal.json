@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_nugget"
+    },
+    "L": {
+      "item": "botania:livingrock"
+    }
+  },
+  "pattern": [
+    "LGL",
+    " L ",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:pedestal"
+  }
+}

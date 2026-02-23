@@ -1,0 +1,42 @@
+{
+  "parent": "extrabotany:main/spirit_craft",
+  "criteria": {
+    "armorset_goblins_layer": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:goblins_layer_helmet"
+          },
+          {
+            "items": "extrabotany:goblins_layer_chestplate"
+          },
+          {
+            "items": "extrabotany:goblins_layer_leggings"
+          },
+          {
+            "items": "extrabotany:goblins_layer_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.armorset_goblins_layer.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:goblins_layer_helmet"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.armorset_goblins_layer"
+    }
+  },
+  "requirements": [
+    [
+      "armorset_goblins_layer"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

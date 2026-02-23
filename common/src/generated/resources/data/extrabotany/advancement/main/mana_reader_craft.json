@@ -1,0 +1,33 @@
+{
+  "parent": "extrabotany:main/nightmare_fuel_eat",
+  "criteria": {
+    "mana_reader_craft": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:mana_reader"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.mana_reader_craft.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:mana_reader"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.mana_reader_craft"
+    }
+  },
+  "requirements": [
+    [
+      "mana_reader_craft"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

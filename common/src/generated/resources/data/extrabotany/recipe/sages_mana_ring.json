@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "botania:mana_ring_greater"
+    },
+    "H": {
+      "item": "extrabotany:hero_medal"
+    },
+    "M": {
+      "item": "botania:mana_tablet"
+    },
+    "T": {
+      "item": "botania:terrasteel_ingot"
+    }
+  },
+  "pattern": [
+    "THT",
+    "MDM",
+    "TMT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:sages_mana_ring"
+  }
+}

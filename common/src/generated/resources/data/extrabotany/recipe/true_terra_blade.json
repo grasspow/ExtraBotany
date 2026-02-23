@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "botania:terrasteel_ingot"
+    },
+    "L": {
+      "item": "botania:life_essence"
+    },
+    "O": {
+      "item": "extrabotany:the_origin"
+    },
+    "T": {
+      "item": "botania:terra_sword"
+    }
+  },
+  "pattern": [
+    "  A",
+    "LO ",
+    "TL "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:true_terra_blade"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    {
+      "item": "extrabotany:hero_medal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:jingwei_feather"
+  }
+}

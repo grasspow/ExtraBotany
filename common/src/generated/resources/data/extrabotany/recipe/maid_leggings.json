@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "extrabotany:gold_cloth"
+    },
+    "G": {
+      "item": "botania:gaia_ingot"
+    },
+    "T": {
+      "item": "botania:terrasteel_leggings"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "CTC",
+    "C C"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:maid_leggings"
+  }
+}

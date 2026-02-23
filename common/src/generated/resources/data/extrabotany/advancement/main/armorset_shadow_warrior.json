@@ -1,0 +1,42 @@
+{
+  "parent": "extrabotany:main/spirit_craft",
+  "criteria": {
+    "armorset_shadow_warrior": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:shadow_warrior_helmet"
+          },
+          {
+            "items": "extrabotany:shadow_warrior_chestplate"
+          },
+          {
+            "items": "extrabotany:shadow_warrior_leggings"
+          },
+          {
+            "items": "extrabotany:shadow_warrior_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.armorset_shadow_warrior.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:shadow_warrior_helmet"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.armorset_shadow_warrior"
+    }
+  },
+  "requirements": [
+    [
+      "armorset_shadow_warrior"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

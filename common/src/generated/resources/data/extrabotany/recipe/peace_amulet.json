@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "botania:livingwood_logs"
+    },
+    "R": {
+      "item": "botania:livingrock"
+    }
+  },
+  "pattern": [
+    " L ",
+    "LRL",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:peace_amulet"
+  }
+}

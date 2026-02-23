@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "extrabotany:the_chaos"
+    },
+    "G": {
+      "item": "botania:mana_gun"
+    },
+    "P": {
+      "tag": "extrabotany:photonium_ingots"
+    },
+    "S": {
+      "item": "botania:manasteel_ingot"
+    }
+  },
+  "pattern": [
+    "PPS",
+    " GC",
+    "  P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:silver_bullet"
+  }
+}

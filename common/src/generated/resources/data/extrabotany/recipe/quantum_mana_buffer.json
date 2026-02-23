@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "extrabotany:mana_buffer"
+    },
+    "O": {
+      "item": "extrabotany:orichalcos"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BOB",
+    "BBB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:quantum_mana_buffer"
+  }
+}

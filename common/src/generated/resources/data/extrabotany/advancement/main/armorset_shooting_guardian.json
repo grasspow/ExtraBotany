@@ -1,0 +1,42 @@
+{
+  "parent": "extrabotany:main/spirit_craft",
+  "criteria": {
+    "armorset_shooting_guardian": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:shooting_guardian_helmet"
+          },
+          {
+            "items": "extrabotany:shooting_guardian_chestplate"
+          },
+          {
+            "items": "extrabotany:shooting_guardian_leggings"
+          },
+          {
+            "items": "extrabotany:shooting_guardian_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.armorset_shooting_guardian.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:shooting_guardian_helmet"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.armorset_shooting_guardian"
+    }
+  },
+  "requirements": [
+    [
+      "armorset_shooting_guardian"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

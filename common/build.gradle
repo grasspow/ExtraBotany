@@ -1,0 +1,52 @@
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    neoFormVersion = neo_form_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+}
+
+dependencies {
+    compileOnly "net.fabricmc:sponge-mixin:0.15.2+mixin.0.8.7"
+    // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
+    compileOnly "io.github.llamalad7:mixinextras-common:0.4.1"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:0.4.1"
+
+    compileOnly "vazkii.botania:botania-xplat-1.21.1:${botania_version}"
+    compileOnly "vazkii.patchouli:Patchouli-xplat:${patchouli_version}"
+
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}:api"
+
+    // Looks weird, but actually seems to work (the -common variant would be in Intermediary mapping)
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+
+    compileOnly "org.jetbrains:annotations:26.1.0"
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.files
+}
+

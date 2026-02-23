@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "O": {
+      "tag": "extrabotany:orichalcos_ingots"
+    },
+    "S": {
+      "item": "botania:mana_string"
+    },
+    "T": {
+      "item": "botania:terrasteel_ingot"
+    }
+  },
+  "pattern": [
+    " TS",
+    "TOS",
+    " TS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:failnaught"
+  }
+}

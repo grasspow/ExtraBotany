@@ -1,0 +1,6 @@
+// 1.21.1	2025-11-02T11:20:12.093513968	ExtraBotany/ExtraBotany item tags (Fabric-specific)
+0c0fc81130a9f817238392e243c399581d5b294a data/trinkets/tags/item/head/hat.json
+312fe3ed1f1b91a76a51e2ae7050fd14452a270e data/trinkets/tags/item/offhand/ring.json
+312fe3ed1f1b91a76a51e2ae7050fd14452a270e data/trinkets/tags/item/hand/ring.json
+5d62348662ce13ffc737ff44ec9750c352cd6456 data/trinkets/tags/item/all.json
+98b3b3b5541fd7a0e3a0ba83115901c4f527e60d data/trinkets/tags/item/chest/necklace.json

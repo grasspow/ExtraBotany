@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "botania:dark_quartz"
+    },
+    "H": {
+      "item": "extrabotany:hero_medal"
+    },
+    "T": {
+      "item": "botania:terrasteel_ingot"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BHB",
+    "TTT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:camera"
+  }
+}

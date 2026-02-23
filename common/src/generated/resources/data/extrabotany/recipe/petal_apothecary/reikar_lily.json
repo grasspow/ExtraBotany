@@ -1,0 +1,39 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "tag": "botania:petals/light_blue"
+    },
+    {
+      "tag": "botania:petals/light_blue"
+    },
+    {
+      "tag": "botania:petals/cyan"
+    },
+    {
+      "tag": "botania:petals/cyan"
+    },
+    {
+      "tag": "botania:petals/blue"
+    },
+    {
+      "tag": "extrabotany:runes/pride"
+    },
+    {
+      "tag": "extrabotany:runes/sloth"
+    },
+    {
+      "tag": "extrabotany:runes/envy"
+    },
+    {
+      "item": "botania:life_essence"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "extrabotany:reikar_lily"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

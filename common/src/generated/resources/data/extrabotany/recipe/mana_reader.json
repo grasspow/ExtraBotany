@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "botania:mana_diamond"
+    },
+    "S": {
+      "item": "botania:livingwood_twig"
+    },
+    "T": {
+      "item": "botania:mana_powder"
+    }
+  },
+  "pattern": [
+    " TD",
+    " ST",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:mana_reader"
+  }
+}

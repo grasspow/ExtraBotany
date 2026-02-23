@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "botania:gaia_ingot"
+    },
+    "L": {
+      "item": "botania:lens_normal"
+    },
+    "P": {
+      "item": "botania:fabulous_pool"
+    }
+  },
+  "pattern": [
+    "PLP",
+    "PIP",
+    "PLP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:mana_buffer"
+  }
+}

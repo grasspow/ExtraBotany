@@ -1,0 +1,33 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "tag": "botania:petals/white"
+    },
+    {
+      "tag": "botania:petals/white"
+    },
+    {
+      "tag": "botania:petals/white"
+    },
+    {
+      "tag": "botania:petals/blue"
+    },
+    {
+      "tag": "botania:petals/blue"
+    },
+    {
+      "tag": "extrabotany:runes/winter"
+    },
+    {
+      "tag": "extrabotany:runes/mana"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "extrabotany:edelweiss"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

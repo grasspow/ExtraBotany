@@ -1,0 +1,33 @@
+{
+  "parent": "extrabotany:main/nightmare_fuel_eat",
+  "criteria": {
+    "nature_orb_craft": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:nature_orb"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.nature_orb_craft.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:nature_orb"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.nature_orb_craft"
+    }
+  },
+  "requirements": [
+    [
+      "nature_orb_craft"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

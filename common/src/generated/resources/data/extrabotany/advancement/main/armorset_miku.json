@@ -1,0 +1,42 @@
+{
+  "parent": "extrabotany:main/nightmare_fuel_eat",
+  "criteria": {
+    "armorset_miku": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:miku_helmet"
+          },
+          {
+            "items": "extrabotany:miku_chestplate"
+          },
+          {
+            "items": "extrabotany:miku_leggings"
+          },
+          {
+            "items": "extrabotany:miku_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.armorset_miku.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:miku_helmet"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.armorset_miku"
+    }
+  },
+  "requirements": [
+    [
+      "armorset_miku"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

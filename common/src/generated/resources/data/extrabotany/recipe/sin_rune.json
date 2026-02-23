@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "botania:life_essence"
+    },
+    {
+      "tag": "extrabotany:runes/mana"
+    },
+    {
+      "tag": "extrabotany:runes/pride"
+    },
+    {
+      "tag": "extrabotany:runes/gluttony"
+    },
+    {
+      "tag": "extrabotany:runes/wrath"
+    },
+    {
+      "tag": "extrabotany:runes/greed"
+    },
+    {
+      "tag": "extrabotany:runes/envy"
+    },
+    {
+      "tag": "extrabotany:runes/lust"
+    },
+    {
+      "tag": "extrabotany:runes/sloth"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "id": "extrabotany:sin_rune"
+  }
+}

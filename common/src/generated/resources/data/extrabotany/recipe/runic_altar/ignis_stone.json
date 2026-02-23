@@ -1,0 +1,32 @@
+{
+  "type": "botania:runic_altar",
+  "catalysts": [],
+  "ingredients": [
+    {
+      "tag": "extrabotany:runes/fire"
+    },
+    {
+      "tag": "extrabotany:runes/fire"
+    },
+    {
+      "item": "botania:gaia_ingot"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    },
+    {
+      "item": "botania:mana_diamond"
+    }
+  ],
+  "mana": 2000,
+  "output": {
+    "count": 1,
+    "id": "extrabotany:ignis_stone"
+  },
+  "reagent": {
+    "item": "botania:livingrock"
+  }
+}

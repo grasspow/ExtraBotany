@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "tag": "botania:petals"
+    },
+    {
+      "item": "botania:life_essence"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "id": "extrabotany:universal_petal"
+  }
+}

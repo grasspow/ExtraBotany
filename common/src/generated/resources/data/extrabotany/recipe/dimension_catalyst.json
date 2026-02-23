@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "botania:alchemy_catalyst"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "L": {
+      "item": "botania:livingrock"
+    },
+    "N": {
+      "item": "extrabotany:nightmare_fuel"
+    }
+  },
+  "pattern": [
+    "LEL",
+    "NAN",
+    "LNL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:dimension_catalyst"
+  }
+}

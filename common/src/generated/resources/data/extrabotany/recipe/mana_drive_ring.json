@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "botania:mana_ring"
+    },
+    {
+      "tag": "extrabotany:runes/mana"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "extrabotany:mana_drive_ring"
+  }
+}

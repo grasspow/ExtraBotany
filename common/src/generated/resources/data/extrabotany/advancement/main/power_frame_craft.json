@@ -1,0 +1,33 @@
+{
+  "parent": "extrabotany:main/nightmare_fuel_eat",
+  "criteria": {
+    "power_frame_craft": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:power_frame"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.power_frame_craft.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:power_frame"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.power_frame_craft"
+    }
+  },
+  "requirements": [
+    [
+      "power_frame_craft"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,30 @@
+{
+  "type": "botania:petal_apothecary",
+  "ingredients": [
+    {
+      "tag": "botania:petals/yellow"
+    },
+    {
+      "tag": "botania:petals/red"
+    },
+    {
+      "tag": "botania:petals/green"
+    },
+    {
+      "tag": "botania:petals/blue"
+    },
+    {
+      "tag": "extrabotany:runes/earth"
+    },
+    {
+      "tag": "extrabotany:runes/water"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "extrabotany:tinkle_flower"
+  },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  }
+}

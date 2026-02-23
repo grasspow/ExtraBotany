@@ -1,0 +1,42 @@
+{
+  "parent": "extrabotany:main/spirit_craft",
+  "criteria": {
+    "armorset_maid": {
+      "conditions": {
+        "items": [
+          {
+            "items": "extrabotany:maid_helmet"
+          },
+          {
+            "items": "extrabotany:maid_chestplate"
+          },
+          {
+            "items": "extrabotany:maid_leggings"
+          },
+          {
+            "items": "extrabotany:maid_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.extrabotany.armorset_maid.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "extrabotany:maid_helmet"
+    },
+    "title": {
+      "translate": "advancement.extrabotany.armorset_maid"
+    }
+  },
+  "requirements": [
+    [
+      "armorset_maid"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
