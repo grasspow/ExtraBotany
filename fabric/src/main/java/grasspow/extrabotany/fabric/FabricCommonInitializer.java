@@ -59,7 +59,7 @@ public class FabricCommonInitializer implements ModInitializer {
         RewardBagItem.initCategoryMap();
 
         registerCapabilities();
-//        registerEvents();
+        registerEvents();
     }
 
     private void coreInit() {
@@ -116,6 +116,10 @@ public class FabricCommonInitializer implements ModInitializer {
                         }
                     }
                 });
+    }
+
+    private void registerEvents(){
+
     }
 
     private void registerCapabilities() {

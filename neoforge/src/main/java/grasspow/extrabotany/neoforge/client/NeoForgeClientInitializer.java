@@ -3,19 +3,39 @@ package grasspow.extrabotany.neoforge.client;
 import grasspow.extrabotany.api.ExtraBotanyAPI;
 import grasspow.extrabotany.client.ExtraBotanyItemProperties;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
+import grasspow.extrabotany.client.core.proxy.ClientProxy;
 import grasspow.extrabotany.client.model.ExtraBotanyLayerDefinitions;
 import grasspow.extrabotany.client.render.ColorHandler;
 import grasspow.extrabotany.client.render.entity.ExtraBotanyEntityRenderers;
+import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
+import grasspow.extrabotany.common.network.server.BuddhistChangePack;
+import grasspow.extrabotany.xplat.ClientXplatAbstractions;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.*;
 
-@EventBusSubscriber(modid = ExtraBotanyAPI.MODID,value = Dist.CLIENT)
+@EventBusSubscriber(modid = ExtraBotanyAPI.MODID, value = Dist.CLIENT)
 public class NeoForgeClientInitializer {
+
+    @SubscribeEvent
+    public static void registerKeys(RegisterKeyMappingsEvent e) {
+        ClientProxy.initKeybindings(e::register);
+    }
+
+    //key input
+    @SubscribeEvent
+    public static void onKeyPress(ClientTickEvent.Post event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null && ClientProxy.BUDDHIST_RELICS_MORPH.consumeClick()) {
+            if (!BuddhistRelicsItem.relicShift(player.getMainHandItem()).isEmpty()) {
+                ClientXplatAbstractions.INSTANCE.sendToServer(BuddhistChangePack.INSTANCE);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item evt) {

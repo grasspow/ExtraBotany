@@ -63,6 +63,7 @@ dependencies {
         officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
     }
+    compileOnly("org.jetbrains:annotations:26.1.0")
 
     modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
 
@@ -88,5 +89,7 @@ dependencies {
     modCompileOnly("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-fabric") { transitive = false }
     modLocalRuntime("maven.modrinth:sodium:mc${minecraft_version}-${sodium_version}-fabric") { transitive = false }
 
-    compileOnly("org.jetbrains:annotations:26.1.0")
+    //for debug
+    modLocalRuntime("maven.modrinth:nbtedit-reborn:5.2.11+mc1.21.1-fabric")
+    modLocalRuntime("maven.modrinth:jade:15.10.5+fabric")
 }

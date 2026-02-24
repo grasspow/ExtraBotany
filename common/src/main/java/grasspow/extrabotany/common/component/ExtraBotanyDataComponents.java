@@ -38,7 +38,6 @@ public final class ExtraBotanyDataComponents {
     /**
      * buddhist
      */
-    public static final DataComponentType<Unit> MORPHING = makeUnit(LibComponentNames.MORPHING);
     public static final DataComponentType<List<ItemStack>> RELIC_DATA = makeItemList(LibComponentNames.RELIC_DATA);
 
     /**

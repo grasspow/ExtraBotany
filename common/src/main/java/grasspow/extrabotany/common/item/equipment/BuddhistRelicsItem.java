@@ -5,14 +5,18 @@ import grasspow.extrabotany.common.component.ExtraBotanyDataComponents;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.lib.LibAdvancementNames;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import vazkii.botania.api.item.Relic;
+import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.brew.BotaniaBrews;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.brew.BaseBrewItem;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.common.item.relic.RelicItem;
+import vazkii.botania.xplat.XplatAbstractions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,6 @@ public class BuddhistRelicsItem extends RelicItem implements IAdvancementRequire
 
     public BuddhistRelicsItem(Properties props) {
         super(props.rarity(Rarity.EPIC));
-//        MinecraftForge.EVENT_BUS.addListener(this::onItemUpdate);
     }
 
     public static void relicInit(ItemStack stack) {
@@ -39,26 +42,47 @@ public class BuddhistRelicsItem extends RelicItem implements IAdvancementRequire
         }
     }
 
-    public static ItemStack expired(ItemStack morphstack) {
-        if (!morphstack.has(ExtraBotanyDataComponents.MORPHING)) {
-            List<ItemStack> itemStacks = morphstack.get(ExtraBotanyDataComponents.RELIC_DATA);
-            int id = 0;
-            for (int i = 0; i < 5; i++) {
-                ItemStack stack = itemStacks.get(i).copy();
-                if (morphstack.getItem() == stack.getItem()) {
-                    id = i;
-                    break;
-                }
-            }
+    public static void onItemUpdate(Player player, Level level) {
+        if (!level.isClientSide()) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                final ItemStack stack = player.getInventory().getItem(i);
+                if (!(stack.getItem().equals(ExtraBotanyItems.buddhistRelics)))
+                    if (stack.has(ExtraBotanyDataComponents.RELIC_DATA)) {
+                        if (ManaItemHandler.instance().requestManaExact(stack, player, MANA_PER_DAMAGE, false)) {
+                            ManaItemHandler.instance().requestManaExact(stack, player, MANA_PER_DAMAGE, true);
+                        } else {
+                            ItemStack budd = expired(stack);
+                            if (!budd.isEmpty()) {
+                                player.getInventory().setItem(i, budd);
+                            }
+                        }
+                    }
 
-            ItemStack budd = new ItemStack(ExtraBotanyItems.buddhistRelics);
-            ItemStack copy = morphstack.copy();
-            copy.remove(ExtraBotanyDataComponents.RELIC_DATA);
-            itemStacks.set(id, copy);
-            budd.set(ExtraBotanyDataComponents.RELIC_DATA, itemStacks);
-            return budd.copy();
+            }
         }
-        return ItemStack.EMPTY;
+    }
+
+    private static ItemStack expired(ItemStack morphStack) {
+        List<ItemStack> itemStacks = morphStack.get(ExtraBotanyDataComponents.RELIC_DATA);
+        if (itemStacks == null) return ItemStack.EMPTY;
+        int id = -1;
+        for (int i = 0; i < 5; i++) {
+            ItemStack stack = itemStacks.get(i).copy();
+            if (morphStack.getItem() == stack.getItem()) {
+                id = i;
+                break;
+            }
+        }
+        if (id == -1) return ItemStack.EMPTY;
+        ItemStack budd = new ItemStack(ExtraBotanyItems.buddhistRelics);
+        ItemStack copy = morphStack.copy();
+        Relic relic = XplatAbstractions.INSTANCE.findRelic(copy);
+        Relic relicNew = XplatAbstractions.INSTANCE.findRelic(budd);
+        relicNew.bindToUUID(relic.getSoulbindUUID());
+        copy.remove(ExtraBotanyDataComponents.RELIC_DATA);
+        itemStacks.set(id, copy);
+        budd.set(ExtraBotanyDataComponents.RELIC_DATA, itemStacks);
+        return budd.copy();
     }
 
     public static ItemStack relicShift(ItemStack heldstack) {
@@ -69,7 +93,7 @@ public class BuddhistRelicsItem extends RelicItem implements IAdvancementRequire
         List<ItemStack> itemStacks = new ArrayList<>(currentList);
 
         if (heldstack.is(ExtraBotanyItems.buddhistRelics)) {
-            ItemStack firstStack = itemStacks.get(0).copy();
+            ItemStack firstStack = itemStacks.getFirst().copy();
             firstStack.set(ExtraBotanyDataComponents.RELIC_DATA, itemStacks);
             return firstStack;
         }
