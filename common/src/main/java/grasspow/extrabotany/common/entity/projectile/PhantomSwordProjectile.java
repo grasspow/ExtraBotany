@@ -50,9 +50,9 @@ public class PhantomSwordProjectile extends BaseSwordProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        entityData.set(VARIETY, 0);
-        entityData.set(DELAY, 0);
-        entityData.set(FAKE, false);
+        builder.define(VARIETY, 0);
+        builder.define(DELAY, 0);
+        builder.define(FAKE, false);
     }
 
     @Override

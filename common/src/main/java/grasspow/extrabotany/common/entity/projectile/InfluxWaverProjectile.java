@@ -122,8 +122,8 @@ public class InfluxWaverProjectile extends BaseSwordProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        entityData.set(STRIKE_TIMES, 0);
-        entityData.set(NEXT, BlockPos.ZERO);
+        builder.define(STRIKE_TIMES, 0);
+        builder.define(NEXT, BlockPos.ZERO);
     }
 
     @Override

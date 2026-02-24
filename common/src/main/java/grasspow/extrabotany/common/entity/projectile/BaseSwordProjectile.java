@@ -61,12 +61,12 @@ public abstract class BaseSwordProjectile extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        entityData.set(ROTATION, 0F);
-        entityData.set(PITCH, 0F);
-        entityData.set(TARGET_POS, BlockPos.ZERO);
-        entityData.set(TARGET_POS_X, 0F);
-        entityData.set(TARGET_POS_Y, 0F);
-        entityData.set(TARGET_POS_Z, 0F);
+        builder.define(ROTATION, 0F);
+        builder.define(PITCH, 0F);
+        builder.define(TARGET_POS, BlockPos.ZERO);
+        builder.define(TARGET_POS_X, 0F);
+        builder.define(TARGET_POS_Y, 0F);
+        builder.define(TARGET_POS_Z, 0F);
     }
 
     public void faceTargetAccurately(float modifier) {
