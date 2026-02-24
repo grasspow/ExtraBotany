@@ -6,7 +6,6 @@ import grasspow.extrabotany.neoforge.data.neoforge.NeoForgeItemTagProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import vazkii.botania.neoforge.data.BotaniaCuriosDataProvider;
 
 @EventBusSubscriber(modid = ExtraBotanyAPI.MODID)
 public class NeoForgeDatagenInitializer {
@@ -19,7 +18,7 @@ public class NeoForgeDatagenInitializer {
         generator.addProvider(evt.includeServer(), new NeoForgeItemTagProvider(output, evt.getLookupProvider(),
                 blockTagProvider.contentsGetter()));
 
-        generator.addProvider(evt.includeServer(), new BotaniaCuriosDataProvider(output, evt.getLookupProvider()));
+
 //
 //        generator.addProvider(event.includeClient(), new BlockstateProvider(output));
 //        generator.addProvider(event.includeClient(), new BlockstateForgeProvider(output, fileHelper));

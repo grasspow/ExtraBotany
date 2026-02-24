@@ -47,7 +47,7 @@ public class PowerFrameBlock extends BotaniaBlock implements EntityBlock {
                 }
                 if (heldStack.isEmpty()) {
                     return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-                } else if (powerFrame.setItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
+                } else if (powerFrame.setItem(player.isCreative() ? heldStack.copy() : heldStack)) {
                     level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 1F);
                     return ItemInteractionResult.SUCCESS;
                 }

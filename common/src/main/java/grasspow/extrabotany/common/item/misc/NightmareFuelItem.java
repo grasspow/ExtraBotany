@@ -23,7 +23,7 @@ public class NightmareFuelItem extends Item {
 //        if (pStack.isEmpty()) {
 //            return new ItemStack(ExtraBotanyItems.SPIRIT_FUEL.get());
 //        } else {
-//            if (living instanceof Player player && !player.getAbilities().instabuild) {
+//            if (living instanceof Player player && !player.isCreative()) {
 //                ItemStack itemstack = new ItemStack(ExtraBotanyItems.SPIRIT_FUEL.get());
 //                if (!player.getInventory().add(itemstack)) {
 //                    player.drop(itemstack, false);

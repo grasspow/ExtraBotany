@@ -31,6 +31,7 @@ public class ManaInfusionProvider extends vazkii.botania.fabric.data.xplat.ManaI
     @Override
     public void buildRecipes(RecipeOutput consumer) {
          normal(consumer,id(LibItemNames.NIGHTMARE_FUEL), new ItemStack(ExtraBotanyItems.nightmareFuel), Ingredient.of(Items.COAL), 2000);
+         normal(consumer,id(LibItemNames.MANA_DRINK), new ItemStack(ExtraBotanyItems.manaDrink), Ingredient.of(ExtraBotanyItems.emptyBottle), 10000);
          normal(consumer,id(LibItemNames.FRIED_CHICKEN), new ItemStack(ExtraBotanyItems.friedChicken), Ingredient.of(Items.COOKED_CHICKEN), 600);
          dimension(consumer,id("enderpearl"), new ItemStack(Items.ENDER_PEARL), ingr(Items.DIAMOND), 20000);
          dimension(consumer,id("shulker_shell"), new ItemStack(Items.SHULKER_SHELL), ingr(Items.DIAMOND_HORSE_ARMOR), 20000);

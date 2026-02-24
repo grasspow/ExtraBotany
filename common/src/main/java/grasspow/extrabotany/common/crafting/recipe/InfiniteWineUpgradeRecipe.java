@@ -1,12 +1,10 @@
 package grasspow.extrabotany.common.crafting.recipe;
 
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
-import grasspow.extrabotany.common.item.brew.BaseBrewItemEX;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.brew.BrewItem;
 import vazkii.botania.common.item.brew.BaseBrewItem;
 
@@ -14,7 +12,7 @@ import static grasspow.extrabotany.common.item.ExtraBotanyItems.cocktail;
 import static grasspow.extrabotany.common.item.ExtraBotanyItems.heroMedal;
 
 public class InfiniteWineUpgradeRecipe extends CustomRecipe {
-    public static final SimpleCraftingRecipeSerializer<InfiniteWineUpgradeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(InfiniteWineUpgradeRecipe::new);
+    public static final RecipeSerializer<InfiniteWineUpgradeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(InfiniteWineUpgradeRecipe::new);
 
     public InfiniteWineUpgradeRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
@@ -41,7 +39,6 @@ public class InfiniteWineUpgradeRecipe extends CustomRecipe {
     }
 
 
-    @NotNull
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) {
         ItemStack brewstack = ItemStack.EMPTY;
@@ -56,8 +53,8 @@ public class InfiniteWineUpgradeRecipe extends CustomRecipe {
         BrewItem brew = (BrewItem) brewstack.getItem();
         ItemStack infiniteWine = new ItemStack(ExtraBotanyItems.infiniteWine);
         BaseBrewItem.setBrew(infiniteWine, brew.getBrew(brewstack));
-        int left = ((BaseBrewItemEX) brewstack.getItem()).getSwigsLeft(brewstack);
-        ((BaseBrewItemEX) brewstack.getItem()).setSwigsLeft(infiniteWine, left == 6 ? 8 : ((int) (((float) left / (float) 6)) * 8));
+        int left = ((BaseBrewItem) brewstack.getItem()).getSwigsLeft(brewstack);
+        ((BaseBrewItem) brewstack.getItem()).setSwigsLeft(infiniteWine, left == 6 ? 8 : ((int) (((float) left / (float) 6)) * 8));
         return infiniteWine;
     }
 
@@ -66,9 +63,8 @@ public class InfiniteWineUpgradeRecipe extends CustomRecipe {
         return width > 1 || height > 1;
     }
 
-    @NotNull
     @Override
-    public RecipeSerializer<InfiniteWineUpgradeRecipe> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 }

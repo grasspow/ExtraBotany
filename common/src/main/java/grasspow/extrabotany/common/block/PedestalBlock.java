@@ -51,7 +51,7 @@ public class PedestalBlock extends BotaniaWaterloggedBlock implements EntityBloc
 //                }
 //                if (heldStack.isEmpty()) {
 //                    return InteractionResult.PASS;
-//                } else if (pedestal.addItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack)) {
+//                } else if (pedestal.addItem(player.isCreative() ? heldStack.copy() : heldStack)) {
 //                    level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 0.8F);
 //                    return InteractionResult.SUCCESS;
 //                }

@@ -24,7 +24,7 @@ public class ManaDrinkItem extends Item {
         Player player = living instanceof Player ? (Player) living : null;
         if (player != null) {
             ManaItemHandler.instance().dispatchManaExact(stack, player, 10000, true);
-            if (!player.getAbilities().instabuild) {
+            if (!player.isCreative()) {
                 stack.shrink(1);
 //                player.getInventory().placeItemBackInInventory(new ItemStack(ExtraBotanyItems.EMPTY_BOTTLE.get()));
             }

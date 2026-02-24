@@ -28,7 +28,6 @@ public class LanguageHelper {
         transItem();
         transBlock();
         transEntity();
-        add("advancement.item_disabled.desc", "You can' use it until you complete corresponding advancement <%s>.", "你无法使用该物品直到你完成进度 <%s>");
         transAdvancement();
 
         //brew
@@ -62,6 +61,12 @@ public class LanguageHelper {
         add("extrabotany.upgrade.repair3", "Repair Upgrade III", "修复升级III");
         add("extrabotany.upgrade.range.on", "Range Upgrade:On", "范围升级:开启");
         add("extrabotany.upgrade.range.off", "Range Upgrade:Off", "范围升级:关闭");
+
+        //budd morph
+        add("extrabotany.misc.morph","(morph)","（幻化）");
+
+        //keymapping
+        add("extrabotany.key.buddhist_relics_morph","Omniscience's morph","虚空万藏幻化");
     }
 
     private static void transItem() {
@@ -271,6 +276,7 @@ public class LanguageHelper {
     private static void transAdvancement() {
         add("advancement.extrabotany.root.title", "Welcome to the World", "欢迎来到世界");
         add("advancement.extrabotany.root.desc", "Don't have a good day, have a great day", "不要错过今天，去过好每一天");
+        add("advancement.item_disabled.desc", "You can' use it until you complete corresponding advancement <%s>.", "你无法使用该物品直到你完成进度 <%s>");
         makeAdv(LibAdvancementNames.NIGHTMARE_FUEL_EAT,
                 "Deep Dark Fantasy", "Deep Dark Fantasy",
                 "Eat a Nightmare Fuel (Unbelievable)", "食用一个梦魇燃料(这真的能吃吗)"

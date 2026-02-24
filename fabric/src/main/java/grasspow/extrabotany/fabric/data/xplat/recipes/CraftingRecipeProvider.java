@@ -1,6 +1,7 @@
 package grasspow.extrabotany.fabric.data.xplat.recipes;
 
 import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
+import grasspow.extrabotany.common.crafting.recipe.*;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.lib.ExtraBotanyTags;
 import grasspow.extrabotany.common.lib.LibItemNames;
@@ -36,6 +37,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
+import static vazkii.botania.fabric.data.xplat.CraftingRecipeProvider.conditionsFromItem;
+import static vazkii.botania.fabric.data.xplat.CraftingRecipeProvider.conditionsFromTag;
 
 public class CraftingRecipeProvider extends BotaniaRecipeProvider {
     public CraftingRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -46,14 +49,18 @@ public class CraftingRecipeProvider extends BotaniaRecipeProvider {
     public String getName() {
         return "ExtraBotany crafting recipes";
     }
+    protected ResourceLocation prefix(String path) {
+        return exbotRL(path);
+    }
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput) {
-//        specialRecipe(recipeOutput, CocktailUpgradeRecipe::new, CraftingBookCategory.MISC);
-//        specialRecipe(recipeOutput, SplashGrenadeRecipe::new, CraftingBookCategory.MISC);
-//        specialRecipe(recipeOutput, InfiniteWineUpgradeRecipe::new, CraftingBookCategory.MISC);
-//        specialRecipe(recipeOutput, GoldClothWipeRelicRecipe::new, CraftingBookCategory.MISC);
-//        specialRecipe(recipeOutput, PotionLensBindBrewRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, CocktailUpgradeRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, SplashGrenadeRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, InfiniteWineUpgradeRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, InfiniteWineSwitchBrewRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, GoldClothWipeRelicRecipe::new, CraftingBookCategory.MISC);
+        specialRecipe(recipeOutput, PotionLensBindBrewRecipe::new, CraftingBookCategory.MISC);
 
         ingotStorage(ExtraBotanyBlocks.photoniumBlock, ExtraBotanyItems.photonium, recipeOutput);
         ingotStorage(ExtraBotanyBlocks.shadowiumBlock, ExtraBotanyItems.shadowium, recipeOutput);
@@ -611,6 +618,10 @@ public class CraftingRecipeProvider extends BotaniaRecipeProvider {
                 .save(consumer);
     }
 
+    protected Item getItemOrThrow(ResourceLocation location) {
+        return BuiltInRegistries.ITEM.getOrThrow(ResourceKey.create(Registries.ITEM, location));
+    }
+
     protected void registerSimpleArmorSet(RecipeOutput consumer, Ingredient item, String variant, Criterion<InventoryChangeTrigger.TriggerInstance> criterion) {
         Item helmet = getItemOrThrow(prefix(variant + "_helmet"));
         Item chestplate = getItemOrThrow(prefix(variant + "_chestplate"));
@@ -642,20 +653,5 @@ public class CraftingRecipeProvider extends BotaniaRecipeProvider {
                 .pattern("S S")
                 .unlockedBy("has_item", criterion)
                 .save(consumer);
-    }
-
-    public static Criterion<InventoryChangeTrigger.TriggerInstance> conditionsFromItem(ItemLike item) {
-        return RecipeProviderAccessor.botania_inventoryTrigger(ItemPredicate.Builder.item().of(item));
-    }
-
-    protected Item getItemOrThrow(ResourceLocation location) {
-        return BuiltInRegistries.ITEM.getOrThrow(ResourceKey.create(Registries.ITEM, location));
-    }
-
-    public static Criterion<InventoryChangeTrigger.TriggerInstance> conditionsFromTag(TagKey<Item> tag) {
-        return RecipeProviderAccessor.botania_inventoryTrigger(ItemPredicate.Builder.item().of(tag));
-    }
-    protected ResourceLocation prefix(String path) {
-        return exbotRL(path);
     }
 }

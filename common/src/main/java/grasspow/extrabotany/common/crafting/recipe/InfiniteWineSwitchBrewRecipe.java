@@ -1,45 +1,40 @@
 package grasspow.extrabotany.common.crafting.recipe;
 
-
-import grasspow.extrabotany.common.item.ExtraBotanyItems;
-import grasspow.extrabotany.common.item.brew.BaseBrewItemEX;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import vazkii.botania.api.brew.BrewItem;
 import vazkii.botania.common.item.brew.BaseBrewItem;
 
-import static grasspow.extrabotany.common.item.ExtraBotanyItems.cocktail;
-import static grasspow.extrabotany.common.item.ExtraBotanyItems.emptyBottle;
+import static grasspow.extrabotany.common.item.ExtraBotanyItems.infiniteWine;
 
-public class SplashGrenadeRecipe extends CustomRecipe {
-    public static final RecipeSerializer<SplashGrenadeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(SplashGrenadeRecipe::new);
+public class InfiniteWineSwitchBrewRecipe extends CustomRecipe {
+    public static final RecipeSerializer<InfiniteWineSwitchBrewRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(InfiniteWineSwitchBrewRecipe::new);
 
-    public SplashGrenadeRecipe(CraftingBookCategory craftingBookCategory) {
+    public InfiniteWineSwitchBrewRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
     }
 
     @Override
-    public boolean  matches(CraftingInput inv, Level level) {
+    public boolean matches(CraftingInput inv, Level level) {
         boolean foundBrew = false;
-        boolean foundItem = false;
+        boolean foundWine = false;
 
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getItem(i);
             if (!stack.isEmpty()) {
-                if (stack.getItem() == cocktail && !foundBrew) {
+                if (stack.getItem() instanceof BaseBrewItem && stack.getItem() != infiniteWine && !foundBrew) {
                     foundBrew = true;
-                } else if (stack.getItem() == Items.POPPED_CHORUS_FRUIT && !foundItem) {
-                    foundItem = true;
+                } else if (stack.getItem() == infiniteWine && !foundWine) {
+                    foundWine = true;
                 } else {
                     return false;
                 }
             }
         }
-        return foundBrew && foundItem;
+        return foundBrew && foundWine;
     }
 
     @Override
@@ -47,8 +42,8 @@ public class SplashGrenadeRecipe extends CustomRecipe {
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == cocktail) {
-                nonnulllist.set(i, new ItemStack(emptyBottle));
+            if (!stack.isEmpty() && stack.getItem() instanceof BaseBrewItem && stack.getItem() != infiniteWine) {
+                nonnulllist.set(i, stack.copy());
                 break;
             }
         }
@@ -60,17 +55,25 @@ public class SplashGrenadeRecipe extends CustomRecipe {
         ItemStack brewstack = ItemStack.EMPTY;
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == cocktail) {
+            if (!stack.isEmpty() && stack.getItem() instanceof BaseBrewItem && stack.getItem() != infiniteWine) {
                 brewstack = stack;
+                break;
+            }
+        }
+        ItemStack winestack = ItemStack.EMPTY;
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (!stack.isEmpty() && stack.getItem() == infiniteWine) {
+                winestack = stack.copy();
                 break;
             }
         }
 
         BrewItem brew = (BrewItem) brewstack.getItem();
-        ItemStack splashGrenade = new ItemStack(ExtraBotanyItems.splashGrenade);
-        BaseBrewItem.setBrew(splashGrenade, brew.getBrew(brewstack));
-        splashGrenade.setCount(((BaseBrewItemEX) brewstack.getItem()).getSwigsLeft(brewstack));
-        return splashGrenade;
+        BaseBrewItem.setBrew(winestack, brew.getBrew(brewstack));
+        int left = ((BaseBrewItem) brewstack.getItem()).getSwigsLeft(brewstack);
+        ((BaseBrewItem) brewstack.getItem()).setSwigsLeft(winestack, left == 6 ? 8 : ((int) (((float) left / (float) 6)) * 8));
+        return winestack;
     }
 
     @Override

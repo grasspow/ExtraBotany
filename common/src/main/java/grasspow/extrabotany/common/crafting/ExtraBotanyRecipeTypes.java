@@ -15,23 +15,13 @@ import java.util.function.BiConsumer;
 public class ExtraBotanyRecipeTypes {
     private static final Map<ResourceLocation, RecipeType<?>> TYPES = new LinkedHashMap<>();
     
-    public static final RecipeType<grasspow.extrabotany.api.recipe.PedestalClickRecipe> PEDESTAL_CLICK = register(grasspow.extrabotany.api.recipe.PedestalClickRecipe.TYPE_ID);
-//    public static final RecipeType<PedestalClickRecipe> PEDESTAL_CLICK_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.PEDESTAL_CLICK, PedestalClickRecipe.Serializer::new);
-
+    public static final RecipeType<PedestalClickRecipe> PEDESTAL_CLICK = register(PedestalClickRecipe.TYPE_ID);
     public static final RecipeType<CocktailUpgradeRecipe> COCKTAIL_UPGRADE = register(CocktailUpgradeRecipe.TYPE_ID);
-//    public static final RecipeType<RecipeSerializer<CocktailUpgradeRecipe>> COCKTAIL_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.COCKTAIL_UPGRADE, () -> CocktailUpgradeRecipe.SERIALIZER);
-
     public static final RecipeType<SplashGrenadeRecipe> SPLASH_GRENADE_UPGRADE = register(SplashGrenadeRecipe.TYPE_ID);
-//    public static final RecipeType<RecipeSerializer<SplashGrenadeRecipe>> SPLASH_GRENADE_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.SPLASH_GRENADE_UPGRADE, () -> SplashGrenadeRecipe.SERIALIZER);
-
     public static final RecipeType<InfiniteWineUpgradeRecipe> INFINITE_WINE_UPGRADE = register(InfiniteWineUpgradeRecipe.TYPE_ID);
-//    public static final RecipeType<RecipeSerializer<InfiniteWineUpgradeRecipe>> INFINITE_WINE_UPGRADE_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.INFINITE_WINE_UPGRADE, () -> InfiniteWineUpgradeRecipe.SERIALIZER);
-
+    public static final RecipeType<InfiniteWineSwitchBrewRecipe> INFINITE_WINE_SWITCH_BREW = register(InfiniteWineSwitchBrewRecipe.TYPE_ID);
     public static final RecipeType<GoldClothWipeRelicRecipe> GOLD_CLOTH_WIPE_RELIC = register(GoldClothWipeRelicRecipe.TYPE_ID);
-//    public static final RecipeType<RecipeSerializer<GoldClothWipeRelicRecipe>> GOLD_CLOTH_WIPE_RELIC_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.GOLD_CLOTH_WIPE_RELIC, () -> GoldClothWipeRelicRecipe.SERIALIZER);
-
     public static final RecipeType<PotionLensBindBrewRecipe> POTION_LENS_BIND_BREW = register(PotionLensBindBrewRecipe.TYPE_ID);
-//    public static final RecipeType<RecipeSerializer<PotionLensBindBrewRecipe>> MANA_LENS_BIND_FLASK_SERIALIZER = RECIPE_SERIALIZERS.register(LibRecipeNames.MANA_LENS_BIND_FLASK, () -> PotionLensBindBrewRecipe.SERIALIZER);
 
     private static <T extends Recipe<?>> RecipeType<T> register(ResourceLocation id) {
         RecipeType<T> type = new BotaniaRecipeType<>(id.getPath());
@@ -60,6 +50,7 @@ public class ExtraBotanyRecipeTypes {
 		r.accept(grasspow.extrabotany.common.crafting.recipe.CocktailUpgradeRecipe.SERIALIZER, CocktailUpgradeRecipe.TYPE_ID);
 		r.accept(grasspow.extrabotany.common.crafting.recipe.SplashGrenadeRecipe.SERIALIZER, SplashGrenadeRecipe.TYPE_ID);
 		r.accept(grasspow.extrabotany.common.crafting.recipe.InfiniteWineUpgradeRecipe.SERIALIZER, InfiniteWineUpgradeRecipe.TYPE_ID);
+		r.accept(grasspow.extrabotany.common.crafting.recipe.InfiniteWineSwitchBrewRecipe.SERIALIZER, InfiniteWineSwitchBrewRecipe.TYPE_ID);
 		r.accept(grasspow.extrabotany.common.crafting.recipe.GoldClothWipeRelicRecipe.SERIALIZER, GoldClothWipeRelicRecipe.TYPE_ID);
 		r.accept(grasspow.extrabotany.common.crafting.recipe.PotionLensBindBrewRecipe.SERIALIZER, PotionLensBindBrewRecipe.TYPE_ID);
 	}

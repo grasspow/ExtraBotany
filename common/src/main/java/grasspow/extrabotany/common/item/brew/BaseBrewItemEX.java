@@ -54,7 +54,7 @@ public class BaseBrewItemEX extends BaseBrewItem {
             }
 
             int swigs = getSwigsLeft(stack);
-            if (living instanceof Player player && !player.getAbilities().instabuild) {
+            if (living instanceof Player player && !player.isCreative()) {
                 if (swigs <= 1 && !stack.is(ExtraBotanyItems.infiniteWine)) {
                     ItemStack result = getBaseStack();
                     if (!player.getInventory().add(result)) {

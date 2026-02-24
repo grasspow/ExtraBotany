@@ -34,7 +34,7 @@ public class LivingrockBarrelBlock extends BotaniaBlock implements EntityBlock {
         if (!level.isClientSide) {
             return (level1, blockPos, blockState, t) -> {
                 if (t instanceof LivingrockBarrelBlockEntity barrel) {
-//                    barrel.tick(level, barrel);
+                    barrel.tick(level, barrel);
                 }
             };
         }

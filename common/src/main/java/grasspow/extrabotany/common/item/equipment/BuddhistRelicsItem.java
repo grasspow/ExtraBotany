@@ -4,7 +4,10 @@ import grasspow.extrabotany.api.IAdvancementRequirement;
 import grasspow.extrabotany.common.component.ExtraBotanyDataComponents;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.lib.LibAdvancementNames;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -38,6 +41,21 @@ public class BuddhistRelicsItem extends RelicItem implements IAdvancementRequire
             itemStacks.set(2, new ItemStack(ExtraBotanyItems.fallnaught));
             itemStacks.set(3, new ItemStack(BotaniaItems.infiniteFruit));
             itemStacks.set(4, new ItemStack(BotaniaItems.kingKey));
+
+            for (ItemStack i : itemStacks) {
+                if (i.isEmpty()) continue;
+                Component currentName = i.get(DataComponents.ITEM_NAME);
+                if (currentName == null) {
+                    currentName = i.getHoverName();
+                }
+                Component newName = currentName
+                        .copy().append(
+                                Component.translatable("extrabotany.misc.morph")
+                                        .withColor(ChatFormatting.GRAY.getColor())
+                        );
+                i.set(DataComponents.ITEM_NAME, newName);
+            }
+
             stack.set(ExtraBotanyDataComponents.RELIC_DATA, itemStacks);
         }
     }
@@ -48,7 +66,7 @@ public class BuddhistRelicsItem extends RelicItem implements IAdvancementRequire
                 final ItemStack stack = player.getInventory().getItem(i);
                 if (!(stack.getItem().equals(ExtraBotanyItems.buddhistRelics)))
                     if (stack.has(ExtraBotanyDataComponents.RELIC_DATA)) {
-                        if (ManaItemHandler.instance().requestManaExact(stack, player, MANA_PER_DAMAGE, false)) {
+                        if (!player.isCreative() || ManaItemHandler.instance().requestManaExact(stack, player, MANA_PER_DAMAGE, false)) {
                             ManaItemHandler.instance().requestManaExact(stack, player, MANA_PER_DAMAGE, true);
                         } else {
                             ItemStack budd = expired(stack);

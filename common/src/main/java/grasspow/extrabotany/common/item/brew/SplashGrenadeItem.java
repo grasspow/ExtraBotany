@@ -52,7 +52,7 @@ public class SplashGrenadeItem extends Item implements BrewItem, CustomCreativeT
             level.addFreshEntity(sg);
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SPLASH_POTION_THROW, SoundSource.PLAYERS, 0.5F, 0.8F);
-        if (!player.getAbilities().instabuild) {
+        if (!player.isCreative()) {
             stack.shrink(1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());

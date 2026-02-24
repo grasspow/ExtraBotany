@@ -7,14 +7,13 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.brew.BrewItem;
 import vazkii.botania.common.item.brew.BaseBrewItem;
 
 import static grasspow.extrabotany.common.item.ExtraBotanyItems.potionLens;
 
 public class PotionLensBindBrewRecipe extends CustomRecipe {
-    public static final SimpleCraftingRecipeSerializer<PotionLensBindBrewRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(PotionLensBindBrewRecipe::new);
+    public static final RecipeSerializer<PotionLensBindBrewRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(PotionLensBindBrewRecipe::new);
 
     public PotionLensBindBrewRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
@@ -40,7 +39,6 @@ public class PotionLensBindBrewRecipe extends CustomRecipe {
         return foundBrew && foundItem;
     }
 
-    @NotNull
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInput inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.withSize(inv.size(), ItemStack.EMPTY);
@@ -54,7 +52,6 @@ public class PotionLensBindBrewRecipe extends CustomRecipe {
         return nonnulllist;
     }
 
-    @NotNull
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) {
         ItemStack brewstack = ItemStack.EMPTY;
@@ -77,9 +74,8 @@ public class PotionLensBindBrewRecipe extends CustomRecipe {
         return width > 1 || height > 1;
     }
 
-    @NotNull
     @Override
-    public RecipeSerializer<PotionLensBindBrewRecipe> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 }

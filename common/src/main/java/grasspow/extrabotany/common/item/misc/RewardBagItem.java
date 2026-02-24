@@ -46,7 +46,7 @@ public class RewardBagItem extends Item {
             ItemStack stack = reward.copy();
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 0.5F, 0.4F / (level.random.nextFloat() * 0.4F + 0.8F));
             player.drop(stack, true).setNoPickUpDelay();
-            if (!player.getAbilities().instabuild) {
+            if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             return InteractionResultHolder.success(itemstack);

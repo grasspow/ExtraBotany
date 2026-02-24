@@ -17,7 +17,7 @@ public class GoldClothItem extends Item {
 //        if (entity instanceof Player player && "soulbindUUID".equals(ItemNBTHelper.getString(stack, "soulbindUUID", "soulbindUUID"))) {
 //            ItemStack newStack = new ItemStack(ExtraBotanyItems.GOLD_CLOTH.get(), 1);
 //            ItemNBTHelper.setString(newStack, "soulbindUUID", player.getStringUUID());
-//            if (!player.getAbilities().instabuild) stack.shrink(1);
+//            if (!player.isCreative()) stack.shrink(1);
 //            own.getInventory().placeItemBackInInventory(newStack);
 //            return InteractionResult.SUCCESS;
 //        }

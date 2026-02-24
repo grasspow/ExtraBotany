@@ -1,6 +1,7 @@
 package grasspow.extrabotany.common.handler;
 
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
+import grasspow.extrabotany.common.lib.ExtraBotanyDamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -36,20 +37,20 @@ public final class DamageHandler {
                     return target.hurt(source.damageSources().indirectMagic(source, target), amount);
                 }
             }
-//            case GENERAL_PIERCING: {
-//                if (source == null) {
-//                    return target.hurt(ExtraBotanyDamageTypes.Sources.generalArmorPiercing(target.level().registryAccess(), null), amount);
-//                } else {
-//                    return target.hurt(ExtraBotanyDamageTypes.Sources.generalArmorPiercing(source.level().registryAccess(), source), amount);
-//                }
-//            }
-//            case MAGIC_PIERCING: {
-//                if (source == null) {
-//                    return target.hurt(ExtraBotanyDamageTypes.Sources.magicArmorPiercing(target.level().registryAccess(), null), amount);
-//                } else {
-//                    return target.hurt(ExtraBotanyDamageTypes.Sources.magicArmorPiercing(source.level().registryAccess(), source), amount);
-//                }
-//            }
+            case GENERAL_PIERCING: {
+                if (source == null) {
+                    return target.hurt(ExtraBotanyDamageTypes.Sources.generalArmorPiercing(target.level().registryAccess(), null), amount);
+                } else {
+                    return target.hurt(ExtraBotanyDamageTypes.Sources.generalArmorPiercing(source.level().registryAccess(), source), amount);
+                }
+            }
+            case MAGIC_PIERCING: {
+                if (source == null) {
+                    return target.hurt(ExtraBotanyDamageTypes.Sources.magicArmorPiercing(target.level().registryAccess(), null), amount);
+                } else {
+                    return target.hurt(ExtraBotanyDamageTypes.Sources.magicArmorPiercing(source.level().registryAccess(), source), amount);
+                }
+            }
             case LIFE_LOSING: {
                 if (!(target instanceof LivingEntity living))
                     return false;
@@ -69,7 +70,7 @@ public final class DamageHandler {
         if (attacker instanceof Player player) {
             boolean sourceEquipped = !EquipmentHandler.findOrEmpty(ExtraBotanyItems.peaceAmulet, player).isEmpty();
             if (target instanceof Player targetPlayer) {
-                return !sourceEquipped && EquipmentHandler.findOrEmpty(ExtraBotanyItems.peaceAmulet, targetPlayer).isEmpty() && !targetPlayer.getAbilities().instabuild;
+                return !sourceEquipped && EquipmentHandler.findOrEmpty(ExtraBotanyItems.peaceAmulet, targetPlayer).isEmpty() && !targetPlayer.isCreative();
             }
             return !sourceEquipped || target instanceof Monster;
         }

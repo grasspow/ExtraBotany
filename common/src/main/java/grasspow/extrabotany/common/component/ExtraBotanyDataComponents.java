@@ -21,7 +21,6 @@ import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 
 public final class ExtraBotanyDataComponents {
     private static final Map<String, DataComponentType<?>> ALL = new HashMap<>();
-
     /**
      * ultimate hammer
      */

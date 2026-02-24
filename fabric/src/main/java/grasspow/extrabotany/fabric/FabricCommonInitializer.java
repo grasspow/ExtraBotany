@@ -6,6 +6,7 @@ import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
 import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
 import grasspow.extrabotany.common.block.block_entity.PedestalBlockEntity;
 import grasspow.extrabotany.common.component.ExtraBotanyDataComponents;
+import grasspow.extrabotany.common.crafting.ExtraBotanyRecipeTypes;
 import grasspow.extrabotany.common.effect.brew.ExtraBotanyBrews;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.ContributorListHandler;
@@ -92,6 +93,10 @@ public class FabricCommonInitializer implements ModInitializer {
             assert BREW_REGISTRY != null;
         }
         ExtraBotanyBrews.submitRegistrations(bind(BREW_REGISTRY));
+        
+        // recipes
+		ExtraBotanyRecipeTypes.submitRecipeTypes(bind(BuiltInRegistries.RECIPE_TYPE));
+        ExtraBotanyRecipeTypes.submitRecipeSerializers(bind(BuiltInRegistries.RECIPE_SERIALIZER));
 
         // Rest
         Registry.register(

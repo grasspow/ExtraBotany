@@ -1,13 +1,11 @@
 package grasspow.extrabotany.common.crafting.recipe;
 
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
-import grasspow.extrabotany.common.item.brew.BaseBrewItemEX;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.brew.BrewItem;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.brew.BaseBrewItem;
@@ -15,7 +13,7 @@ import vazkii.botania.common.item.brew.BaseBrewItem;
 import static grasspow.extrabotany.common.item.ExtraBotanyItems.manaDrink;
 
 public class CocktailUpgradeRecipe extends CustomRecipe {
-    public static final SimpleCraftingRecipeSerializer<CocktailUpgradeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(CocktailUpgradeRecipe::new);
+    public static final RecipeSerializer<CocktailUpgradeRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(CocktailUpgradeRecipe::new);
 
     public CocktailUpgradeRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
@@ -54,7 +52,6 @@ public class CocktailUpgradeRecipe extends CustomRecipe {
         return nonnulllist;
     }
 
-    @NotNull
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) {
         ItemStack brewstack = ItemStack.EMPTY;
@@ -69,8 +66,8 @@ public class CocktailUpgradeRecipe extends CustomRecipe {
         BrewItem brew = (BrewItem) brewstack.getItem();
         ItemStack cocktail = new ItemStack(ExtraBotanyItems.cocktail);
         BaseBrewItem.setBrew(cocktail, brew.getBrew(brewstack));
-        int left = ((BaseBrewItemEX) brewstack.getItem()).getSwigsLeft(brewstack);
-        ((BaseBrewItemEX) brewstack.getItem()).setSwigsLeft(cocktail, left == 6 ? 8 : ((int) (((float) left / (float) 6)) * 8));
+        int left = ((BaseBrewItem) brewstack.getItem()).getSwigsLeft(brewstack);
+        ((BaseBrewItem) brewstack.getItem()).setSwigsLeft(cocktail, left == 6 ? 8 : ((int) (((float) left / (float) 6)) * 8));
         return cocktail;
     }
 
@@ -79,9 +76,8 @@ public class CocktailUpgradeRecipe extends CustomRecipe {
         return width > 1 || height > 1;
     }
 
-    @NotNull
     @Override
-    public RecipeSerializer<CocktailUpgradeRecipe> getSerializer() {
-        return SERIALIZER;
-    }
+	public RecipeSerializer<?> getSerializer() {
+		return SERIALIZER;
+	}
 }

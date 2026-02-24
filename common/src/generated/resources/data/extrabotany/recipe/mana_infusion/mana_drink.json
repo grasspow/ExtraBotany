@@ -1,0 +1,11 @@
+{
+  "type": "botania:mana_infusion",
+  "input": {
+    "item": "extrabotany:empty_bottle"
+  },
+  "mana": 10000,
+  "output": {
+    "count": 1,
+    "id": "extrabotany:mana_drink"
+  }
+}

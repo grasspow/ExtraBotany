@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.xplat.XplatAbstractions;
 
@@ -13,7 +12,7 @@ import java.util.UUID;
 import static grasspow.extrabotany.common.item.ExtraBotanyItems.goldCloth;
 
 public class GoldClothWipeRelicRecipe extends CustomRecipe {
-    public static final SimpleCraftingRecipeSerializer<GoldClothWipeRelicRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(GoldClothWipeRelicRecipe::new);
+    public static final RecipeSerializer<GoldClothWipeRelicRecipe> SERIALIZER = new SimpleCraftingRecipeSerializer<>(GoldClothWipeRelicRecipe::new);
 
     public GoldClothWipeRelicRecipe(CraftingBookCategory craftingBookCategory) {
         super(craftingBookCategory);
@@ -40,7 +39,6 @@ public class GoldClothWipeRelicRecipe extends CustomRecipe {
     }
 
 
-    @NotNull
     @Override
     public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) {
         ItemStack relicStack = ItemStack.EMPTY;
@@ -65,9 +63,8 @@ public class GoldClothWipeRelicRecipe extends CustomRecipe {
         return width > 1 || height > 1;
     }
 
-    @NotNull
     @Override
-    public RecipeSerializer<GoldClothWipeRelicRecipe> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return SERIALIZER;
     }
 }

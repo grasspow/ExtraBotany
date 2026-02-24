@@ -635,7 +635,7 @@ public class EGO extends Mob {
                 if (!level().isClientSide) {
                     clearPotions(player);
                     keepInsideArena(player);
-                    player.getAbilities().flying &= player.getAbilities().instabuild;
+                    player.getAbilities().flying &= player.isCreative();
                 }
             }
         }
@@ -648,7 +648,7 @@ public class EGO extends Mob {
             particles();
             Player player = Proxy.INSTANCE.getClientPlayer();
             if (getPlayersAround().contains(player)) {
-                player.getAbilities().flying &= player.getAbilities().instabuild;//disable flight
+                player.getAbilities().flying &= player.isCreative();//disable flight
             }
             return;
         }
