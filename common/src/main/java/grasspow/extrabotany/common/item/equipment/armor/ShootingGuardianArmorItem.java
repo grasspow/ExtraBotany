@@ -57,10 +57,6 @@ public class ShootingGuardianArmorItem extends MikuArmorItem {
 
     @Override
     public boolean hasArmorSetItem(Player player, EquipmentSlot slot) {
-        if (player == null) {
-            return false;
-        }
-
         ItemStack stack = player.getItemBySlot(slot);
         if (stack.isEmpty()) {
             return false;

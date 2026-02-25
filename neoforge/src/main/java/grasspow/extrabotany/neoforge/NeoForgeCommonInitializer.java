@@ -6,6 +6,7 @@ import grasspow.extrabotany.api.ExtraBotanyNeoForgeCapabilities;
 import grasspow.extrabotany.api.ExtraBotanyRegistries;
 import grasspow.extrabotany.api.NatureOrb;
 import grasspow.extrabotany.api.item.ExtraBotanyArmorMaterials;
+import grasspow.extrabotany.api.item.IArmorSetsWithEffects;
 import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import grasspow.extrabotany.common.advancements.ExtraBotanyCriteriaTriggers;
 import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
@@ -21,6 +22,7 @@ import grasspow.extrabotany.common.impl.DefaultNatureOrb;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.item.brew.InfiniteWineItem;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
+import grasspow.extrabotany.common.item.equipment.armor.MikuArmorItem;
 import grasspow.extrabotany.common.item.equipment.bauble.BaubleItem;
 import grasspow.extrabotany.common.item.equipment.bauble.MoonPendantItem;
 import grasspow.extrabotany.common.item.equipment.bauble.SagesManaRingItem;
@@ -35,12 +37,16 @@ import grasspow.extrabotany.neoforge.network.NeoForgePacketHandler;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import grasspow.extrabotany.xplat.XplatAbstractions;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -56,6 +62,7 @@ import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -127,7 +134,7 @@ public class NeoForgeCommonInitializer {
         bind(event, Registries.RECIPE_SERIALIZER, ExtraBotanyRecipeTypes::submitRecipeSerializers);
 
         bind(event, Registries.ENTITY_TYPE, ExtraBotanyEntities::registerEntities);
-        
+
         bind(event, BotaniaRegistries.BREWS, ExtraBotanyBrews::submitRegistrations);
 
         bind(event, Registries.TRIGGER_TYPE, ExtraBotanyCriteriaTriggers::init);
@@ -172,24 +179,41 @@ public class NeoForgeCommonInitializer {
     private void registerEvents() {
         IEventBus bus = NeoForge.EVENT_BUS;
 
-        // relic sword event
-        bus.addListener((AttackEntityEvent e )-> {
+        bus.addListener((AttackEntityEvent e) -> {
             Player attacker = e.getEntity();
+            //IItemWithLeftClick
             if (attacker.getMainHandItem().getItem() instanceof IItemWithLeftClick i) {
-                i.onLeftClick(attacker,e.getTarget());
+                i.onLeftClick(attacker, e.getTarget());
             }
         });
-        bus.addListener((PlayerInteractEvent.LeftClickEmpty e)->{
-            if (e.getEntity().level().isClientSide() &&!e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof IItemWithLeftClick) {
-                ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(e.getItemStack()));
-            }
-        });
-        bus.addListener((PlayerInteractEvent.LeftClickBlock e)->{
+
+        bus.addListener((PlayerInteractEvent.LeftClickEmpty e) -> {
+            //IItemWithLeftClick
             if (e.getEntity().level().isClientSide() && !e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof IItemWithLeftClick) {
                 ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(e.getItemStack()));
             }
         });
 
+        bus.addListener((PlayerInteractEvent.LeftClickBlock e) -> {
+            //IItemWithLeftClick
+            if (e.getEntity().level().isClientSide() && !e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof IItemWithLeftClick) {
+                ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(e.getItemStack()));
+            }
+        });
+
+        bus.addListener((LivingDamageEvent.Pre e) -> {
+            LivingEntity target = e.getEntity();
+            if (target instanceof Player player) {
+                //IArmorSetsWithEffects
+                ItemStack helmet = ((NonNullList<ItemStack>) player.getArmorSlots()).getFirst();
+                if (helmet != ItemStack.EMPTY && helmet.getItem() instanceof IArmorSetsWithEffects set && helmet.getItem().getEquipmentSlot(helmet) == EquipmentSlot.HEAD && set.hasArmorSet(player)) {
+                    //miku armor
+                    if (helmet.getItem() instanceof MikuArmorItem && e.getSource().is(DamageTypes.MAGIC)) {
+                        e.setNewDamage(e.getOriginalDamage() * 0.25f);
+                    }
+                }
+            }
+        });
 
     }
 

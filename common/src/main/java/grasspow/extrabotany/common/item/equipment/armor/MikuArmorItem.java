@@ -1,6 +1,7 @@
 package grasspow.extrabotany.common.item.equipment.armor;
 
 import com.google.common.base.Suppliers;
+import grasspow.extrabotany.api.item.IArmorSetsWithEffects;
 import grasspow.extrabotany.client.lib.LibResources;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.ChatFormatting;
@@ -8,47 +9,26 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.mana.ManaDiscountArmor;
 import vazkii.botania.common.item.equipment.armor.manasteel.ManasteelArmorItem;
-import vazkii.botania.common.item.equipment.tool.ToolCommons;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 import static vazkii.botania.api.BotaniaAPI.DUMMY_ARMOR_MATERIAL;
 
-public class MikuArmorItem extends ManasteelArmorItem implements ManaDiscountArmor {
+public class MikuArmorItem extends ManasteelArmorItem implements ManaDiscountArmor, IArmorSetsWithEffects {
     public MikuArmorItem(Type type,Properties props) {
         super(type, DUMMY_ARMOR_MATERIAL, props);
     }
 
-//    @SubscribeEvent(priority = EventPriority.LOW)
-//    public void onPlayerAttacked(LivingHurtEvent event) {
-//        Entity target = event.getEntity();
-//        if (target instanceof Player player) {
-//            if (hasArmorSet(player) && getEquipmentSlot() == EquipmentSlot.HEAD) {
-//                if (event.getSource().is(DamageTypes.MAGIC)) {
-//                    event.setAmount(event.getAmount() * 0.25F);
-//                }
-//            }
-//        }
-//    }
-
     @Override
     public float getDiscount(ItemStack stack, int slot, Player player, @Nullable ItemStack tool) {
         return hasArmorSet(player) ? 0.15F : 0;
-    }
-
-    @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> breakCallback) {
-        return ToolCommons.damageItemIfPossible(stack, amount, entity, getManaPerDamage());
     }
 
     protected int getManaPerDamage() {
@@ -74,10 +54,6 @@ public class MikuArmorItem extends ManasteelArmorItem implements ManaDiscountArm
 
     @Override
     public boolean hasArmorSetItem(Player player, EquipmentSlot slot) {
-        if (player == null) {
-            return false;
-        }
-
         ItemStack stack = player.getItemBySlot(slot);
         if (stack.isEmpty()) {
             return false;

@@ -109,7 +109,7 @@ public class ExtraBotanyItems {
     public static final Item mikuChest = makeArmor(LibItemNames.MIKU_CHEST, MikuArmorItem::new, nonStackable(), ArmorItem.Type.CHESTPLATE);
     public static final Item mikuLegs = makeArmor(LibItemNames.MIKU_LEGS, MikuArmorItem::new, nonStackable(), ArmorItem.Type.LEGGINGS);
     public static final Item mikuBoots = makeArmor(LibItemNames.MIKU_BOOTS, MikuArmorItem::new, nonStackable(), ArmorItem.Type.BOOTS);
-    public static final Item goblinsLayerHelm = makeArmor(LibItemNames.GOBLINS_LAYER_HELM, GoblinsLayerArmorItem::new, nonStackable(), ArmorItem.Type.HELMET);
+    public static final Item goblinsLayerHelm = makeArmor(LibItemNames.GOBLINS_LAYER_HELM, GoblinsLayerHelmetItem::new, nonStackable(), ArmorItem.Type.HELMET);
     public static final Item goblinsLayerChest = makeArmor(LibItemNames.GOBLINS_LAYER_CHEST, GoblinsLayerArmorItem::new, nonStackable(), ArmorItem.Type.CHESTPLATE);
     public static final Item goblinsLayerLegs = makeArmor(LibItemNames.GOBLINS_LAYER_LEGS, GoblinsLayerArmorItem::new, nonStackable(), ArmorItem.Type.LEGGINGS);
     public static final Item goblinsLayerBoots = makeArmor(LibItemNames.GOBLINS_LAYER_BOOTS, GoblinsLayerArmorItem::new, nonStackable(), ArmorItem.Type.BOOTS);

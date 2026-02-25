@@ -21,8 +21,6 @@ import java.util.function.Supplier;
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 
 public class ShadowWarriorArmorItem extends MikuArmorItem {
-    public static final String TAG_NIGHT = "is_night";
-
     public ShadowWarriorArmorItem(Type type, Properties props) {
         super(type, props);
     }
@@ -65,10 +63,6 @@ public class ShadowWarriorArmorItem extends MikuArmorItem {
 
     @Override
     public boolean hasArmorSetItem(Player player, EquipmentSlot slot) {
-        if (player == null) {
-            return false;
-        }
-
         ItemStack stack = player.getItemBySlot(slot);
         if (stack.isEmpty()) {
             return false;

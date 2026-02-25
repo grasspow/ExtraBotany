@@ -19,7 +19,7 @@ public class PowerFrameBlockEntityRenderer implements BlockEntityRenderer<PowerF
     public void render(PowerFrameBlockEntity powerFrame, float v, PoseStack matrixStack, MultiBufferSource iRenderTypeBuffer, int combinedLightIn, int combinedOverlayIn) {
         if (rot > 360 * 8) rot = 0;
         rot++;
-        var stack = powerFrame.getItem();
+        var stack = powerFrame.getItem(0);
         if (!stack.isEmpty()) {
             matrixStack.pushPose();
             matrixStack.translate(0.5F, 0.4F, 0.5F);
