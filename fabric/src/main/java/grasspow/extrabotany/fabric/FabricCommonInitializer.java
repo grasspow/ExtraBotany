@@ -2,6 +2,7 @@ package grasspow.extrabotany.fabric;
 
 import grasspow.extrabotany.api.ExtraBotanyFabricCapabilities;
 import grasspow.extrabotany.api.ExtraBotanyRegistries;
+import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
 import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
 import grasspow.extrabotany.common.block.block_entity.PedestalBlockEntity;
@@ -21,18 +22,30 @@ import grasspow.extrabotany.common.item.equipment.tool.CameraItem;
 import grasspow.extrabotany.common.item.equipment.weapon.*;
 import grasspow.extrabotany.common.item.misc.RewardBagItem;
 import grasspow.extrabotany.common.lib.LibBlockNames;
+import grasspow.extrabotany.common.network.server.LeftClickPack;
 import grasspow.extrabotany.fabric.network.FabricPacketHandler;
+import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.BotaniaFabricCapabilities;
 import vazkii.botania.api.brew.Brew;
@@ -93,9 +106,9 @@ public class FabricCommonInitializer implements ModInitializer {
             assert BREW_REGISTRY != null;
         }
         ExtraBotanyBrews.submitRegistrations(bind(BREW_REGISTRY));
-        
+
         // recipes
-		ExtraBotanyRecipeTypes.submitRecipeTypes(bind(BuiltInRegistries.RECIPE_TYPE));
+        ExtraBotanyRecipeTypes.submitRecipeTypes(bind(BuiltInRegistries.RECIPE_TYPE));
         ExtraBotanyRecipeTypes.submitRecipeSerializers(bind(BuiltInRegistries.RECIPE_SERIALIZER));
 
         // Rest
@@ -123,8 +136,24 @@ public class FabricCommonInitializer implements ModInitializer {
                 });
     }
 
-    private void registerEvents(){
-
+    private void registerEvents() {
+        AttackEntityCallback.EVENT.register(
+                (Player player, Level world, InteractionHand hand, Entity entity, EntityHitResult hitResult) -> {
+                    if (player.getItemInHand(hand).getItem() instanceof IItemWithLeftClick i) {
+                        return i.onLeftClick(player,entity);
+                    }
+                    return InteractionResult.PASS;
+                }
+        );
+        AttackBlockCallback.EVENT.register(
+                (Player player, Level world, InteractionHand hand, BlockPos pos, Direction direction) -> {
+                    if (player.getItemInHand(hand).getItem() instanceof IItemWithLeftClick i) {
+                        ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(player.getItemInHand(hand)));
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.PASS;
+                }
+        );
     }
 
     private void registerCapabilities() {

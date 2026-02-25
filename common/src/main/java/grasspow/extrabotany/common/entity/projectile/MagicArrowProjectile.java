@@ -36,6 +36,7 @@ public class MagicArrowProjectile extends BaseProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DAMAGE, 0);
         builder.define(LIFE, 0);
     }

@@ -1,5 +1,6 @@
 package grasspow.extrabotany.common.entity.projectile;
 
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -78,7 +80,7 @@ public abstract class BaseSwordProjectile extends ThrowableProjectile {
 
     public void faceTarget(float modifier) {
         this.faceEntity(this.getTargetPos());
-        Vec3 vec = new Vec3(getTargetPos().getX() - getX(), getTargetPos().getY() - getY(), getTargetPos().getZ() - getZ())
+        Vec3 vec = new Vec3(getTargetPos().getX() - getX() + 0.5, getTargetPos().getY() - getY() + 0.5, getTargetPos().getZ() - getZ() + 0.5)
                 .normalize();
         this.lerpMotion(vec.x * modifier, vec.y * modifier, vec.z * modifier);
     }
@@ -245,4 +247,9 @@ public abstract class BaseSwordProjectile extends ThrowableProjectile {
     public boolean ignoreExplosion(Explosion explosion) {
         return true;
     }
+
+    public abstract BakedModel getIcon();
+
+    @Override
+    public abstract ItemStack getWeaponItem();
 }

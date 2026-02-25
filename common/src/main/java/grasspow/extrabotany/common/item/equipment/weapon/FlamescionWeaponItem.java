@@ -2,12 +2,12 @@ package grasspow.extrabotany.common.item.equipment.weapon;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 
 public class FlamescionWeaponItem extends SwordItem {
 
-    public FlamescionWeaponItem(Properties properties) {
-        super(Tiers.NETHERITE,  properties);
+    public FlamescionWeaponItem(Tier tier, Properties properties) {
+        super(tier, properties);
 //        MinecraftForge.EVENT_BUS.addListener(this::leftClick);
 //        MinecraftForge.EVENT_BUS.addListener(this::leftClickBlock);
 //        MinecraftForge.EVENT_BUS.addListener(this::attackEntity);

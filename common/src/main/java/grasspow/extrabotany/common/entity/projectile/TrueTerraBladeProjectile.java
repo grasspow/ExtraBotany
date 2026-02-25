@@ -3,12 +3,14 @@ package grasspow.extrabotany.common.entity.projectile;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.DamageHandler;
+import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import vazkii.botania.client.core.proxy.ClientProxy;
@@ -29,6 +31,7 @@ public class TrueTerraBladeProjectile extends BaseSwordProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
 
     }
 
@@ -80,7 +83,13 @@ public class TrueTerraBladeProjectile extends BaseSwordProjectile {
         return 30;
     }
 
+    @Override
     public BakedModel getIcon() {
         return MiscellaneousModels.INSTANCE.trueTerraBladeProjectileModel;
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return new ItemStack(ExtraBotanyItems.trueTerraBlade);
     }
 }

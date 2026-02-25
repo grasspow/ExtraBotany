@@ -3,12 +3,14 @@ package grasspow.extrabotany.common.entity.projectile;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.DamageHandler;
+import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -44,6 +46,7 @@ public class TrueShadowKatanaProjectile extends BaseSwordProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
 
     }
 
@@ -73,7 +76,13 @@ public class TrueShadowKatanaProjectile extends BaseSwordProjectile {
         }
     }
 
+    @Override
     public BakedModel getIcon() {
         return MiscellaneousModels.INSTANCE.trueShadowKatanaProjectileModel;
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return new ItemStack(ExtraBotanyItems.trueShadowKatana);
     }
 }

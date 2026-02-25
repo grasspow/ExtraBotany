@@ -63,10 +63,10 @@ public class LanguageHelper {
         add("extrabotany.upgrade.range.off", "Range Upgrade:Off", "范围升级:关闭");
 
         //budd morph
-        add("extrabotany.misc.morph","(morph)","（幻化）");
+        add("extrabotany.misc.morph", "(morph)", "（幻化）");
 
         //keymapping
-        add("extrabotany.key.buddhist_relics_morph","Omniscience's morph","虚空万藏幻化");
+        add("extrabotany.key.buddhist_relics_morph", "Omniscience's morph", "虚空万藏幻化");
     }
 
     private static void transItem() {
@@ -308,7 +308,7 @@ public class LanguageHelper {
     }
 
     private static void makeAdv(String key, String titleEn, String titleZh, String descEn, String descZh) {
-        add("advancement.extrabotany." + key + ".title", titleEn, titleZh);
+        add("advancement.extrabotany." + key, titleEn, titleZh);
         add("advancement.extrabotany." + key + ".desc", descEn, descZh);
     }
 

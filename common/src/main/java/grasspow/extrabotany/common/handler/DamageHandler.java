@@ -22,7 +22,9 @@ public final class DamageHandler {
             return false;
         switch (type) {
             case GENERAL: {
-                if (source instanceof Player player) {
+                if (source == null) {
+                    return target.hurt(target.level().damageSources().generic(), amount);
+                } else if (source instanceof Player player) {
                     return target.hurt(player.damageSources().playerAttack(player), amount);
                 } else if (source instanceof LivingEntity living) {
                     return target.hurt(living.damageSources().mobAttack(living), amount);

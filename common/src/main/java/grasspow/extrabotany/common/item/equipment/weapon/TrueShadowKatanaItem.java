@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.item.Relic;
@@ -17,8 +17,8 @@ import java.util.List;
 import static grasspow.extrabotany.common.lib.CommonHelper.getFilteredEntities;
 
 public class TrueShadowKatanaItem extends RelicSwordItem {
-    public TrueShadowKatanaItem(Properties prop) {
-        super(Tiers.DIAMOND, 5, -2F, prop);
+    public TrueShadowKatanaItem(Tier tier, Properties prop) {
+        super(tier, prop);
     }
 
     public void attack(LivingEntity player, Entity target, int times, double speedTime, float damageTime) {

@@ -23,10 +23,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.equipment.CustomDamageItem;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
 import vazkii.botania.common.item.equipment.tool.bow.LivingwoodBowItem;
 import vazkii.botania.common.item.relic.RelicImpl;
@@ -36,7 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class FailnaughtItem extends LivingwoodBowItem implements CustomDamageItem, IAdvancementRequirement {
+public class FailnaughtItem extends LivingwoodBowItem implements IAdvancementRequirement {
     private static final int MANA_PER_DAMAGE = 320;
 
     public FailnaughtItem(Properties prop) {
@@ -57,7 +55,6 @@ public class FailnaughtItem extends LivingwoodBowItem implements CustomDamageIte
         return ToolCommons.damageItemIfPossible(stack, amount, entity, MANA_PER_DAMAGE / multiply);
     }
 
-    @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         var stack = player.getItemInHand(hand);

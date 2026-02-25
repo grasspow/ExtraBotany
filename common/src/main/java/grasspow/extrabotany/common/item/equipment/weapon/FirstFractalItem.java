@@ -3,29 +3,40 @@ package grasspow.extrabotany.common.item.equipment.weapon;
 import grasspow.extrabotany.api.IAdvancementRequirement;
 import grasspow.extrabotany.common.entity.projectile.PhantomSwordProjectile;
 import grasspow.extrabotany.common.lib.LibAdvancementNames;
+import grasspow.extrabotany.common.lib.LibItemNames;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.AABB;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.relic.RelicImpl;
 
+import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
+
 
 public class FirstFractalItem extends RelicSwordItem implements IAdvancementRequirement {
-    public FirstFractalItem(Properties prop) {
-        super(Tiers.NETHERITE, 10, -1.6F, prop);
+    public FirstFractalItem(Tier tier, Properties prop) {
+        super(tier, prop);
     }
 
-//    @Override
-//    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-//        Multimap<Holder<Attribute>, AttributeModifier> ret = HashMultimap.create(super.getAttributeModifiers(slot, stack));
-//        if (slot == EquipmentSlot.MAINHAND) {
-//            ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(getBaubleUUID(stack), "Fractal modifier", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL));
-//        }
-//        return ret;
-//    }
+    private static ItemAttributeModifiers createAttributes() {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.MOVEMENT_SPEED,
+                        new AttributeModifier(
+                                exbotRL(LibItemNames.FIRST_FRACTAL + "_modifier"),
+                                0.3,
+                                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        ),
+                        EquipmentSlotGroup.MAINHAND
+                )
+                .build();
+    }
 
     @Override
     public int getManaPerDamage() {

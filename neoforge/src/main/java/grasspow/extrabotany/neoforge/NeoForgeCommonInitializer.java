@@ -6,6 +6,7 @@ import grasspow.extrabotany.api.ExtraBotanyNeoForgeCapabilities;
 import grasspow.extrabotany.api.ExtraBotanyRegistries;
 import grasspow.extrabotany.api.NatureOrb;
 import grasspow.extrabotany.api.item.ExtraBotanyArmorMaterials;
+import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import grasspow.extrabotany.common.advancements.ExtraBotanyCriteriaTriggers;
 import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
 import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
@@ -29,7 +30,9 @@ import grasspow.extrabotany.common.item.equipment.weapon.*;
 import grasspow.extrabotany.common.item.misc.RewardBagItem;
 import grasspow.extrabotany.common.lib.LibBlockNames;
 import grasspow.extrabotany.common.lib.LibMisc;
+import grasspow.extrabotany.common.network.server.LeftClickPack;
 import grasspow.extrabotany.neoforge.network.NeoForgePacketHandler;
+import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import grasspow.extrabotany.xplat.XplatAbstractions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
@@ -38,6 +41,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -52,6 +56,8 @@ import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaRegistries;
@@ -165,6 +171,25 @@ public class NeoForgeCommonInitializer {
 
     private void registerEvents() {
         IEventBus bus = NeoForge.EVENT_BUS;
+
+        // relic sword event
+        bus.addListener((AttackEntityEvent e )-> {
+            Player attacker = e.getEntity();
+            if (attacker.getMainHandItem().getItem() instanceof IItemWithLeftClick i) {
+                i.onLeftClick(attacker,e.getTarget());
+            }
+        });
+        bus.addListener((PlayerInteractEvent.LeftClickEmpty e)->{
+            if (e.getEntity().level().isClientSide() &&!e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof IItemWithLeftClick) {
+                ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(e.getItemStack()));
+            }
+        });
+        bus.addListener((PlayerInteractEvent.LeftClickBlock e)->{
+            if (e.getEntity().level().isClientSide() && !e.getItemStack().isEmpty() && e.getItemStack().getItem() instanceof IItemWithLeftClick) {
+                ClientXplatAbstractions.INSTANCE.sendToServer(new LeftClickPack(e.getItemStack()));
+            }
+        });
+
 
     }
 

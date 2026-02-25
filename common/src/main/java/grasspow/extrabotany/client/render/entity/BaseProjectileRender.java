@@ -37,7 +37,8 @@ public class BaseProjectileRender extends EntityRenderer<BaseSwordProjectile> {
 
         float alpha = 0.9F;
         int color = 0xFFFFFF | ((int) (alpha * 255F)) << 24;
-        BakedModel model = this.itemRenderer.getModel(weapon.getWeaponItem(), weapon.level(), null, weapon.getId());
+//        BakedModel model = this.itemRenderer.getModel(weapon.getWeaponItem(), weapon.level(), null, weapon.getId());
+        BakedModel model = weapon.getIcon();
         RenderHelper.renderItemCustomColor(mc.player, weapon.getWeaponItem(), color, matrixStack, bufferIn, 0xF000F0, OverlayTexture.NO_OVERLAY, model);
 
         matrixStack.scale(1 / s, 1 / s, 1 / s);

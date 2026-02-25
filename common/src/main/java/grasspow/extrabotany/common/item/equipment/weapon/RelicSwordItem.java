@@ -3,6 +3,7 @@ package grasspow.extrabotany.common.item.equipment.weapon;
 import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,35 +21,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class RelicSwordItem extends SwordItem implements IItemWithLeftClick, CustomDamageItem {
-    public RelicSwordItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
-        super(pTier, pProperties.rarity(Rarity.EPIC));
-//        MinecraftForge.EVENT_BUS.addListener(this::leftClick);
-//        MinecraftForge.EVENT_BUS.addListener(this::leftClickBlock);
-//        MinecraftForge.EVENT_BUS.addListener(this::attackEntity);
+    public RelicSwordItem(Tier tier,Properties props) {
+        super(tier,props);
     }
-
-//    public void attackEntity(AttackEntityEvent evt) {
-//        if (!evt.getEntity().level().isClientSide()) {
-//            onLeftClick(evt.getEntity(), evt.getTarget());
-//        }
-//    }
-//
-//    public void leftClick(PlayerInteractEvent.LeftClickEmpty evt) {
-//        if (!evt.getItemStack().isEmpty() && evt.getItemStack().getItem() == this) {
-//            ClientExbotXplatAbs.INSTANCE.sendToServer(new LeftClickPack(evt.getItemStack()));
-//        }
-//    }
-//
-//    public void leftClickBlock(PlayerInteractEvent.LeftClickBlock evt) {
-//        if (evt.getEntity().level().isClientSide() && !evt.getItemStack().isEmpty() && evt.getItemStack().getItem() == this) {
-//            ClientExbotXplatAbs.INSTANCE.sendToServer(new LeftClickPack(evt.getItemStack()));
-//        }
-//    }
-
-//    @Override
-//    public int getEntityLifespan(ItemStack itemStack, Level level) {
-//        return Integer.MAX_VALUE;
-//    }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
@@ -66,7 +41,7 @@ public abstract class RelicSwordItem extends SwordItem implements IItemWithLeftC
     }
 
     @Override
-    public void onLeftClick(Player player, Entity target) {
+    public InteractionResult onLeftClick(Player player, Entity target) {
         if (!player.level().isClientSide() && !player.getMainHandItem().isEmpty()
                 && player.getMainHandItem().getItem() == this
                 && player.getAttackStrengthScale(0) == 1
@@ -74,6 +49,7 @@ public abstract class RelicSwordItem extends SwordItem implements IItemWithLeftC
             attack(player, target);
             player.awardStat(Stats.ITEM_USED.get(this));
         }
+        return InteractionResult.PASS;
     }
 
     @Override

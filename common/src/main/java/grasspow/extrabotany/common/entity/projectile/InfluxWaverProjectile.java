@@ -3,6 +3,7 @@ package grasspow.extrabotany.common.entity.projectile;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.DamageHandler;
+import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -75,11 +77,11 @@ public class InfluxWaverProjectile extends BaseSwordProjectile {
                 if (!living.isRemoved()) {
                     living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
                     if (getOwner() instanceof Player) {
-                        DamageHandler.INSTANCE.dmg(living, getOwner(), 12F, DamageHandler.INSTANCE.GENERAL_PIERCING);
+                        DamageHandler.INSTANCE.dmg(living, getOwner(), 10F, DamageHandler.INSTANCE.GENERAL_PIERCING);
                     } else {
                         if (living.invulnerableTime == 0)
                             DamageHandler.INSTANCE.dmg(living, getOwner(), 2.5F, DamageHandler.INSTANCE.LIFE_LOSING);
-                        DamageHandler.INSTANCE.dmg(living, getOwner(), 7F, DamageHandler.INSTANCE.MAGIC);
+                        DamageHandler.INSTANCE.dmg(living, getOwner(), 6F, DamageHandler.INSTANCE.MAGIC);
                     }
                     flag = living.isRemoved();
                     if (getStrikeTimes() > 0 && !flag) {
@@ -122,6 +124,7 @@ public class InfluxWaverProjectile extends BaseSwordProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(STRIKE_TIMES, 0);
         builder.define(NEXT, BlockPos.ZERO);
     }
@@ -171,7 +174,13 @@ public class InfluxWaverProjectile extends BaseSwordProjectile {
         return 30;
     }
 
+    @Override
     public BakedModel getIcon() {
         return MiscellaneousModels.INSTANCE.influxWaverProjectileModel;
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return new ItemStack(ExtraBotanyItems.influxWaver);
     }
 }

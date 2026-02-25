@@ -3,6 +3,7 @@ package grasspow.extrabotany.common.entity.projectile;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.DamageHandler;
+import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -42,14 +44,15 @@ public class PhantomSwordProjectile extends BaseSwordProjectile {
         super(ExtraBotanyEntities.PHANTOM_SWORD, level);
     }
 
-    public PhantomSwordProjectile(Level level, LivingEntity thrower, BlockPos targetpos, float damageTime) {
+    public PhantomSwordProjectile(Level level, LivingEntity thrower, BlockPos targetPos, float damageTime) {
         super(ExtraBotanyEntities.PHANTOM_SWORD, level, thrower, damageTime);
-        setTargetPos(targetpos);
+        setTargetPos(targetPos);
         setVariety(new Random().nextInt(10));
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(VARIETY, 0);
         builder.define(DELAY, 0);
         builder.define(FAKE, false);
@@ -113,8 +116,14 @@ public class PhantomSwordProjectile extends BaseSwordProjectile {
         return 0;
     }
 
+    @Override
     public BakedModel getIcon() {
         return MiscellaneousModels.INSTANCE.firstFractalWeaponModels[getVariety()];
+    }
+
+    @Override
+    public ItemStack getWeaponItem() {
+        return new ItemStack(ExtraBotanyItems.firstFractal);
     }
 
     @Override

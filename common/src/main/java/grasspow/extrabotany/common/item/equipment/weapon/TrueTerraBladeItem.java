@@ -4,7 +4,7 @@ import grasspow.extrabotany.common.entity.projectile.TrueTerraBladeProjectile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.relic.RelicImpl;
@@ -12,8 +12,8 @@ import vazkii.botania.common.item.relic.RelicImpl;
 public class TrueTerraBladeItem extends RelicSwordItem {
     private static final int MANA_PER_DAMAGE = 800;
 
-    public TrueTerraBladeItem(Properties prop) {
-        super(Tiers.DIAMOND, 5, -2F, prop);
+    public TrueTerraBladeItem(Tier tier, Properties prop) {
+        super(tier, prop);
     }
 
     /**

@@ -18,11 +18,12 @@ import grasspow.extrabotany.common.item.misc.*;
 import grasspow.extrabotany.common.lib.LibItemNames;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import vazkii.botania.common.component.BotaniaDataComponents;
 import vazkii.botania.common.item.lens.Lens;
 import vazkii.botania.common.item.lens.LensItem;
@@ -36,6 +37,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
+import static vazkii.botania.common.item.BotaniaItems.unstackableCustomDamage;
 
 public class ExtraBotanyItems {
 
@@ -53,7 +55,7 @@ public class ExtraBotanyItems {
     public static final Item deathRing = make(LibItemNames.DEATH_RING, DeathRingItem::new, nonStackable());
     public static final Item manaDriveRing = make(LibItemNames.MANA_DRIVE_RING, ManaDriveRingItem::new, nonStackable());
     public static final Item natureOrb = make(LibItemNames.NATURE_ORB, NatureOrbItem::new, nonStackable()
-            .component(ExtraBotanyDataComponents.MAX_NATURE,NatureOrbItem.DEFAULT_MAX_NATURE));
+            .component(ExtraBotanyDataComponents.MAX_NATURE, NatureOrbItem.DEFAULT_MAX_NATURE));
     public static final Item jingweiFeather = make(LibItemNames.JINGWEI_FEATHER, JingweiFeatherItem::new, nonStackable());
     public static final Item potatoChips = make(LibItemNames.POTATO_CHIPS, PotatoChipsItem::new, nonStackable());
     public static final Item sunRing = make(LibItemNames.SUN_RING, SunRingItem::new, nonStackable());
@@ -82,12 +84,22 @@ public class ExtraBotanyItems {
     public static final Item traceLens = make(LibItemNames.TRACE_LENS, stackTo16(), TraceLens::new, LensItem.PROP_CONTROL);
 
     // tool
-    public static final Item manasteelHammer = make(LibItemNames.MANASTEEL_HAMMER, ManasteelHammer::new , ModTiers.MANASTEEL, nonStackable());
-    public static final Item elementiumHammer = make(LibItemNames.ELEMENTIUM_HAMMER, ManasteelHammer::new , ModTiers.ELEMENTIUM, nonStackable());
-    public static final Item terrasteelHammer = make(LibItemNames.TERRASTEEL_HAMMER, ManasteelHammer::new , ModTiers.TERRASTEEL, nonStackable());
-    public static final Item ultimateHammer = make(LibItemNames.ULTIMATE_HAMMER, UltimateHammer::new,  nonStackable().rarity(Rarity.EPIC));
+    public static final Item manasteelHammer = make(LibItemNames.MANASTEEL_HAMMER, ManasteelHammer::new, ModTiers.MANASTEEL, nonStackable());
+    public static final Item elementiumHammer = make(LibItemNames.ELEMENTIUM_HAMMER, ManasteelHammer::new, ModTiers.ELEMENTIUM, nonStackable());
+    public static final Item terrasteelHammer = make(LibItemNames.TERRASTEEL_HAMMER, ManasteelHammer::new, ModTiers.TERRASTEEL, nonStackable());
+    public static final Item ultimateHammer = make(LibItemNames.ULTIMATE_HAMMER, UltimateHammer::new, nonStackable().rarity(Rarity.EPIC));
     public static final Item manaReader = make(LibItemNames.MANA_READER, ManaReader::new, nonStackable());
-    public static final Item walkingCane = make(LibItemNames.WALKING_CANE, WalkingCaneItem::new, nonStackable());
+    public static final Item walkingCane = make(LibItemNames.WALKING_CANE, WalkingCaneItem::new,
+            nonStackable().attributes(
+                    ItemAttributeModifiers.builder()
+                            .add(Attributes.MOVEMENT_SPEED,
+                                    new AttributeModifier(
+                                            exbotRL(LibItemNames.WALKING_CANE + "_modifier"),
+                                            0.6,
+                                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
+                                    EquipmentSlotGroup.HAND)
+                            .build()
+            ));
     public static final Item rodOfDiscord = make(LibItemNames.ROD_OF_DISCORD, RodOfDiscordItem::new, nonStackable());
     public static final Item silverBullet = make(LibItemNames.SILVER_BULLET, SilverBulletItem::new, nonStackable());
     public static final Item camera = make(LibItemNames.CAMERA, CameraItem::new, nonStackable());
@@ -115,15 +127,45 @@ public class ExtraBotanyItems {
     public static final Item maidBoots = makeArmor(LibItemNames.MAID_BOOTS, MaidArmorItem::new, nonStackable(), ArmorItem.Type.BOOTS);
 
     // weapon
-    public static final Item shadowKatana = make(LibItemNames.SHADOW_KATANA, ShadowKatanaItem::new, nonStackable());
-    public static final Item flamescionWeapon = make(LibItemNames.FLAMESCION_WEAPON, FlamescionWeaponItem::new, relic());
-    public static final Item influxWaver = make(LibItemNames.INFLUX_WAVER, InfluxWaverItem::new, relic());
-    public static final Item starWrath = make(LibItemNames.STAR_WRATH, StarWrathItem::new, relic());
-    public static final Item trueShadowKatana = make(LibItemNames.TRUE_SHADOW_KATANA, TrueShadowKatanaItem::new, relic());
-    public static final Item trueTerraBlade = make(LibItemNames.TRUE_TERRA_BLADE, TrueTerraBladeItem::new, relic());
-    public static final Item excaliber = make(LibItemNames.EXCALIBER, ExcaliberItem::new, relic());
-    public static final Item firstFractal = make(LibItemNames.FIRST_FRACTAL, FirstFractalItem::new, relic());
-    public static final Item fallnaught = make(LibItemNames.FAILNAUGHT, FailnaughtItem::new, relic());
+    public static final Item shadowKatana = make(LibItemNames.SHADOW_KATANA, ShadowKatanaItem::new, Tiers.IRON,
+            nonStackable().rarity(Rarity.UNCOMMON));
+    public static final Item flamescionWeapon = make(LibItemNames.FLAMESCION_WEAPON, FlamescionWeaponItem::new, Tiers.NETHERITE,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.EPIC));
+    public static final Item influxWaver = make(LibItemNames.INFLUX_WAVER, InfluxWaverItem::new, Tiers.DIAMOND,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON).attributes(SwordItem.createAttributes(Tiers.DIAMOND, 5, -2F)));
+    public static final Item starWrath = make(LibItemNames.STAR_WRATH, StarWrathItem::new, Tiers.DIAMOND,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON).attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, -1.6F)));
+    public static final Item trueShadowKatana = make(LibItemNames.TRUE_SHADOW_KATANA, TrueShadowKatanaItem::new, Tiers.DIAMOND,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON).attributes(SwordItem.createAttributes(Tiers.DIAMOND, 5, -2F)));
+    public static final Item trueTerraBlade = make(LibItemNames.TRUE_TERRA_BLADE, TrueTerraBladeItem::new, Tiers.DIAMOND,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON).attributes(SwordItem.createAttributes(Tiers.DIAMOND, 5, -2F)));
+    public static final Item excaliber = make(LibItemNames.EXCALIBER, ExcaliberItem::new, Tiers.NETHERITE,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON)
+                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 8, -2f)
+                            .withModifierAdded(
+                                    Attributes.MOVEMENT_SPEED,
+                                    new AttributeModifier(
+                                            exbotRL(LibItemNames.EXCALIBER + "_modifier"),
+                                            0.3,
+                                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
+                                    EquipmentSlotGroup.MAINHAND
+                            )
+                    )
+    );
+    public static final Item firstFractal = make(LibItemNames.FIRST_FRACTAL, FirstFractalItem::new, Tiers.NETHERITE,
+            unstackableCustomDamage().fireResistant().rarity(Rarity.EPIC)
+                    .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 8, -2f)
+                            .withModifierAdded(
+                                    Attributes.MOVEMENT_SPEED,
+                                    new AttributeModifier(
+                                            exbotRL(LibItemNames.FIRST_FRACTAL + "_modifier"),
+                                            0.3,
+                                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
+                                    EquipmentSlotGroup.MAINHAND
+                            )
+                    )
+    );
+    public static final Item fallnaught = make(LibItemNames.FAILNAUGHT, FailnaughtItem::new, unstackableCustomDamage().fireResistant().rarity(Rarity.UNCOMMON));
 
     // cosmetic bauble
     public static final Item foxEar = make(LibItemNames.FOX_EAR, CosmeticBaubleItem.Variant.FOX_EAR, new Item.Properties());
@@ -174,7 +216,7 @@ public class ExtraBotanyItems {
     public static final Item splashGrenade = make(LibItemNames.SPLASH_GRENADE, SplashGrenadeItem::new, stackTo32());
 
     private static Item make(String name, Item.Properties props, Supplier<Lens> lens, int prop) {
-        return make(name,props,lens,prop,false);
+        return make(name, props, lens, prop, false);
     }
 
     private static Item make(String name, Item.Properties props, Supplier<Lens> lens, int prop, boolean isBrew) {
@@ -204,8 +246,8 @@ public class ExtraBotanyItems {
         return item;
     }
 
-    private static Item make(String name, BiFunction<Tier,Item.Properties, Item> func, Tier tier, Item.Properties props) {
-        Item item = func.apply(tier,props);
+    private static Item make(String name, BiFunction<Tier, Item.Properties, Item> func, Tier tier, Item.Properties props) {
+        Item item = func.apply(tier, props);
         var old = ALL.put(name, item);
         if (old != null) {
             throw new IllegalArgumentException("Typo? Duplicate name: " + name);
@@ -223,7 +265,7 @@ public class ExtraBotanyItems {
     }
 
     private static Item makeArmor(String name, BiFunction<ArmorItem.Type, Item.Properties, ArmorItem> func, Item.Properties props, ArmorItem.Type type) {
-        Item item = func.apply(type,props);
+        Item item = func.apply(type, props);
         var old = ALL.put(name, item);
         if (old != null) {
             throw new IllegalArgumentException("Typo? Duplicate name: " + name);
@@ -231,8 +273,8 @@ public class ExtraBotanyItems {
         return item;
     }
 
-    private static Item makeRewardBag(String name, BiFunction<Item.Properties,RewardBagItem.Variant, Item> func, Item.Properties props, RewardBagItem.Variant variant) {
-        Item item = func.apply(props,variant);
+    private static Item makeRewardBag(String name, BiFunction<Item.Properties, RewardBagItem.Variant, Item> func, Item.Properties props, RewardBagItem.Variant variant) {
+        Item item = func.apply(props, variant);
         var old = ALL.put(name, item);
         if (old != null) {
             throw new IllegalArgumentException("Typo? Duplicate name: " + name);

@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -36,18 +36,9 @@ import java.util.function.Consumer;
 
 public class ExcaliberItem extends RelicSwordItem implements LensEffectItem, IAdvancementRequirement {
 
-    public ExcaliberItem(Properties prop) {
-        super(Tiers.NETHERITE, 8, -2f, prop);
+    public ExcaliberItem(Tier tier, Properties prop) {
+        super(tier, prop);
     }
-
-//    @Override
-//    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-//        Multimap<Holder<Attribute>, AttributeModifier> ret = HashMultimap.create(super.getAttributeModifiers(slot, stack));
-//        if (slot == EquipmentSlot.MAINHAND) {
-//            ret.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(getBaubleUUID(stack), "Excaliber modifier", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL));
-//        }
-//        return ret;
-//    }
 
     @Override
     public int getManaPerDamage() {
@@ -79,7 +70,7 @@ public class ExcaliberItem extends RelicSwordItem implements LensEffectItem, IAd
         burst.setDeltaMovement(burst.getDeltaMovement().scale(motionModifier));
 
         ItemStack lens = stack.copy();
-        lens.set(ExtraBotanyDataComponents.ATTACKER,player.getName().getString());
+        lens.set(ExtraBotanyDataComponents.ATTACKER, player.getName().getString());
         burst.setSourceLens(lens);
         return burst;
     }
@@ -100,8 +91,7 @@ public class ExcaliberItem extends RelicSwordItem implements LensEffectItem, IAd
         AABB axis = new AABB(entity.getX(), entity.getY(), entity.getZ(), entity.xOld, entity.yOld, entity.zOld).inflate(1);
         Entity attacker = entity.getOwner();
 
-//        int homeID = ItemNBTHelper.getInt(stack, TAG_HOME_ID, -1);
-        int homeID = stack.getOrDefault(ExtraBotanyDataComponents.HOME_ID,-1);
+        int homeID = stack.getOrDefault(ExtraBotanyDataComponents.HOME_ID, -1);
         if (homeID == -1) {
             AABB axis1 = new AABB(entity.getX() - 5F, entity.getY() - 5F, entity.getZ() - 5F,
                     entity.xOld + 5F, entity.yOld + 5F, entity.zOld + 5F);
@@ -110,8 +100,7 @@ public class ExcaliberItem extends RelicSwordItem implements LensEffectItem, IAd
                 if (living instanceof Player || !(living instanceof Mob) || living.hurtTime != 0)
                     continue;
                 homeID = living.getId();
-//                ItemNBTHelper.setInt(stack, TAG_HOME_ID, homeID);
-                stack.set(ExtraBotanyDataComponents.HOME_ID,homeID);
+                stack.set(ExtraBotanyDataComponents.HOME_ID, homeID);
                 break;
             }
         }

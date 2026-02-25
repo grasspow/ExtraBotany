@@ -14,7 +14,7 @@ public interface NatureOrb {
 
     int getMaxNature();
 
-    void addNature(int x);
+    boolean addNature(int x);
 
     boolean canReceiveNatureFromNatureAdder(BlockEntity adder);
 

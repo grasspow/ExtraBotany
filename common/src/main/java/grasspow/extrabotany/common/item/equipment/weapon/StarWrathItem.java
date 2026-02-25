@@ -3,15 +3,15 @@ package grasspow.extrabotany.common.item.equipment.weapon;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.entity.FallingStarEntity;
 import vazkii.botania.common.item.relic.RelicImpl;
 
 public class StarWrathItem extends RelicSwordItem {
-    public StarWrathItem(Properties prop) {
-        super(Tiers.DIAMOND, 6, -1.6F, prop);
+    public StarWrathItem(Tier tier, Properties prop) {
+        super(tier, prop);
     }
 
     @Override

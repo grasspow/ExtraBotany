@@ -4,15 +4,15 @@ import grasspow.extrabotany.common.entity.projectile.InfluxWaverProjectile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.relic.RelicImpl;
 
 public class InfluxWaverItem extends RelicSwordItem {
 
-    public InfluxWaverItem(Properties prop) {
-        super(Tiers.DIAMOND, 5, -2F, prop);
+    public InfluxWaverItem(Tier tier,Properties prop) {
+        super(tier, prop);
     }
 
     @Override

@@ -2,6 +2,7 @@ package grasspow.extrabotany.common.item.equipment.bauble;
 
 import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import grasspow.extrabotany.common.entity.projectile.AuraFireProjectile;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,7 @@ public class JingweiFeatherItem extends BaubleItem implements IItemWithLeftClick
 //    }
 
     @Override
-    public void onLeftClick(Player player, Entity target) {
+    public InteractionResult onLeftClick(Player player, Entity target) {
         if (player.getMainHandItem().isEmpty() && player.getAttackStrengthScale(0) == 1)
             if (ManaItemHandler.instance().requestManaExactForTool(new ItemStack(this), player, MANA_PER_DAMAGE, true)) {
                 AuraFireProjectile proj = new AuraFireProjectile(player, player.level());
@@ -47,6 +48,7 @@ public class JingweiFeatherItem extends BaubleItem implements IItemWithLeftClick
                 if (!player.level().isClientSide())
                     player.level().addFreshEntity(proj);
             }
+        return null;
     }
 
 }

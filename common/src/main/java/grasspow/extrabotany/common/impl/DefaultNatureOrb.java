@@ -19,8 +19,10 @@ public record DefaultNatureOrb(ItemStack stack) implements NatureOrb {
     }
 
     @Override
-    public void addNature(int nature) {
+    public boolean addNature(int nature) {
+        if ((getNature() + nature)<0) return false;
         DataComponentHelper.setIntNonZero(stack, ExtraBotanyDataComponents.NATURE, Math.min(getNature() + nature, getMaxNature()));
+        return true;
     }
 
     @Override
