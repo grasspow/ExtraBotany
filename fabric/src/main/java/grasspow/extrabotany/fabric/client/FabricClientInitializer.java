@@ -4,6 +4,7 @@ import grasspow.extrabotany.client.ExtraBotanyItemProperties;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.client.core.proxy.ClientProxy;
 import grasspow.extrabotany.client.model.ExtraBotanyLayerDefinitions;
+import grasspow.extrabotany.client.render.BlockRenderLayers;
 import grasspow.extrabotany.client.render.ColorHandler;
 import grasspow.extrabotany.client.render.entity.ExtraBotanyEntityRenderers;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
@@ -11,6 +12,7 @@ import grasspow.extrabotany.common.network.server.BuddhistChangePack;
 import grasspow.extrabotany.fabric.network.FabricPacketHandler;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -33,7 +35,7 @@ public class FabricClientInitializer implements ClientModInitializer {
             MiscellaneousModels.INSTANCE.onModelRegister(Minecraft.getInstance().getResourceManager(), pluginContext::addModels);
             pluginContext.modifyModelAfterBake().register((bakedModel, context) -> MiscellaneousModels.INSTANCE.modifyModelAfterbake(bakedModel, context.resourceId()));
         });
-
+		BlockRenderLayers.init(BlockRenderLayerMap.INSTANCE::putBlock);
         ExtraBotanyItemProperties.init((i, id, propGetter) -> ItemProperties.register(i.asItem(), id, propGetter));
         ExtraBotanyLayerDefinitions.init((loc, supplier) -> EntityModelLayerRegistry.registerModelLayer(loc, supplier::get));
         ExtraBotanyEntityRenderers.registerBlockEntityRenderers(BlockEntityRenderers::register);

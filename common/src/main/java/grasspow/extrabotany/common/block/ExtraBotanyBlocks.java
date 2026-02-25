@@ -39,62 +39,60 @@ public class ExtraBotanyBlocks {
     public static final Block powerFrame = new PowerFrameBlock(BlockBehaviour.Properties.ofFullCopy(livingrock).noOcclusion());
 
 
-
     private static final BlockBehaviour.Properties FLOWER_PROPS = BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY);
     private static final BlockBehaviour.Properties FLOATING_PROPS = BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.5F).sound(SoundType.GRAVEL).lightLevel(s -> 15);
 
-    public static final Block annoyingFlower = createSpecialFlowerBlock(MobEffects.HUNGER, 360, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.ANNOYING_FLOWER);
+    public static final Block annoyingFlower = createSpecialFlowerBlock(MobEffects.HUNGER, 360, () -> ExtraBotanyBlockEntities.ANNOYING_FLOWER);
     public static final Block annoyingFlowerFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.ANNOYING_FLOWER);
-    public static final Block annoyingFlowerPotted = ExtraBotanyBlocks.flowerPot(annoyingFlower, 0);
+    public static final Block annoyingFlowerPotted = ExtraBotanyBlocks.flowerPot(annoyingFlower);
 
-    public static final Block serenitian = createSpecialFlowerBlock(MobEffects.HERO_OF_THE_VILLAGE, 360, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.SERENITIAN);
+    public static final Block serenitian = createSpecialFlowerBlock(MobEffects.HERO_OF_THE_VILLAGE, 360, () -> ExtraBotanyBlockEntities.SERENITIAN);
     public static final Block serenitianFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.SERENITIAN);
-    public static final Block serenitianPotted = ExtraBotanyBlocks.flowerPot(serenitian, 0);
+    public static final Block serenitianPotted = ExtraBotanyBlocks.flowerPot(serenitian);
 
-    public static final Block bellFlower = createSpecialFlowerBlock(MobEffects.MOVEMENT_SPEED, 360, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.BELL_FLOWER);
+    public static final Block bellFlower = createSpecialFlowerBlock(MobEffects.MOVEMENT_SPEED, 360, () -> ExtraBotanyBlockEntities.BELL_FLOWER);
     public static final Block bellFlowerFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.BELL_FLOWER);
-    public static final Block bellFlowerPotted = ExtraBotanyBlocks.flowerPot(bellFlower, 0);
+    public static final Block bellFlowerPotted = ExtraBotanyBlocks.flowerPot(bellFlower);
 
-    public static final Block edelweiss = createSpecialFlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 80, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.EDELWEISS);
+    public static final Block edelweiss = createSpecialFlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 80, () -> ExtraBotanyBlockEntities.EDELWEISS);
     public static final Block edelweissFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.EDELWEISS);
-    public static final Block edelweissPotted = ExtraBotanyBlocks.flowerPot(edelweiss, 0);
+    public static final Block edelweissPotted = ExtraBotanyBlocks.flowerPot(edelweiss);
 
 
-    public static final Block geminiOrchid = createSpecialFlowerBlock(MobEffects.GLOWING, 1600, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.GEMINI_ORCHID);
+    public static final Block geminiOrchid = createSpecialFlowerBlock(MobEffects.GLOWING, 1600, () -> ExtraBotanyBlockEntities.GEMINI_ORCHID);
     public static final Block geminiOrchidFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.GEMINI_ORCHID);
-    public static final Block geminiOrchidPotted = ExtraBotanyBlocks.flowerPot(geminiOrchid, 0);
+    public static final Block geminiOrchidPotted = ExtraBotanyBlocks.flowerPot(geminiOrchid);
 
 
-    public static final Block sunBless = createSpecialFlowerBlock(MobEffects.LUCK, 1600, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.SUN_BLESS);
+    public static final Block sunBless = createSpecialFlowerBlock(MobEffects.LUCK, 1600, () -> ExtraBotanyBlockEntities.SUN_BLESS);
     public static final Block sunBlessFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.SUN_BLESS);
-    public static final Block sunBlessPotted = ExtraBotanyBlocks.flowerPot(sunBless, 0);
+    public static final Block sunBlessPotted = ExtraBotanyBlocks.flowerPot(sunBless);
 
-    public static final Block moonBless = createSpecialFlowerBlock(MobEffects.UNLUCK, 1600, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.MOON_BLESS);
+    public static final Block moonBless = createSpecialFlowerBlock(MobEffects.UNLUCK, 1600, () -> ExtraBotanyBlockEntities.MOON_BLESS);
     public static final Block moonBlessFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.MOON_BLESS);
-    public static final Block moonBlessPotted = ExtraBotanyBlocks.flowerPot(moonBless, 0);
+    public static final Block moonBlessPotted = ExtraBotanyBlocks.flowerPot(moonBless);
 
-    public static final Block omniViolet = createSpecialFlowerBlock(MobEffects.REGENERATION, 360, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.OMNI_VIOLET);
+    public static final Block omniViolet = createSpecialFlowerBlock(MobEffects.REGENERATION, 360, () -> ExtraBotanyBlockEntities.OMNI_VIOLET);
     public static final Block omniVioletFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.OMNI_VIOLET);
-    public static final Block omniVioletPotted = ExtraBotanyBlocks.flowerPot(omniViolet, 0);
+    public static final Block omniVioletPotted = ExtraBotanyBlocks.flowerPot(omniViolet);
 
-    public static final Block reikarLily = createSpecialFlowerBlock(MobEffects.JUMP, 1600, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.REIKAR_LILY);
+    public static final Block reikarLily = createSpecialFlowerBlock(MobEffects.JUMP, 1600, () -> ExtraBotanyBlockEntities.REIKAR_LILY);
     public static final Block reikarLilyFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.REIKAR_LILY);
-    public static final Block reikarLilyPotted = ExtraBotanyBlocks.flowerPot(reikarLily, 0);
+    public static final Block reikarLilyPotted = ExtraBotanyBlocks.flowerPot(reikarLily);
 
-    public static final Block tinkleFlower = createSpecialFlowerBlock(MobEffects.DIG_SPEED, 360, FLOWER_PROPS, () -> ExtraBotanyBlockEntities.TINKLE_FLOWER);
+    public static final Block tinkleFlower = createSpecialFlowerBlock(MobEffects.DIG_SPEED, 360, () -> ExtraBotanyBlockEntities.TINKLE_FLOWER);
     public static final Block tinkleFlowerFloating = new FloatingSpecialFlowerBlock(FLOATING_PROPS, () -> ExtraBotanyBlockEntities.TINKLE_FLOWER);
-    public static final Block tinkleFlowerPotted = ExtraBotanyBlocks.flowerPot(tinkleFlower, 0);
+    public static final Block tinkleFlowerPotted = ExtraBotanyBlocks.flowerPot(tinkleFlower);
 
     private static FlowerBlock createSpecialFlowerBlock(
             Holder<MobEffect> effect, int effectDuration,
-            BlockBehaviour.Properties props,
             Supplier<BlockEntityType<? extends SpecialFlowerBlockEntity>> beType) {
-        return new SpecialFlowerBlock(effect, effectDuration, props, beType);
+        return new SpecialFlowerBlock(effect, effectDuration, ExtraBotanyBlocks.FLOWER_PROPS, beType);
     }
 
-    static FlowerPotBlock flowerPot(Block block, int lightLevel) {
+    static FlowerPotBlock flowerPot(Block block) {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY);
-        return new FlowerPotBlock(block, lightLevel > 0 ? properties.lightLevel(blockState -> lightLevel) : properties);
+        return new FlowerPotBlock(block, properties);
     }
 
     public static void registerBlocks(BiConsumer<Block, ResourceLocation> r) {

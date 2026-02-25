@@ -235,9 +235,9 @@ public class LanguageHelper {
         addBlock(ExtraBotanyBlocks.powerFrame, "Power Frame", "力量框架");
 
         //flower 1.16
-        addFlower(ExtraBotanyBlocks.annoyingFlower, "Annoying Flower", "神烦花", "Time to rest", "摸了");
-        addFlower(ExtraBotanyBlocks.serenitian, "Serenitian", "永寂龙胆", "Torn to oblivion", "无念，断绝");
-        addFlower(ExtraBotanyBlocks.bellFlower, "Bell Flower", "风铃花", "Lost wind", "迷失的风");
+        addFlower(LibBlockNames.ANNOYING_FLOWER, "Annoying Flower", "神烦花", "Time to rest", "摸了");
+        addFlower(LibBlockNames.SERENITIAN, "Serenitian", "永寂龙胆", "Torn to oblivion", "无念，断绝");
+        addFlower(LibBlockNames.BELL_FLOWER, "Bell Flower", "风铃花", "Lost wind", "迷失的风");
         addFlower(LibBlockNames.EDELWEISS, "Edelweiss", "雪绒花", "Do you want to build a snowman?", "你想堆个雪人吗？");
         addFlower(LibBlockNames.GEMINI_ORCHID, "Gemini Orchid", "双子兰", "Why is a raven like a writing desk?", "为什么乌鸦像写字台？");
         addFlower(LibBlockNames.SUN_BLESS, "Sunshine Lily", "日曜百合", "May the light heal and enlighten you", "愿光芒能治愈并指引你");
@@ -250,11 +250,11 @@ public class LanguageHelper {
 
     private static void transEntity() {
         addEntity(ExtraBotanyEntities.SPLASH_GRENADE, "Splash Grenade", "圣水手雷");
-//        addEntity(ExtraBotanyEntities.MAGIC_ARROW_PROJECTILE, "Magic Arrow Projectile", "百中弓射弹");
-//        addEntity(ExtraBotanyEntities.TRUE_TERRA_BLADE_PROJECTILE, "True TerraBlade Projectile", "真泰拉之刃射弹");
-//        addEntity(ExtraBotanyEntities.TRUE_SHADOW_KATANA_PROJECTILE, "True ShadowKatana Projectile", "真影刃射弹");
-//        addEntity(ExtraBotanyEntities.INFLUX_WAVER_PROJECTILE, "Influx Waver Projectile", "波涌之刃射弹");
-//        addEntity(ExtraBotanyEntities.PHANTOM_SWORD_PROJECTILE, "First Fractal Projectile", "最初分型射弹");
+        addEntity(ExtraBotanyEntities.MAGIC_ARROW, "Magic Arrow Projectile", "百中弓射弹");
+        addEntity(ExtraBotanyEntities.TRUE_TERRA_BLADE, "True TerraBlade Projectile", "真泰拉之刃射弹");
+        addEntity(ExtraBotanyEntities.TRUE_SHADOW_KATANA, "True ShadowKatana Projectile", "真影刃射弹");
+        addEntity(ExtraBotanyEntities.INFLUX_WAVER, "Influx Waver Projectile", "波涌之刃射弹");
+        addEntity(ExtraBotanyEntities.PHANTOM_SWORD, "First Fractal Projectile", "最初分型射弹");
         addEntity(LibEntityNames.EGO, "EGO", "本我");
         addEntity(LibEntityNames.EGO_MINION, "EGO's Minion", "本我的仆从");
         addEntity(LibEntityNames.EGO_LANDMINE, "EGO's Landmine", "本我的地雷");

@@ -13,7 +13,7 @@ import grasspow.extrabotany.data.tag.ItemTagProvider;
 import grasspow.extrabotany.fabric.data.fabric.FabricBlockLootProvider;
 import grasspow.extrabotany.fabric.data.fabric.FabricBlockTagProvider;
 import grasspow.extrabotany.fabric.data.fabric.FabricItemTagProvider;
-import grasspow.extrabotany.fabric.data.xplat.model.FloatingFlowerModelProvider;
+import grasspow.extrabotany.data.model.FloatingFlowerModelProvider;
 import grasspow.extrabotany.fabric.data.xplat.recipes.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -37,9 +37,9 @@ public class FabricDatagenInitializer implements DataGeneratorEntrypoint {
     }
 
     private static void configureFabricDatagen(FabricDataGenerator.Pack pack) {
-		pack.addProvider(FabricBlockLootProvider::new);
-		var blockTagProvider = pack.addProvider(FabricBlockTagProvider::new);
-		pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, blockTagProvider.contentsGetter()));
+        pack.addProvider(FabricBlockLootProvider::new);
+        var blockTagProvider = pack.addProvider(FabricBlockTagProvider::new);
+        pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, blockTagProvider.contentsGetter()));
     }
 
     private static void configureXplatDatagen(FabricDataGenerator.Pack pack) {
@@ -70,8 +70,8 @@ public class FabricDatagenInitializer implements DataGeneratorEntrypoint {
     }
 
     protected static void damageTypeBC(BootstrapContext<DamageType> context) {
-        context.register(GENERAL_ARMOR_PIERCING,GENERAL_AP);
-        context.register(MAGIC_ARMOR_PIERCING,MAGIC_AP);
-        context.register(CRITICAL,CRI);
+        context.register(GENERAL_ARMOR_PIERCING, GENERAL_AP);
+        context.register(MAGIC_ARMOR_PIERCING, MAGIC_AP);
+        context.register(CRITICAL, CRI);
     }
 }

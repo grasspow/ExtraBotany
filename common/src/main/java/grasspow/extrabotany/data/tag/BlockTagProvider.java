@@ -21,10 +21,11 @@ import static grasspow.extrabotany.common.block.ExtraBotanyBlocks.*;
 
 
 public class BlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
-	public static final Predicate<Block> EXBOT_BLOCK = b -> LibMisc.MOD_ID.equals(BuiltInRegistries.BLOCK.getKey(b).getNamespace());
+    public static final Predicate<Block> EXBOT_BLOCK = b -> LibMisc.MOD_ID.equals(BuiltInRegistries.BLOCK.getKey(b).getNamespace());
+
     public BlockTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(packOutput, Registries.BLOCK, lookupProvider, (block) -> block.builtInRegistryHolder().key());
-	}
+        super(packOutput, Registries.BLOCK, lookupProvider, (block) -> block.builtInRegistryHolder().key());
+    }
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
@@ -58,9 +59,15 @@ public class BlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
                 moonBless, omniViolet, reikarLily, tinkleFlower
         ).forEach(tag(BotaniaTags.Blocks.GENERATING_SPECIAL_FLOWERS)::add);
         tag(BotaniaTags.Blocks.SPECIAL_FLOATING_FLOWERS).add(BuiltInRegistries.BLOCK.stream().filter(EXBOT_BLOCK)
-				.filter(b -> b instanceof FloatingSpecialFlowerBlock)
-				.sorted(Comparator.comparing(BuiltInRegistries.BLOCK::getKey))
-				.toArray(Block[]::new)
-		);
+                .filter(b -> b instanceof FloatingSpecialFlowerBlock)
+                .sorted(Comparator.comparing(BuiltInRegistries.BLOCK::getKey))
+                .toArray(Block[]::new)
+        );
+        tag(BlockTags.FLOWER_POTS)
+                .add(
+                        annoyingFlowerPotted, serenitianPotted, bellFlowerPotted, edelweissPotted,
+                        geminiOrchidPotted,
+                        sunBlessPotted, moonBlessPotted, omniVioletPotted, reikarLilyPotted, tinkleFlowerPotted
+                );
     }
 }

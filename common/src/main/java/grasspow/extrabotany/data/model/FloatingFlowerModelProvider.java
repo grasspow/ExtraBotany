@@ -1,4 +1,4 @@
-package grasspow.extrabotany.fabric.data.xplat.model;
+package grasspow.extrabotany.data.model;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

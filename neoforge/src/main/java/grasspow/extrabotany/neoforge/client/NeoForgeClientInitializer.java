@@ -5,21 +5,29 @@ import grasspow.extrabotany.client.ExtraBotanyItemProperties;
 import grasspow.extrabotany.client.core.handler.MiscellaneousModels;
 import grasspow.extrabotany.client.core.proxy.ClientProxy;
 import grasspow.extrabotany.client.model.ExtraBotanyLayerDefinitions;
+import grasspow.extrabotany.client.render.BlockRenderLayers;
 import grasspow.extrabotany.client.render.ColorHandler;
 import grasspow.extrabotany.client.render.entity.ExtraBotanyEntityRenderers;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
 import grasspow.extrabotany.common.network.server.BuddhistChangePack;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 
 @EventBusSubscriber(modid = ExtraBotanyAPI.MODID, value = Dist.CLIENT)
 public class NeoForgeClientInitializer {
+
+    @SubscribeEvent
+    public static void clientInit(FMLClientSetupEvent e){
+        BlockRenderLayers.init(ItemBlockRenderTypes::setRenderLayer);
+    }
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent e) {
