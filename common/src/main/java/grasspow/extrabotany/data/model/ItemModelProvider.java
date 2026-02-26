@@ -66,6 +66,7 @@ public class ItemModelProvider implements DataProvider {
         registerItemBlocks(takeAll(items, i -> i instanceof BlockItem).stream().map(i -> (BlockItem) i).collect(Collectors.toSet()), map::put);
         registerItemOverrides(items, map::put);
         registerItems(items, map::put);
+        registerIcons(map::put);
         PackOutput.PathProvider modelPathProvider = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models");
         List<CompletableFuture<?>> output = new ArrayList<>();
 

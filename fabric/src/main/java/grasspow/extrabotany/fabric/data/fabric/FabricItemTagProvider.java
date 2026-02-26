@@ -37,8 +37,8 @@ public class FabricItemTagProvider extends ItemTagProvider {
 
         Item[] necklace = {
                 moonPendant,
-                redScarf
-//                ,CORE_GOD
+                redScarf,
+                coreGod
         };
         tag(accessory("chest/necklace")).add(necklace);
 

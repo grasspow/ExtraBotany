@@ -14,6 +14,7 @@ import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,6 +53,9 @@ public class NeoForgeClientInitializer {
 
     @SubscribeEvent
     public static void onModelRegister(ModelEvent.RegisterAdditional evt) {
+		var resourceManager = Minecraft.getInstance().getResourceManager();
+		MiscellaneousModels.INSTANCE.onModelRegister(resourceManager,
+				id -> evt.register(ModelResourceLocation.standalone(id)));
         ExtraBotanyItemProperties.init((item, id, prop) -> ItemProperties.register(item.asItem(), id, prop));
     }
 

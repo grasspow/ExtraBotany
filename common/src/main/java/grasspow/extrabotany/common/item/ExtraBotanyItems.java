@@ -66,7 +66,7 @@ public class ExtraBotanyItems {
             .component(BotaniaDataComponents.CAN_DRAIN_MANA_TO_POOL, Unit.INSTANCE)
             .component(BotaniaDataComponents.CAN_ACCEPT_MANA_FROM_ITEMS, Unit.INSTANCE)
             .component(BotaniaDataComponents.CAN_RECEIVE_MANA_FROM_POOL, Unit.INSTANCE));
-//    public static final Item coreGod = regDefItem(LibItemNames.CORE_GOD, CoreGodItem::new, nonStackable());
+    public static final Item coreGod = make(LibItemNames.CORE_GOD, CoreGodItem::new, nonStackable());
 
     // food
     public static final Item spiritFuel = make(LibItemNames.SPIRIT_FUEL, food(ModFoods.SPIRIT_FUEL));

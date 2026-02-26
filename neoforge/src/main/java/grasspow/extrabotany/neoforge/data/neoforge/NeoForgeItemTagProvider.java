@@ -40,8 +40,7 @@ public class NeoForgeItemTagProvider extends ItemTagProvider {
                 moonPendant
         ).forEach(tag(accessory("necklace"))::add);
         Stream.of(
-                redScarf
-//                , CORE_GOD
+                redScarf,coreGod
         ).forEach(tag(accessory("body"))::add);
         Stream.of(
                 frostStar, deathRing, manaDriveRing, sunRing,

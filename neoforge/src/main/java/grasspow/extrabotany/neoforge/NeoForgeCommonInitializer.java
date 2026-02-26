@@ -23,10 +23,7 @@ import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.item.brew.InfiniteWineItem;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
 import grasspow.extrabotany.common.item.equipment.armor.MikuArmorItem;
-import grasspow.extrabotany.common.item.equipment.bauble.BaubleItem;
-import grasspow.extrabotany.common.item.equipment.bauble.MoonPendantItem;
-import grasspow.extrabotany.common.item.equipment.bauble.SagesManaRingItem;
-import grasspow.extrabotany.common.item.equipment.bauble.SunRingItem;
+import grasspow.extrabotany.common.item.equipment.bauble.*;
 import grasspow.extrabotany.common.item.equipment.tool.CameraItem;
 import grasspow.extrabotany.common.item.equipment.weapon.*;
 import grasspow.extrabotany.common.item.misc.RewardBagItem;
@@ -64,7 +61,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.BotaniaRegistries;
@@ -215,6 +214,14 @@ public class NeoForgeCommonInitializer {
             }
         });
 
+        bus.addListener((PlayerTickEvent.Post e) -> {
+            CoreGodItem.updatePlayerFlyStatus(e.getEntity());
+        });
+
+        bus.addListener((PlayerEvent.PlayerLoggedOutEvent e)->{
+            CoreGodItem.playerLoggedOut(e.getEntity());
+        });
+
     }
 
     private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
@@ -239,7 +246,7 @@ public class NeoForgeCommonInitializer {
             Map.entry(ExtraBotanyItems.firstFractal, FirstFractalItem::makeRelic),
             Map.entry(ExtraBotanyItems.fallnaught, FailnaughtItem::makeRelic),
             Map.entry(ExtraBotanyItems.camera, CameraItem::makeRelic),
-//            Map.entry(ExtraBotanyItems.CORE_GOD.get(), CoreGodItem::makeRelic),
+            Map.entry(ExtraBotanyItems.coreGod, CoreGodItem::makeRelic),
             Map.entry(ExtraBotanyItems.buddhistRelics, BuddhistRelicsItem::makeRelic)
     ));
 

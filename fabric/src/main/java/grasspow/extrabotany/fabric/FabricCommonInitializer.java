@@ -15,6 +15,7 @@ import grasspow.extrabotany.common.impl.DefaultNatureOrb;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.item.brew.InfiniteWineItem;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
+import grasspow.extrabotany.common.item.equipment.bauble.CoreGodItem;
 import grasspow.extrabotany.common.item.equipment.bauble.MoonPendantItem;
 import grasspow.extrabotany.common.item.equipment.bauble.SagesManaRingItem;
 import grasspow.extrabotany.common.item.equipment.bauble.SunRingItem;
@@ -26,10 +27,12 @@ import grasspow.extrabotany.common.network.server.LeftClickPack;
 import grasspow.extrabotany.fabric.network.FabricPacketHandler;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -140,7 +143,7 @@ public class FabricCommonInitializer implements ModInitializer {
         AttackEntityCallback.EVENT.register(
                 (Player player, Level world, InteractionHand hand, Entity entity, EntityHitResult hitResult) -> {
                     if (player.getItemInHand(hand).getItem() instanceof IItemWithLeftClick i) {
-                        return i.onLeftClick(player,entity);
+                        return i.onLeftClick(player, entity);
                     }
                     return InteractionResult.PASS;
                 }
@@ -154,6 +157,12 @@ public class FabricCommonInitializer implements ModInitializer {
                     return InteractionResult.PASS;
                 }
         );
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            server.getPlayerList().getPlayers().forEach(CoreGodItem::updatePlayerFlyStatus);
+        });
+        ServerPlayConnectionEvents.DISCONNECT.register(((handler, server) -> {
+            CoreGodItem.playerLoggedOut(handler.player);
+        }));
     }
 
     private void registerCapabilities() {
@@ -171,7 +180,7 @@ public class FabricCommonInitializer implements ModInitializer {
         BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> FirstFractalItem.makeRelic(st), ExtraBotanyItems.firstFractal);
         BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> FailnaughtItem.makeRelic(st), ExtraBotanyItems.fallnaught);
         BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> CameraItem.makeRelic(st), ExtraBotanyItems.camera);
-//            BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> CoreGodItem.makeRelic(st),ExtraBotanyItems.CORE_GOD.get());
+        BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> CoreGodItem.makeRelic(st), ExtraBotanyItems.coreGod);
         BotaniaFabricCapabilities.RELIC.registerForItems((st, c) -> BuddhistRelicsItem.makeRelic(st), ExtraBotanyItems.buddhistRelics);
         ExtraBotanyFabricCapabilities.NATURE_ORB.registerForItems((st, c) -> new DefaultNatureOrb(st), ExtraBotanyItems.natureOrb);
     }

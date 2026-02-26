@@ -50,6 +50,12 @@ public final class ExtraBotanyDataComponents {
     public static final DataComponentType<Integer> NATURE = makeInteger(LibComponentNames.NATURE);
     public static final DataComponentType<Integer> MAX_NATURE = makeInteger(LibComponentNames.MAX_NATURE);
 
+    /**
+     * coregod
+     */
+    public static final DataComponentType<Integer> VARIANT = makeInteger(LibComponentNames.VARIANT);
+
+
     public static void registerComponents(BiConsumer<DataComponentType<?>, ResourceLocation> biConsumer) {
         for (Map.Entry<String, DataComponentType<?>> entry : ALL.entrySet()) {
             biConsumer.accept(entry.getValue(), exbotRL(entry.getKey()));

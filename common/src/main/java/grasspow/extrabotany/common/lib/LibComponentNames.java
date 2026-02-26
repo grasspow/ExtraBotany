@@ -20,4 +20,7 @@ public class LibComponentNames {
     // nature
     public static final String NATURE = "nature";
     public static final String MAX_NATURE = "max_nature";
+
+    //coregod
+    public static final String VARIANT = "variant";
 }
