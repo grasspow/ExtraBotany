@@ -1,5 +1,8 @@
 package grasspow.extrabotany.common.entity;
 
+import grasspow.extrabotany.common.entity.ego.EGO;
+import grasspow.extrabotany.common.entity.ego.EGOLandmine;
+import grasspow.extrabotany.common.entity.ego.EGOMinion;
 import grasspow.extrabotany.common.entity.item.brew.SplashGrenadeEntity;
 import grasspow.extrabotany.common.entity.projectile.*;
 import grasspow.extrabotany.common.lib.LibEntityNames;
@@ -62,27 +65,27 @@ public final class ExtraBotanyEntities {
             .clientTrackingRange(64)
             .build(exbotRL(LibEntityNames.MAGIC_ARROW).toString());
     //ego
-//    public static final EntityType<EGO> EGO = EntityType.Builder
-//                    .<EGO>of(EGO::new, MobCategory.MONSTER)
-//                    .sized(0.6F, 1.8F)
-//                    .fireImmune()
-//                    .clientTrackingRange(10)
-//                    .updateInterval(10)
-//                    .build(exbotRL(LibEntityNames.EGO).toString()));
-//    public static final EntityType<EGOMinion> EGO_MINION = EntityType.Builder
-//                    .<EGOMinion>of(EGOMinion::new, MobCategory.MONSTER)
-//                    .sized(0.6F, 1.8F)
-//                    .fireImmune()
-//                    .clientTrackingRange(10)
-//                    .updateInterval(2)
-//                    .clientTrackingRange(128)
-//                    .build(exbotRL(LibEntityNames.EGO_MINION).toString());
-//    public static final EntityType<EGOLandmine> EGO_LANDMINE = EntityType.Builder
-//                    .<EGOLandmine>of(EGOLandmine::new, MobCategory.MISC)
-//                    .sized(3F, 0.1F)
-//                    .updateInterval(2)
-//                    .clientTrackingRange(128)
-//                    .build(exbotRL(LibEntityNames.EGO_LANDMINE).toString());
+    public static final EntityType<EGO> EGO = EntityType.Builder
+            .<EGO>of(EGO::new, MobCategory.MONSTER)
+            .sized(0.6F, 1.8F)
+            .fireImmune()
+            .clientTrackingRange(10)
+            .updateInterval(10)
+            .build(exbotRL(LibEntityNames.EGO).toString());
+    public static final EntityType<EGOMinion> EGO_MINION = EntityType.Builder
+            .<EGOMinion>of(EGOMinion::new, MobCategory.MONSTER)
+            .sized(0.6F, 1.8F)
+            .fireImmune()
+            .clientTrackingRange(10)
+            .updateInterval(2)
+            .clientTrackingRange(128)
+            .build(exbotRL(LibEntityNames.EGO_MINION).toString());
+    public static final EntityType<EGOLandmine> EGO_LANDMINE = EntityType.Builder
+            .<EGOLandmine>of(EGOLandmine::new, MobCategory.MISC)
+            .sized(3F, 0.1F)
+            .updateInterval(2)
+            .clientTrackingRange(128)
+            .build(exbotRL(LibEntityNames.EGO_LANDMINE).toString());
 
     public static void registerEntities(BiConsumer<EntityType<?>, ResourceLocation> r) {
         r.accept(SPLASH_GRENADE, exbotRL(LibEntityNames.SPLASH_GRENADE));
@@ -93,9 +96,9 @@ public final class ExtraBotanyEntities {
         r.accept(PHANTOM_SWORD, exbotRL(LibEntityNames.PHANTOM_SWORD));
         r.accept(MAGIC_ARROW, exbotRL(LibEntityNames.MAGIC_ARROW));
 
-//        r.accept(EGO,exbotRL(LibEntityNames.EGO));
-//        r.accept(EGO_MINION,exbotRL(LibEntityNames.EGO_MINION));
-//        r.accept(EGO_LANDMINE,exbotRL(LibEntityNames.EGO_LANDMINE));
+        r.accept(EGO,exbotRL(LibEntityNames.EGO));
+        r.accept(EGO_MINION,exbotRL(LibEntityNames.EGO_MINION));
+        r.accept(EGO_LANDMINE,exbotRL(LibEntityNames.EGO_LANDMINE));
     }
 
     private ExtraBotanyEntities() {

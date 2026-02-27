@@ -3,6 +3,9 @@ package grasspow.extrabotany.client.render.entity;
 import grasspow.extrabotany.client.render.block_entity.LivingrockBarrelBlockEntityRenderer;
 import grasspow.extrabotany.client.render.block_entity.PedestalBlockEntityRenderer;
 import grasspow.extrabotany.client.render.block_entity.PowerFrameBlockEntityRenderer;
+import grasspow.extrabotany.client.render.entity.ego.EGOLandmineRender;
+import grasspow.extrabotany.client.render.entity.ego.EGOMinionRender;
+import grasspow.extrabotany.client.render.entity.ego.EGORender;
 import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -21,9 +24,9 @@ public final class ExtraBotanyEntityRenderers {
         consumer.accept(ExtraBotanyEntities.MAGIC_ARROW, DummyRender::new);
 
         //ego
-//        consumer.accept( ExtraBotanyEntities.EGO, EGORender::new);
-//        consumer.accept( ExtraBotanyEntities.EGO_MINION, EGORender::new);
-//        consumer.accept( ExtraBotanyEntities.EGO_LANDMINE, EGOLandmineRender::new);
+        consumer.accept( ExtraBotanyEntities.EGO, EGORender::new);
+        consumer.accept( ExtraBotanyEntities.EGO_MINION, EGOMinionRender::new);
+        consumer.accept( ExtraBotanyEntities.EGO_LANDMINE, EGOLandmineRender::new);
     }
 
     public static void registerBlockEntityRenderers(EntityRenderers.BERConsumer consumer) {

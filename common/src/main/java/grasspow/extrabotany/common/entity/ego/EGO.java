@@ -38,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.botania.common.entity.GaiaGuardianEntity;
 import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.MathHelper;
 import vazkii.botania.common.helper.VecHelper;
@@ -48,7 +49,7 @@ import java.util.*;
 
 import static vazkii.botania.common.helper.PlayerHelper.isTruePlayer;
 
-public class EGO extends Mob {
+public class EGO extends GaiaGuardianEntity {
     public static final float ARENA_RANGE = 12F;
     public static final int ARENA_HEIGHT = 5;
     public static final float MAX_HP = 600F;
@@ -102,6 +103,9 @@ public class EGO extends Mob {
     public EGO(EntityType<EGO> type, Level level) {
         super(type, level);
         xpReward = 825;
+        if (level.isClientSide) {
+            Proxy.INSTANCE.addBoss(this);
+        }
     }
 
 //    public static boolean spawn(Player player, ItemStack stack, Level level, BlockPos pos) {
