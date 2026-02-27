@@ -1,15 +1,18 @@
 package grasspow.extrabotany.common.item.equipment.armor;
 
 import com.google.common.base.Suppliers;
+import grasspow.extrabotany.api.ExtraBotanyAPI;
 import grasspow.extrabotany.api.item.IArmorSetsWithEffects;
 import grasspow.extrabotany.client.lib.LibResources;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.mana.ManaDiscountArmor;
@@ -19,11 +22,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
-import static vazkii.botania.api.BotaniaAPI.DUMMY_ARMOR_MATERIAL;
 
 public class MikuArmorItem extends ManasteelArmorItem implements ManaDiscountArmor, IArmorSetsWithEffects {
     public MikuArmorItem(Type type,Properties props) {
-        super(type, DUMMY_ARMOR_MATERIAL, props);
+        super(type, ExtraBotanyAPI.instance().getMikuArmorMaterial(), props);
+    }
+
+    public MikuArmorItem(Type type,Holder<ArmorMaterial> mat,Properties props){
+        super(type, mat, props);
     }
 
     @Override

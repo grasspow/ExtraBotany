@@ -1,75 +1,94 @@
 package grasspow.extrabotany.common.entity.ego;
 
 import com.google.common.collect.ImmutableList;
+import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
+import grasspow.extrabotany.common.handler.ExtraBotanySounds;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.item.equipment.weapon.*;
+import grasspow.extrabotany.common.network.client.SpawnEgoPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import vazkii.botania.api.block.Bound;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.block.BotaniaBlocks;
-import vazkii.botania.common.entity.GaiaGuardianEntity;
 import vazkii.botania.common.handler.BotaniaSounds;
+import vazkii.botania.common.handler.EquipmentHandler;
 import vazkii.botania.common.helper.MathHelper;
+import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.helper.VecHelper;
 import vazkii.botania.common.lib.BotaniaTags;
 import vazkii.botania.common.proxy.Proxy;
+import vazkii.botania.network.EffectType;
+import vazkii.botania.network.clientbound.BotaniaEffectPacket;
+import vazkii.botania.xplat.XplatAbstractions;
 
 import java.util.*;
 
+import static vazkii.botania.common.entity.GaiaGuardianEntity.ARENA_HEIGHT;
+import static vazkii.botania.common.entity.GaiaGuardianEntity.ARENA_RANGE;
 import static vazkii.botania.common.helper.PlayerHelper.isTruePlayer;
 
-public class EGO extends GaiaGuardianEntity {
-    public static final float ARENA_RANGE = 12F;
-    public static final int ARENA_HEIGHT = 5;
-    public static final float MAX_HP = 600F;
+public class EGO extends Mob {
     private static final int SPAWN_TICKS = 160;
+    public static final float MAX_HP = 600F;
 
+    private static final int DAMAGE_CAP = 25;
+
+    private static final String TAG_INVUL_TIME = "invulTime";
     private static final String TAG_SOURCE_X = "sourceX";
     private static final String TAG_SOURCE_Y = "sourceY";
     private static final String TAG_SOURCE_Z = "sourcesZ";
-
     private static final String TAG_PLAYER_COUNT = "playerCount";
-    private static final String TAG_STAGE = "stage";
-    private static final String TAG_WEAPON_TYPE = "weapon_type";
-    private static final String TAG_TP_DELAY = "tpDelay";
-    private static final String TAG_ATTACK_DELAY = "attackDelay";
-    private static final String TAG_INVUL_TIME = "invulTime";
-    private static final int DAMAGE_CAP = 25;
-    private static final TagKey<Block> BLACKLIST = BotaniaTags.Blocks.GAIA_GUARDIAN_IMMUNE;
+
     private static final EntityDataAccessor<Integer> INVUL_TIME = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> WEAPON_TYPE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
 
     private static final List<BlockPos> PYLON_LOCATIONS = ImmutableList.of(
             new BlockPos(4, 1, 4),
@@ -78,22 +97,37 @@ public class EGO extends GaiaGuardianEntity {
             new BlockPos(-4, 1, -4)
     );
 
-//    private static final List<ResourceLocation> CHEATY_BLOCKS = Arrays.asList(
-//            new ResourceLocation("openblocks", "beartrap"),
-//            new ResourceLocation("thaumictinkerer", "magnet")
-//    );
+    private static final List<ResourceLocation> CHEATY_BLOCKS = Arrays.asList(
+            ResourceLocation.fromNamespaceAndPath("openblocks", "beartrap"),
+            ResourceLocation.fromNamespaceAndPath("thaumictinkerer", "magnet")
+    );
+
+    private static final String TAG_STAGE = "stage";
+    private static final String TAG_WEAPON_TYPE = "weapon_type";
+    private static final String TAG_TP_DELAY = "tpDelay";
+    private static final String TAG_ATTACK_DELAY = "attackDelay";
+    private static final TagKey<Block> BLACKLIST = BotaniaTags.Blocks.GAIA_GUARDIAN_IMMUNE;
+    private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> WEAPON_TYPE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
+
+    private boolean spawnLandmines = false;
+    private boolean spawnPixies = false;
+    private boolean anyWithArmor = false;
+    private boolean aggro = false;
+    private int tpDelay = 0;
+    private int mobSpawnTicks = 0;
+    private int playerCount = 0;
+    private boolean hardMode = false;
+    private BlockPos source = Bound.UNBOUND_POS;
+    private final List<UUID> playersWhoAttacked = new ArrayList<>();
+    private final ServerBossEvent bossInfo = (ServerBossEvent) new ServerBossEvent(ExtraBotanyEntities.EGO.getDescription(), BossEvent.BossBarColor.PINK, BossEvent.BossBarOverlay.PROGRESS).setCreateWorldFog(true);
+    private UUID bossInfoUUID = bossInfo.getId();
+    @Nullable
+    public Player trueKiller = null;
 
     private float damageTaken = 0;
-    private int tpDelay = 0;
     private int changeWeaponDelay = 0;
     private int attackDelay = 0;
-    private int playerCount = 0;
-    private BlockPos source = BlockPos.ZERO;
-    private final List<UUID> playersWhoAttacked = new ArrayList<>();
-//    private final ServerBossEvent bossInfo = (ServerBossEvent) new ServerBossEvent(ExtraBotanyEntities.EGO.get().getDescription(), BossEvent.BossBarColor.PINK, BossEvent.BossBarOverlay.PROGRESS).setCreateWorldFog(true);
-//    private UUID bossInfoUUID = bossInfo.getId();
-
-    public Player trueKiller = null;
 
     private final int MAX_WAVE = 6;
     private int wave = 0;
@@ -102,110 +136,141 @@ public class EGO extends GaiaGuardianEntity {
 
     public EGO(EntityType<EGO> type, Level level) {
         super(type, level);
-        xpReward = 825;
-        if (level.isClientSide) {
-            Proxy.INSTANCE.addBoss(this);
+    }
+
+    public static boolean spawn(Player player, ItemStack stack, Level level, BlockPos pos) {
+        //initial checks
+        if (!(level.getBlockEntity(pos) instanceof BeaconBlockEntity) ||
+                !isTruePlayer(player) ||
+                countEGOAround(level, pos) > 0)
+            return false;
+
+        //check inventory
+        if (!checkInventory(player)) {
+            if (!level.isClientSide)
+                player.sendSystemMessage(Component.translatable("extrabotanymisc.inventoryUnfeasible").withStyle(ChatFormatting.RED));
+            return false;
+        }
+
+        //check difficulty
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            if (!level.isClientSide) {
+                player.sendSystemMessage(Component.translatable("botaniamisc.peacefulNoob").withStyle(ChatFormatting.RED));
+            }
+            return false;
+        }
+
+        //check pylons
+        List<BlockPos> invalidPylonBlocks = checkPylons(level, pos);
+        if (!invalidPylonBlocks.isEmpty()) {
+            if (level.isClientSide) {
+                warnInvalidBlocks(level, invalidPylonBlocks);
+            } else {
+                player.sendSystemMessage(Component.translatable("botaniamisc.needsCatalysts").withStyle(ChatFormatting.RED));
+            }
+
+            return false;
+        }
+
+        //check arena shape
+        List<BlockPos> invalidArenaBlocks = checkArena(level, pos);
+        if (!invalidArenaBlocks.isEmpty()) {
+            if (level.isClientSide) {
+                warnInvalidBlocks(level, invalidArenaBlocks);
+            } else {
+                XplatAbstractions.INSTANCE.sendToPlayer(player, new BotaniaEffectPacket(EffectType.ARENA_INDICATOR, pos.getX(), pos.getY(), pos.getZ()));
+
+                player.sendSystemMessage(Component.translatable("botaniamisc.badArena").withStyle(ChatFormatting.RED));
+            }
+
+            return false;
+        }
+
+        //check nature_orb or challenge_ticket
+        var orb = grasspow.extrabotany.xplat.XplatAbstractions.INSTANCE.findNatureOrbItem(stack);
+        if (orb != null) {
+            if (orb.getNature() < 200000 || !orb.canReceiveNatureFromNatureAdder(level.getBlockEntity(pos)))
+                return false;
+        } else if (!stack.is(ExtraBotanyItems.challengeTicket)) {
+            return false;
+        }
+
+        //all checks ok, spawn the boss
+        if (!level.isClientSide) {
+            if (orb != null) {
+                orb.addNature(-200000);
+            } else {
+                stack.shrink(1);
+            }
+
+            EGO e = (EGO) ExtraBotanyEntities.EGO.create(level);
+            e.setPos(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
+            e.setInvulTime(SPAWN_TICKS);
+            e.setHealth(1F);
+            e.bossInfo.setProgress(0.0f);
+            e.source = pos;
+
+            e.tpDelay = SPAWN_TICKS;
+            e.setWeaponType(0);
+            e.setCustomName(player.getDisplayName());
+
+            List<Player> playersAround = e.getPlayersAround();
+            int playerCount = playersAround.size();
+            e.playerCount = playerCount;
+
+            e.attackDelay = 100;
+
+            float healthMultiplier = 0.4F + playerCount * 0.6F;
+            e.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MAX_HP * healthMultiplier);
+            e.setHealth(MAX_HP * healthMultiplier);
+            e.getAttribute(Attributes.ARMOR).setBaseValue(20);
+
+            e.playSound(BotaniaSounds.gaiaSummon, 1F, 1F);
+            e.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(e.blockPosition()), MobSpawnType.EVENT, null);
+
+            level.addFreshEntity(e);
+
+            if (!e.level().isClientSide) {
+                XplatAbstractions.INSTANCE.sendToTracking(
+                        e,
+                        new SpawnEgoPacket(
+                                e.getId(),
+                                e.getPlayerCount(),
+                                e.getSource(),
+                                e.getBossInfoUuid()
+                        )
+                );
+            }
+
+            for (Player nearbyPlayer : playersAround) {
+                if (nearbyPlayer instanceof ServerPlayer serverPlayer) {
+                    CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, e);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static void warnInvalidBlocks(Level world, Iterable<BlockPos> invalidPositions) {
+        WispParticleData data = WispParticleData.wisp(0.5F, 1, 0.2F, 0.2F, 8, false);
+        for (BlockPos pos_ : invalidPositions) {
+            world.addParticle(data, pos_.getX() + 0.5, pos_.getY() + 0.5, pos_.getZ() + 0.5, 0, 0, 0);
         }
     }
 
-//    public static boolean spawn(Player player, ItemStack stack, Level level, BlockPos pos) {
-//        //initial checks
-//        if (!(level.getBlockEntity(pos) instanceof BeaconBlockEntity) ||
-//                !isTruePlayer(player) ||
-//                countEGOAround(level, pos) > 0)
-//            return false;
-//
-//        if (!checkInventory(player)) {
-//            if (!level.isClientSide)
-//                player.sendSystemMessage(Component.translatable("extrabotanymisc.inventoryUnfeasible").withStyle(ChatFormatting.RED));
-//            return false;
-//        }
-//
-//        //check difficulty
-//        if (level.getDifficulty() == Difficulty.PEACEFUL) {
-//            if (!level.isClientSide) {
-//                player.sendSystemMessage(Component.translatable("botaniamisc.peacefulNoob").withStyle(ChatFormatting.RED));
-//            }
-//            return false;
-//        }
-//
-//        //check pylons
-//        List<BlockPos> invalidPylonBlocks = checkPylons(level, pos);
-//        if (!invalidPylonBlocks.isEmpty()) {
-//            if (level.isClientSide) {
-//                warnInvalidBlocks(level, invalidPylonBlocks);
-//            } else {
-//                player.sendSystemMessage(Component.translatable("botaniamisc.needsCatalysts").withStyle(ChatFormatting.RED));
-//            }
-//
-//            return false;
-//        }
-//
-//        //check arena shape
-//        List<BlockPos> invalidArenaBlocks = checkArena(level, pos);
-//        if (!invalidArenaBlocks.isEmpty()) {
-//            if (level.isClientSide) {
-//                warnInvalidBlocks(level, invalidArenaBlocks);
-//            } else {
-//                XplatAbstractions.INSTANCE.sendToPlayer(player, new BotaniaEffectPacket(EffectType.ARENA_INDICATOR, pos.getX(), pos.getY(), pos.getZ()));
-//
-//                player.sendSystemMessage(Component.translatable("botaniamisc.badArena").withStyle(ChatFormatting.RED));
-//            }
-//
-//            return false;
-//        }
-//        var orb = ClientXplatAbstractions.INSTANCE.findNatureOrbItem(stack);
-//        if (orb != null) {
-//            if (orb.getNature() < 200000 || !orb.canExportManaToPool(level.getBlockEntity(pos)))
-//                return false;
-//        }
-//
-//        //all checks ok, spawn the boss
-//        if (!level.isClientSide) {
-//            if (orb != null) {
-//                orb.addNature(-200000);
-//            } else {
-//                stack.shrink(1);
-//            }
-//
-//            EGO e = ExtraBotanyEntities.EGO.get().create(level);
-//            e.tpDelay = SPAWN_TICKS;
-//            e.setPos(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
-//            e.setWeaponType(0);
-//            e.setCustomName(player.getDisplayName());
-//            e.setHealth(e.getMaxHealth());
-//            e.source = pos;
-//
-//            int playerCount = e.getPlayersAround().size();
-//            e.playerCount = playerCount;
-//            e.setInvulTime(0);
-//            e.setAttackDelay(100);
-//            e.setTpDelay(160);
-//            float healthMultiplier = 0.4F + playerCount * 0.6F;
-//            e.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MAX_HP * healthMultiplier);
-//            e.setHealth(MAX_HP * healthMultiplier);
-//
-//            e.getAttribute(Attributes.ARMOR).setBaseValue(20);
-//            e.playSound(BotaniaSounds.gaiaSummon, 1F, 1F);
-//            e.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(e.blockPosition()), MobSpawnType.EVENT, null, null);
-//
-//            level.addFreshEntity(e);
-//        }
-//
-//        return true;
-//    }
-
-    private static List<BlockPos> checkPylons(Level level, BlockPos beaconPos) {
+    private static List<BlockPos> checkPylons(Level world, BlockPos beaconPos) {
         List<BlockPos> invalidPylonBlocks = new ArrayList<>();
 
         for (BlockPos coords : PYLON_LOCATIONS) {
             BlockPos pos_ = beaconPos.offset(coords);
 
-            BlockState state = level.getBlockState(pos_);
+            BlockState state = world.getBlockState(pos_);
             if (!state.is(BotaniaBlocks.gaiaPylon)) {
                 invalidPylonBlocks.add(pos_);
             }
         }
+
         return invalidPylonBlocks;
     }
 
@@ -255,38 +320,33 @@ public class EGO extends GaiaGuardianEntity {
         return trippedPositions;
     }
 
-    private static void warnInvalidBlocks(Level world, Iterable<BlockPos> invalidPositions) {
-        WispParticleData data = WispParticleData.wisp(0.5F, 1, 0.2F, 0.2F, 8, false);
-        for (BlockPos pos_ : invalidPositions) {
-            world.addParticle(data, pos_.getX() + 0.5, pos_.getY() + 0.5, pos_.getZ() + 0.5, 0, 0, 0);
-        }
-    }
-
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(2, new FloatGoal(this));
         goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, ARENA_RANGE * 1.5F));
     }
 
-//    @Override
-//    protected void defineSynchedData() {
-//        super.defineSynchedData();
-//        entityData.define(INVUL_TIME, 0);
-//        entityData.define(STAGE, 0);
-//        entityData.define(WEAPON_TYPE, 0);
-//    }
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(INVUL_TIME, 0);
+        builder.define(STAGE, 0);
+        builder.define(WEAPON_TYPE, 0);
+    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag cmp) {
         super.addAdditionalSaveData(cmp);
-        cmp.putInt(TAG_TP_DELAY, tpDelay);
-        cmp.putInt(TAG_ATTACK_DELAY, attackDelay);
+        cmp.putInt(TAG_INVUL_TIME, getInvulTime());
+
         cmp.putInt(TAG_SOURCE_X, source.getX());
         cmp.putInt(TAG_SOURCE_Y, source.getY());
         cmp.putInt(TAG_SOURCE_Z, source.getZ());
+
         cmp.putInt(TAG_PLAYER_COUNT, playerCount);
 
-        cmp.putInt(TAG_INVUL_TIME, getInvulTime());
+        cmp.putInt(TAG_TP_DELAY, tpDelay);
+        cmp.putInt(TAG_ATTACK_DELAY, attackDelay);
         cmp.putInt(TAG_STAGE, getStage());
         cmp.putInt(TAG_WEAPON_TYPE, getWeaponType());
     }
@@ -294,17 +354,20 @@ public class EGO extends GaiaGuardianEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag cmp) {
         super.readAdditionalSaveData(cmp);
+        setInvulTime(cmp.getInt(TAG_INVUL_TIME));
+
         int x = cmp.getInt(TAG_SOURCE_X);
         int y = cmp.getInt(TAG_SOURCE_Y);
         int z = cmp.getInt(TAG_SOURCE_Z);
         source = new BlockPos(x, y, z);
+
+        if (this.hasCustomName()) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
+
         tpDelay = cmp.getInt(TAG_TP_DELAY);
         attackDelay = cmp.getInt(TAG_ATTACK_DELAY);
         playerCount = cmp.contains(TAG_PLAYER_COUNT) ? cmp.getInt(TAG_PLAYER_COUNT) : 1;
-        if (this.hasCustomName()) {
-//            this.bossInfo.setName(this.getDisplayName());
-        }
-        setInvulTime(cmp.getInt(TAG_INVUL_TIME));
         setStage(cmp.getInt(TAG_STAGE));
         setWeaponType(cmp.getInt(TAG_WEAPON_TYPE));
     }
@@ -312,7 +375,7 @@ public class EGO extends GaiaGuardianEntity {
     @Override
     public void setCustomName(Component name) {
         super.setCustomName(name);
-//        this.bossInfo.setName(this.getDisplayName());
+        this.bossInfo.setName(this.getDisplayName());
     }
 
     @Override
@@ -339,9 +402,14 @@ public class EGO extends GaiaGuardianEntity {
     }
 
     @Override
-    public void die(DamageSource source) {
+    protected float getDamageAfterArmorAbsorb(DamageSource source, float damage) {
+        return super.getDamageAfterArmorAbsorb(source, Math.min(DAMAGE_CAP, damage));
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
         setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-        super.die(source);
+        super.die(damageSource);
         LivingEntity lastAttacker = getKillCredit();
 
         if (!level().isClientSide) {
@@ -350,7 +418,7 @@ public class EGO extends GaiaGuardianEntity {
                 if (!isTruePlayer(player)) {
                     continue;
                 }
-                DamageSource currSource = player == lastAttacker ? source : player.damageSources().generic();
+                DamageSource currSource = player == lastAttacker ? damageSource : player.damageSources().generic();
                 if (player != lastAttacker) {
                     // Vanilla handles this in attack code, but only for the killer
                     CriteriaTriggers.PLAYER_KILLED_ENTITY.trigger((ServerPlayer) player, this, currSource);
@@ -373,16 +441,8 @@ public class EGO extends GaiaGuardianEntity {
             }
 
         }
-//        playSound(SoundEvents.GENERIC_EXPLODE, 5F, (1F + (level().random.nextFloat() - level().random.nextFloat()) * 0.2F) * 0.7F);
+        playSound(SoundEvents.GENERIC_EXPLODE.value(), 5F, (1F + (level().random.nextFloat() - level().random.nextFloat()) * 0.2F) * 0.7F);
         level().addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1D, 0D, 0D);
-
-        //playSound(ModSounds.gaiaDeath, 1F, (1F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
-    }
-
-    @Override
-    protected ResourceKey<LootTable> getDefaultLootTable() {
-//        return resId("entities/ego");
-        return super.getDefaultLootTable();
     }
 
     @Override
@@ -391,6 +451,8 @@ public class EGO extends GaiaGuardianEntity {
         if (wasRecentlyHit && isTruePlayer(source.getEntity())) {
             trueKiller = (Player) source.getEntity();
         }
+
+        super.dropFromLootTable(source, wasRecentlyHit);
         // Generate loot table for every single attacking player
         for (UUID u : playersWhoAttacked) {
             Player player = level().getPlayerByUUID(u);
@@ -411,7 +473,11 @@ public class EGO extends GaiaGuardianEntity {
     }
 
     public List<Player> getPlayersAround() {
-        return level().getEntitiesOfClass(Player.class, getArenaBB(source), player -> isTruePlayer(player) && !player.isSpectator());
+        return PlayerHelper.getRealPlayersIn(level(), getArenaBB(source));
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     private static int countEGOAround(Level level, BlockPos source) {
@@ -472,6 +538,7 @@ public class EGO extends GaiaGuardianEntity {
         }
     }
 
+
     private void smashBlocksAround(int centerX, int centerY, int centerZ, int radius) {
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dy = -radius; dy <= radius + 1; dy++) {
@@ -479,42 +546,51 @@ public class EGO extends GaiaGuardianEntity {
                     int x = centerX + dx;
                     int y = centerY + dy;
                     int z = centerZ + dz;
+
                     BlockPos pos = new BlockPos(x, y, z);
                     BlockState state = level().getBlockState(pos);
                     Block block = state.getBlock();
-                    if (state.getDestroySpeed(level(), pos) == -1)
+
+                    if (state.getDestroySpeed(level(), pos) == -1) {
                         continue;
-//                    if (CHEATY_BLOCKS.contains(ForgeRegistries.BLOCKS.getKey(block))) {
-//                        level().destroyBlock(pos, true);
-//                    } else {
-                        //don't break blacklisted blocks
-                        if (state.is(BLACKLIST))
-                            continue;
-                        //don't break the floor
-                        if (y < source.getY())
-                            continue;
-                        //don't break blocks in pylon columns
-                        if (Math.abs(source.getX() - x) == 4 && Math.abs(source.getZ() - z) == 4)
-                            continue;
+                    }
+
+                    if (CHEATY_BLOCKS.contains(BuiltInRegistries.BLOCK.getKey(block))) {
                         level().destroyBlock(pos, true);
-//                    }
+                    } else {
+                        //don't break immune blocks
+                        if (state.is(BotaniaTags.Blocks.GAIA_GUARDIAN_IMMUNE)) {
+                            continue;
+                        }
+                        //don't break the floor
+                        if (y < source.getY()) {
+                            continue;
+                        }
+                        //don't break blocks in pylon columns
+                        if (Math.abs(source.getX() - x) == 4 && Math.abs(source.getZ() - z) == 4) {
+                            continue;
+                        }
+
+                        level().destroyBlock(pos, true);
+                    }
                 }
             }
         }
     }
 
     private void clearPotions(Player player) {
-//        List<MobEffect> potionsToRemove = player.getActiveEffects().stream()
-//                .filter(effect -> effect.getDuration() < 160 && effect.isAmbient() && effect.getEffect().getCategory() != MobEffectCategory.HARMFUL)
-//                .map(MobEffectInstance::getEffect)
-//                .distinct().toList();
-//
-//        potionsToRemove.forEach(potion ->
-//        {
-//            player.removeEffect(potion);
-//            ((ServerLevel) level()).getChunkSource().broadcastAndSend(player,
-//                    new ClientboundRemoveMobEffectPacket(player.getId(), potion));
-//        });
+        Set<Holder<MobEffect>> effectsToRemove = new HashSet<>();
+        for (var effectInstance : player.getActiveEffects()) {
+            if (effectInstance.getDuration() < 160 && effectInstance.isAmbient() && effectInstance.getEffect().value().getCategory() != MobEffectCategory.HARMFUL) {
+                effectsToRemove.add(effectInstance.getEffect());
+            }
+        }
+
+        for (var effect : effectsToRemove) {
+            player.removeEffect(effect);
+            ((ServerLevel) level()).getChunkSource().broadcastAndSend(player,
+                    new ClientboundRemoveMobEffectPacket(player.getId(), effect));
+        }
     }
 
     private void keepInsideArena(Player player) {
@@ -532,42 +608,39 @@ public class EGO extends GaiaGuardianEntity {
         if (stack.isEmpty())
             return true;
 
-//        String modid = stack.getItem().getCreatorModId(stack);
-//        return modid.contains("extrabotany") || modid.contains("botania") || modid.contains("minecraft");
-        return true;
+        String modid = stack.getItem().getDescriptionId();
+        return modid.contains("extrabotany") || modid.contains("botania") || modid.contains("minecraft");
     }
 
-//    public static boolean checkInventory(Player player) {
+    public static boolean checkInventory(Player player) {
 //        if (!ConfigHandler.COMMON.disableDisarm.get()) {
-//            for (int i = 0; i < player.getInventory().size(); i++) {
-//                final ItemStack stack = player.getInventory().getItem(i);
-//                if (!checkFeasibility(stack))
-//                    return false;
-//            }
-//        }
-//        return true;
-//    }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            final ItemStack stack = player.getInventory().getItem(i);
+            if (!checkFeasibility(stack))
+                return false;
+        }
+        return true;
+    }
 
     /**
      * drop item
      */
     public static void disarm(Player player) {
 //        if (!ConfigHandler.COMMON.disableDisarm.get() && !player.isCreative()) {
-//            for (int i = 0; i < player.getInventory().size(); i++) {
-//                final ItemStack stack = player.getInventory().getItem(i);
-//                if (!checkFeasibility(stack)) {
-//                    player.drop(stack, false);
-//                    player.getInventory().setItem(i, ItemStack.EMPTY);
-//                }
-//            }
-//            for (int i = 0; i < EquipmentHandler.getAllWorn(player).size(); i++) {
-//                final ItemStack stack = EquipmentHandler.getAllWorn(player).getItem(i);
-//                if (!checkFeasibility(stack)) {
-//                    player.drop(stack, false);
-//                    EquipmentHandler.getAllWorn(player).setItem(i, ItemStack.EMPTY);
-//                }
-//            }
-//        }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            final ItemStack stack = player.getInventory().getItem(i);
+            if (!checkFeasibility(stack)) {
+                player.drop(stack, false);
+                player.getInventory().setItem(i, ItemStack.EMPTY);
+            }
+        }
+        for (int i = 0; i < EquipmentHandler.getAllWorn(player).getContainerSize(); i++) {
+            final ItemStack stack = EquipmentHandler.getAllWorn(player).getItem(i);
+            if (!checkFeasibility(stack)) {
+                player.drop(stack, false);
+                EquipmentHandler.getAllWorn(player).setItem(i, ItemStack.EMPTY);
+            }
+        }
     }
 
     /**
@@ -657,7 +730,7 @@ public class EGO extends GaiaGuardianEntity {
             return;
         }
 
-//        bossInfo.setProgress(getHealth() / getMaxHealth());
+        bossInfo.setProgress(getHealth() / getMaxHealth());
 
         if (isPassenger()) {
             stopRiding();
@@ -682,7 +755,7 @@ public class EGO extends GaiaGuardianEntity {
                     setDeltaMovement(getDeltaMovement().x, 0, getDeltaMovement().z);
                     if (invul % 60 == 0)
                         if (wave < MAX_WAVE) {
-//                            EGOLandmine.spawnLandmine(wave, level(), source.below(), this);
+                            EGOLandmine.spawnLandmine(wave, level(), source.below(), this);
                             wave++;
                         }
                     return;
@@ -758,7 +831,7 @@ public class EGO extends GaiaGuardianEntity {
         }
         //--change phase--
         if (getStage() >= 1 && tpTimes % 7 == 0) {
-//            EGOLandmine.spawnLandmine(level().random.nextInt(8), level(), source.below(), this);
+            EGOLandmine.spawnLandmine(level().random.nextInt(8), level(), source.below(), this);
             tpTimes++;
         }
 
@@ -778,20 +851,15 @@ public class EGO extends GaiaGuardianEntity {
     }
 
     @Override
-    public void setHealth(float f) {
-        super.setHealth(f);
-    }
-
-    @Override
     public void startSeenByPlayer(@NotNull ServerPlayer player) {
         super.startSeenByPlayer(player);
-//        bossInfo.addPlayer(player);
+        bossInfo.addPlayer(player);
     }
 
     @Override
     public void stopSeenByPlayer(@NotNull ServerPlayer player) {
         super.stopSeenByPlayer(player);
-//        bossInfo.removePlayer(player);
+        bossInfo.removePlayer(player);
     }
 
     @Override
@@ -882,65 +950,55 @@ public class EGO extends GaiaGuardianEntity {
         }
     }
 
-//    @Nonnull
-//    @Override
-//    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-//        return NetworkHooks.getEntitySpawningPacket(this);
-//    }
+    public UUID getBossInfoUuid() {
+        return bossInfoUUID;
+    }
 
-//    @Override
-//    public boolean canBeLeashed(Player player) {
-//        return false;
-//    }
+    public void readSpawnData(int playerCount, BlockPos source, UUID bossInfoUUID) {
+        this.playerCount = playerCount;
+        this.source = source;
+        this.bossInfoUUID = bossInfoUUID;
+        Proxy.INSTANCE.runOnClient(() -> () -> EgoMusic.play(this));
+    }
 
-//    @Override
-//    public void writeSpawnData(FriendlyByteBuf buffer) {
-//        buffer.writeInt(playerCount);
-//        buffer.writeLong(source.asLong());
-//        buffer.writeLong(bossInfoUUID.getMostSignificantBits());
-//        buffer.writeLong(bossInfoUUID.getLeastSignificantBits());
-//    }
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+        return new ClientboundAddEntityPacket(this, entity);
+    }
 
-//    @Override
-//    public void readSpawnData(FriendlyByteBuf additionalData) {
-//        playerCount = additionalData.readInt();
-//        source = BlockPos.of(additionalData.readLong());
-//        long msb = additionalData.readLong();
-//        long lsb = additionalData.readLong();
-//        bossInfoUUID = new UUID(msb, lsb);
+    @Override
+    public boolean canBeLeashed() {
+        return false;
+    }
 
-//        Proxy.INSTANCE.runOnClient(() -> () -> EgoMusic.play(this));
-        //Minecraft.getInstance().getSoundManager().play(new EGO.EgoMusic(this));
-//    }
 
     /**
      * class for music
      **/
-//    @OnlyIn(Dist.CLIENT)
-//    private static class EgoMusic extends AbstractTickableSoundInstance {
-//        private final EGO guardian;
-//
-//        public EgoMusic(EGO guardian) {
-//            super(ExtraBotanySounds.SWORDLAND.get(), SoundSource.RECORDS, SoundInstance.createUnseededRandom());
-//            this.guardian = guardian;
-//            this.x = guardian.getSource().getX();
-//            this.y = guardian.getSource().getY();
-//            this.z = guardian.getSource().getZ();
-//            // this.repeat = true;
-//            // TODO restore once LWJGL3/vanilla bug fixed? AND CHANGE MUSIC
-//        }
-//
-//        public static void play(EGO guardian) {
-//            Minecraft.getInstance().getSoundManager().play(new EgoMusic(guardian));
-//        }
-//
-//        @Override
-//        public void tick() {
-//            if (!guardian.isAlive()) {
-//                stop();
-//            }
-//        }
-//    }
+    private static class EgoMusic extends AbstractTickableSoundInstance {
+        private final EGO guardian;
+
+        public EgoMusic(EGO guardian) {
+            super(ExtraBotanySounds.SWORDLAND, SoundSource.RECORDS, SoundInstance.createUnseededRandom());
+            this.guardian = guardian;
+            this.x = guardian.getSource().getX();
+            this.y = guardian.getSource().getY();
+            this.z = guardian.getSource().getZ();
+            this.looping = true;
+            // TODO restore once LWJGL3/vanilla bug fixed? AND CHANGE MUSIC
+        }
+
+        public static void play(EGO guardian) {
+            Minecraft.getInstance().getSoundManager().play(new EgoMusic(guardian));
+        }
+
+        @Override
+        public void tick() {
+            if (!guardian.isAlive()) {
+                stop();
+            }
+        }
+    }
 
     /**
      * getter and setter
@@ -972,21 +1030,5 @@ public class EGO extends GaiaGuardianEntity {
 
     public void setWeaponType(int weaponType) {
         entityData.set(WEAPON_TYPE, weaponType);
-    }
-
-    public int getTpDelay() {
-        return tpDelay;
-    }
-
-    public void setTpDelay(int tpDelay) {
-        this.tpDelay = tpDelay;
-    }
-
-    public int getAttackDelay() {
-        return attackDelay;
-    }
-
-    public void setAttackDelay(int attackDelay) {
-        this.attackDelay = attackDelay;
     }
 }

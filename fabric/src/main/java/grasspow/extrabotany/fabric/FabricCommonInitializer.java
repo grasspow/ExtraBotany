@@ -2,6 +2,7 @@ package grasspow.extrabotany.fabric;
 
 import grasspow.extrabotany.api.ExtraBotanyFabricCapabilities;
 import grasspow.extrabotany.api.ExtraBotanyRegistries;
+import grasspow.extrabotany.api.item.ExtraBotanyArmorMaterials;
 import grasspow.extrabotany.api.item.IItemWithLeftClick;
 import grasspow.extrabotany.common.block.ExtraBotanyBlocks;
 import grasspow.extrabotany.common.block.block_entity.ExtraBotanyBlockEntities;
@@ -11,6 +12,7 @@ import grasspow.extrabotany.common.crafting.ExtraBotanyRecipeTypes;
 import grasspow.extrabotany.common.effect.brew.ExtraBotanyBrews;
 import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.ContributorListHandler;
+import grasspow.extrabotany.common.handler.ExtraBotanySounds;
 import grasspow.extrabotany.common.impl.DefaultNatureOrb;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import grasspow.extrabotany.common.item.brew.InfiniteWineItem;
@@ -87,6 +89,8 @@ public class FabricCommonInitializer implements ModInitializer {
 
     private void registryInit() {
         // Core item/block/BE
+        ExtraBotanySounds.init(BuiltInRegistries.SOUND_EVENT);
+        ExtraBotanyArmorMaterials.registerArmorMaterials(BuiltInRegistries.ARMOR_MATERIAL);
         ExtraBotanyDataComponents.registerComponents(bind(BuiltInRegistries.DATA_COMPONENT_TYPE));
         ExtraBotanyBlocks.registerBlocks(bind(BuiltInRegistries.BLOCK));
         ExtraBotanyBlocks.registerItemBlocks(boundForItem);

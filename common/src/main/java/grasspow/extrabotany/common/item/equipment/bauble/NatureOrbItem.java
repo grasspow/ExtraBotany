@@ -1,6 +1,7 @@
 package grasspow.extrabotany.common.item.equipment.bauble;
 
 import grasspow.extrabotany.common.component.ExtraBotanyDataComponents;
+import grasspow.extrabotany.common.entity.ego.EGO;
 import grasspow.extrabotany.xplat.XplatAbstractions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 
 import java.util.List;
 
-import static grasspow.extrabotany.common.lib.CommonHelper.clearPotions;
+import static grasspow.extrabotany.common.lib.CommonHelper.clearHarmfulPotions;
 
 public class NatureOrbItem extends BaubleItem implements CustomCreativeTabContents {
 
@@ -46,8 +47,7 @@ public class NatureOrbItem extends BaubleItem implements CustomCreativeTabConten
         ItemStack stack = ctx.getItemInHand();
         Level level = ctx.getLevel();
         BlockPos clickedPos = ctx.getClickedPos();
-//        return EGO.spawn(ctx.getPlayer(), stack, level, clickedPos) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
-        return InteractionResult.PASS;
+        return EGO.spawn(ctx.getPlayer(), stack, level, clickedPos) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class NatureOrbItem extends BaubleItem implements CustomCreativeTabConten
                 }
                 if (orb.getNature() > 400000) {
                     if (player.tickCount % 40 == 0) {
-                        clearPotions(stack, player);
+                        clearHarmfulPotions(stack, player);
                     }
                 }
             }

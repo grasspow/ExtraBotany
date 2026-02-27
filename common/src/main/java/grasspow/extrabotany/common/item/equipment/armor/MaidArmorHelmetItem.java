@@ -12,7 +12,7 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-import static grasspow.extrabotany.common.lib.CommonHelper.clearPotions;
+import static grasspow.extrabotany.common.lib.CommonHelper.clearHarmfulPotions;
 
 public class MaidArmorHelmetItem extends MaidArmorItem {
     public List<ResourceKey<DamageType>> source = new ArrayList<>();
@@ -75,7 +75,7 @@ public class MaidArmorHelmetItem extends MaidArmorItem {
                     && ManaItemHandler.instance().requestManaExactForTool(stack, player, 20, true))
                 player.heal(1F);
             if (player.tickCount % 40 == 0 && ManaItemHandler.instance().requestManaExactForTool(stack, player, 20, true))
-                clearPotions(stack, player);
+                clearHarmfulPotions(stack, player);
         }
     }
 }

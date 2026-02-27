@@ -10,7 +10,6 @@ import grasspow.extrabotany.client.render.BlockRenderLayers;
 import grasspow.extrabotany.client.render.ColorHandler;
 import grasspow.extrabotany.client.render.entity.ExtraBotanyEntityRenderers;
 import grasspow.extrabotany.common.item.equipment.BuddhistRelicsItem;
-import grasspow.extrabotany.common.item.equipment.armor.MikuArmorItem;
 import grasspow.extrabotany.common.network.server.BuddhistChangePack;
 import grasspow.extrabotany.fabric.network.FabricPacketHandler;
 import grasspow.extrabotany.xplat.ClientXplatAbstractions;
@@ -32,6 +31,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
+import vazkii.botania.common.item.equipment.armor.manasteel.ManasteelArmorItem;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -74,14 +74,14 @@ public class FabricClientInitializer implements ClientModInitializer {
 		for (var entry : BuiltInRegistries.ITEM.entrySet()) {
 			Item item = entry.getValue();
 			ResourceLocation id = entry.getKey().location();
-			if (item instanceof MikuArmorItem armor
+			if (item instanceof ManasteelArmorItem armor
 					&& id.getNamespace().equals(ExtraBotanyAPI.MODID)) {
 				armors.put(armor, armor.getMaterial().value().layers().getFirst());
 			}
 		}
 
 		ArmorRenderer renderer = (matrices, vertexConsumers, stack, entity, slot, light, contextModel) -> {
-            MikuArmorItem armor = (MikuArmorItem) stack.getItem();
+            ManasteelArmorItem armor = (ManasteelArmorItem) stack.getItem();
 			var model = ArmorModels.get(stack);
 			var texture = armor.getArmorTexture(stack, entity, slot, armors.get(stack.getItem()), false);
 			if (model != null) {

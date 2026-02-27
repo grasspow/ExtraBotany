@@ -1,37 +1,39 @@
 package grasspow.extrabotany.common.impl;
 
 import grasspow.extrabotany.api.ExtraBotanyAPI;
+import grasspow.extrabotany.api.item.ExtraBotanyArmorMaterials;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
 
 public class ExtraBotanyApiImpl implements ExtraBotanyAPI {
-//    public ExtraBotanyArmorMaterial getMaidArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.MAID;
-//    }
-//
-//    public ExtraBotanyArmorMaterial getMikuArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.MIKU;
-//    }
-//
-//    public ExtraBotanyArmorMaterial getGoblinSlayerArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.GOBLINS_LAYER;
-//    }
-//
-//    public ExtraBotanyArmorMaterial getShadowWarriorArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.SHADOW_WARRIOR;
-//    }
-//
-//    public ExtraBotanyArmorMaterial getShootingGuardianArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.SHOOTING_GUARDIAN;
-//    }
+    public Holder<ArmorMaterial> getMaidArmorMaterial() {
+        return ExtraBotanyArmorMaterials.MAID;
+    }
 
-//    public ExtraBotanyArmorMaterial getSilentSagesArmorMaterial() {
-//        return ExtraBotanyArmorMaterial.SILENT_SAGES;
-//    }
+    public Holder<ArmorMaterial> getMikuArmorMaterial() {
+        return ExtraBotanyArmorMaterials.MIKU;
+    }
+
+    public Holder<ArmorMaterial> getGoblinSlayerArmorMaterial() {
+        return ExtraBotanyArmorMaterials.GOBLINS_LAYER;
+    }
+
+    public Holder<ArmorMaterial> getShadowWarriorArmorMaterial() {
+        return ExtraBotanyArmorMaterials.SHADOW_WARRIOR;
+    }
+
+    public Holder<ArmorMaterial> getShootingGuardianArmorMaterial() {
+        return ExtraBotanyArmorMaterials.SHOOTING_GUARDIAN;
+    }
+
+    public Holder<ArmorMaterial> getSilentSagesArmorMaterial() {
+        return ExtraBotanyArmorMaterials.SILENT_SAGES;
+    }
 
     public void addPotionEffect(LivingEntity entity, Holder<MobEffect> potion, int time, int max, boolean multi) {
         if (!entity.hasEffect(potion))

@@ -1,6 +1,7 @@
 package grasspow.extrabotany.common.item.equipment.armor;
 
 import com.google.common.base.Suppliers;
+import grasspow.extrabotany.api.ExtraBotanyAPI;
 import grasspow.extrabotany.client.lib.LibResources;
 import grasspow.extrabotany.common.item.ExtraBotanyItems;
 import net.minecraft.ChatFormatting;
@@ -20,7 +21,7 @@ import static grasspow.extrabotany.api.ExtraBotanyAPI.exbotRL;
 public class GoblinsLayerArmorItem extends MikuArmorItem {
 
     public GoblinsLayerArmorItem(Type type, Properties props) {
-        super(type, props);
+        super(type, ExtraBotanyAPI.instance().getGoblinSlayerArmorMaterial(), props);
     }
     
     private static final Supplier<ItemStack[]> armorSet = Suppliers.memoize(() -> new ItemStack[]{

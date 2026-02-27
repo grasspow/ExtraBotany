@@ -1,6 +1,8 @@
 package grasspow.extrabotany.common.entity.ego;
 
+import grasspow.extrabotany.common.entity.ExtraBotanyEntities;
 import grasspow.extrabotany.common.handler.DamageHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,173 +34,168 @@ public class EGOLandmine extends Entity {
         super(type, level);
     }
 
-//    public EGOLandmine(Level level) {
-//        super(ExtraBotanyEntities.EGO_LANDMINE.get(), level);
-//    }
+    public EGOLandmine(Level level) {
+        super(ExtraBotanyEntities.EGO_LANDMINE, level);
+    }
 
-//    public static void spawnLandmine(int wave, Level level, BlockPos source, Entity ego) {
-//        Vec3 vecSource = Vec3.atCenterOf(source);
-//        Vec3 unit = new Vec3(2, 0, 0);
-//        if (!level.isClientSide) {
-//            switch (wave) {
-//                case 0: {
-//                    for (int i = 0; i < 8; i++) {
-//                        unit = unit.yRot((float) (Math.PI / 4F * i));
-//                        for (int j = 0; j < 8; j++) {
-//                            Vec3 end = vecSource.add(unit.multiply(j + 1, j + 1, j + 1));
-//                            int k = j % 4 == 0 ? 2 : 0;
-//                            EGOLandmine landmine = new EGOLandmine(level);
-//                            landmine.summoner = ego;
-//                            landmine.setPos(end.x, end.y, end.z);
-//                            landmine.setLandmineType(k);
-//                            level.addFreshEntity(landmine);
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 1: {
-//                    for (int i = 0; i < 5; i++) {
-//                        for (int j = 0; j < 16; j++) {
-//                            Vec3 u = unit.add(new Vec3(3, 0, 0).multiply(i, 0, 0));
-//                            u = u.yRot((float) (Math.PI / 8F * j));
-//                            Vec3 end = vecSource.add(u);
-//                            int k = i % 3;
-//                            EGOLandmine landmine = new EGOLandmine(level);
-//                            landmine.summoner = ego;
-//                            landmine.setPos(end.x, end.y, end.z);
-//                            landmine.setLandmineType(k);
-//                            level.addFreshEntity(landmine);
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 2: {
-//                    for (int i = 0; i < 72; i++) {
-//                        double p = i * Math.PI / 12F;
-//                        double r = 1 + 1 * p;
-//                        double x = r * Math.cos(p);
-//                        double z = r * Math.sin(p);
-//                        double y = vecSource.y;
-//                        int k = i % 5 == 0 ? 2 : 0;
-//                        EGOLandmine landmine = new EGOLandmine(level);
-//                        landmine.summoner = ego;
-//                        landmine.setPos(vecSource.x + x, y, vecSource.z + z);
-//                        landmine.setLandmineType(k);
-//                        level.addFreshEntity(landmine);
-//                    }
-//                    break;
-//                }
-//                case 3: {
-//                    for (int i = 0; i < 80; i++) {
-//                        double p = i * Math.PI / 80F;
-//                        double r = 24 * Math.sin(5F * p);
-//                        double x = r * Math.cos(p);
-//                        double z = r * Math.sin(p);
-//                        double y = vecSource.y;
-//                        int k = i % 4 == 0 ? 2 : 0;
-//                        EGOLandmine landmine = new EGOLandmine(level);
-//                        landmine.summoner = ego;
-//                        landmine.setPos(vecSource.x + x, y, vecSource.z + z);
-//                        landmine.setLandmineType(k);
-//                        level.addFreshEntity(landmine);
-//                    }
-//                    break;
-//                }
-//                case 4: {
-//                    for (int i = 0; i < 8; i++) {
-//                        for (int j = 0; j < 16; j++) {
-//                            Vec3 u = unit.multiply(3, 0, 3);
-//                            u = u.yRot((float) (Math.PI / 8F * j));
-//                            Vec3 end = vecSource.add(unit.multiply(6, 0, 6).yRot((float) (Math.PI / 4 * i))).add(u);
-//                            int k = i % 3;
-//                            EGOLandmine landmine = new EGOLandmine(level);
-//                            landmine.summoner = ego;
-//                            landmine.setPos(end.x, end.y, end.z);
-//                            landmine.setLandmineType(k);
-//                            level.addFreshEntity(landmine);
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 5: {
-//                    for (int i = 0; i < 6; i++) {
-//                        Vec3 mp = vecSource.add(unit.multiply(5, 0, 5).yRot((float) (Math.PI * 2 / 6F * i)));
-//                        EGOLandmine mid = new EGOLandmine(level);
-//                        mid.summoner = ego;
-//                        mid.setPos(mp.x, mp.y, mp.z);
-//                        mid.setLandmineType(0);
-//                        level.addFreshEntity(mid);
-//                        for (int j = 0; j < 16; j++) {
-//                            Vec3 u = unit.multiply(2, 0, 2).yRot((float) (Math.PI / 8F * j));
-//                            Vec3 end = mp.add(u);
-//                            EGOLandmine landmine = new EGOLandmine(level);
-//                            landmine.summoner = ego;
-//                            landmine.setPos(end.x, end.y, end.z);
-//                            landmine.setLandmineType(2);
-//                            level.addFreshEntity(landmine);
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 6: {
-//                    for (int i = 0; i < 72; i++) {
-//                        Vec3 mp = vecSource.add(unit.multiply(7, 0, 7).yRot((float) (Math.PI * 2 / 72F * i)));
-//                        EGOLandmine mid = new EGOLandmine(level);
-//                        mid.summoner = ego;
-//                        mid.setPos(mp.x, mp.y, mp.z);
-//                        mid.setLandmineType(2);
-//                        level.addFreshEntity(mid);
-//                        if (i % 5 == 0) {
-//                            for (int j = 0; j < 12; j++) {
-//                                Vec3 u = unit.multiply(4, 0, 4).yRot((float) (Math.PI / 6F * j));
-//                                Vec3 end = mp.add(u);
-//                                EGOLandmine landmine = new EGOLandmine(level);
-//                                landmine.summoner = ego;
-//                                landmine.setPos(end.x, end.y, end.z);
-//                                landmine.setLandmineType(i % 2);
-//                                level.addFreshEntity(landmine);
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//                case 7: {
-//                    for (int i = 0; i < 6; i++) {
-//                        for (int l1 = 0; l1 < 11; l1++) {
-//                            Vec3 mp = vecSource.add(unit.multiply(l1, 0, l1).yRot((float) (Math.PI * 2 / 6F * i)));
-//                            EGOLandmine mid = new EGOLandmine(level);
-//                            mid.summoner = ego;
-//                            mid.setPos(mp.x, mp.y, mp.z);
-//                            mid.setLandmineType(1);
-//                            level.addFreshEntity(mid);
-//                            if (l1 == 5) {
-//                                for (int j = 0; j < 6; j++) {
-//                                    for (int l2 = 0; l2 < 7; l2++) {
-//                                        Vec3 end = mp.add(unit.multiply(l2 * 0.6F, 0, l2 * 0.6F).yRot((float) (Math.PI * 2 / 6F * j + Math.PI / 6F)));
-//                                        EGOLandmine landmine = new EGOLandmine(level);
-//                                        landmine.summoner = ego;
-//                                        landmine.setPos(end.x, end.y, end.z);
-//                                        landmine.setLandmineType(j % 3);
-//                                        level.addFreshEntity(landmine);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
-
-//    @Override
-//    protected void defineSynchedData() {
-//        entityData.define(TYPE, 0);
-//    }
+    public static void spawnLandmine(int wave, Level level, BlockPos source, Entity ego) {
+        Vec3 vecSource = Vec3.atCenterOf(source);
+        Vec3 unit = new Vec3(2, 0, 0);
+        if (!level.isClientSide) {
+            switch (wave) {
+                case 0: {
+                    for (int i = 0; i < 8; i++) {
+                        unit = unit.yRot((float) (Math.PI / 4F * i));
+                        for (int j = 0; j < 8; j++) {
+                            Vec3 end = vecSource.add(unit.multiply(j + 1, j + 1, j + 1));
+                            int k = j % 4 == 0 ? 2 : 0;
+                            EGOLandmine landmine = new EGOLandmine(level);
+                            landmine.summoner = ego;
+                            landmine.setPos(end.x, end.y, end.z);
+                            landmine.setLandmineType(k);
+                            level.addFreshEntity(landmine);
+                        }
+                    }
+                    break;
+                }
+                case 1: {
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 16; j++) {
+                            Vec3 u = unit.add(new Vec3(3, 0, 0).multiply(i, 0, 0));
+                            u = u.yRot((float) (Math.PI / 8F * j));
+                            Vec3 end = vecSource.add(u);
+                            int k = i % 3;
+                            EGOLandmine landmine = new EGOLandmine(level);
+                            landmine.summoner = ego;
+                            landmine.setPos(end.x, end.y, end.z);
+                            landmine.setLandmineType(k);
+                            level.addFreshEntity(landmine);
+                        }
+                    }
+                    break;
+                }
+                case 2: {
+                    for (int i = 0; i < 72; i++) {
+                        double p = i * Math.PI / 12F;
+                        double r = 1 + 1 * p;
+                        double x = r * Math.cos(p);
+                        double z = r * Math.sin(p);
+                        double y = vecSource.y;
+                        int k = i % 5 == 0 ? 2 : 0;
+                        EGOLandmine landmine = new EGOLandmine(level);
+                        landmine.summoner = ego;
+                        landmine.setPos(vecSource.x + x, y, vecSource.z + z);
+                        landmine.setLandmineType(k);
+                        level.addFreshEntity(landmine);
+                    }
+                    break;
+                }
+                case 3: {
+                    for (int i = 0; i < 80; i++) {
+                        double p = i * Math.PI / 80F;
+                        double r = 24 * Math.sin(5F * p);
+                        double x = r * Math.cos(p);
+                        double z = r * Math.sin(p);
+                        double y = vecSource.y;
+                        int k = i % 4 == 0 ? 2 : 0;
+                        EGOLandmine landmine = new EGOLandmine(level);
+                        landmine.summoner = ego;
+                        landmine.setPos(vecSource.x + x, y, vecSource.z + z);
+                        landmine.setLandmineType(k);
+                        level.addFreshEntity(landmine);
+                    }
+                    break;
+                }
+                case 4: {
+                    for (int i = 0; i < 8; i++) {
+                        for (int j = 0; j < 16; j++) {
+                            Vec3 u = unit.multiply(3, 0, 3);
+                            u = u.yRot((float) (Math.PI / 8F * j));
+                            Vec3 end = vecSource.add(unit.multiply(6, 0, 6).yRot((float) (Math.PI / 4 * i))).add(u);
+                            int k = i % 3;
+                            EGOLandmine landmine = new EGOLandmine(level);
+                            landmine.summoner = ego;
+                            landmine.setPos(end.x, end.y, end.z);
+                            landmine.setLandmineType(k);
+                            level.addFreshEntity(landmine);
+                        }
+                    }
+                    break;
+                }
+                case 5: {
+                    for (int i = 0; i < 6; i++) {
+                        Vec3 mp = vecSource.add(unit.multiply(5, 0, 5).yRot((float) (Math.PI * 2 / 6F * i)));
+                        EGOLandmine mid = new EGOLandmine(level);
+                        mid.summoner = ego;
+                        mid.setPos(mp.x, mp.y, mp.z);
+                        mid.setLandmineType(0);
+                        level.addFreshEntity(mid);
+                        for (int j = 0; j < 16; j++) {
+                            Vec3 u = unit.multiply(2, 0, 2).yRot((float) (Math.PI / 8F * j));
+                            Vec3 end = mp.add(u);
+                            EGOLandmine landmine = new EGOLandmine(level);
+                            landmine.summoner = ego;
+                            landmine.setPos(end.x, end.y, end.z);
+                            landmine.setLandmineType(2);
+                            level.addFreshEntity(landmine);
+                        }
+                    }
+                    break;
+                }
+                case 6: {
+                    for (int i = 0; i < 72; i++) {
+                        Vec3 mp = vecSource.add(unit.multiply(7, 0, 7).yRot((float) (Math.PI * 2 / 72F * i)));
+                        EGOLandmine mid = new EGOLandmine(level);
+                        mid.summoner = ego;
+                        mid.setPos(mp.x, mp.y, mp.z);
+                        mid.setLandmineType(2);
+                        level.addFreshEntity(mid);
+                        if (i % 5 == 0) {
+                            for (int j = 0; j < 12; j++) {
+                                Vec3 u = unit.multiply(4, 0, 4).yRot((float) (Math.PI / 6F * j));
+                                Vec3 end = mp.add(u);
+                                EGOLandmine landmine = new EGOLandmine(level);
+                                landmine.summoner = ego;
+                                landmine.setPos(end.x, end.y, end.z);
+                                landmine.setLandmineType(i % 2);
+                                level.addFreshEntity(landmine);
+                            }
+                        }
+                    }
+                    break;
+                }
+                case 7: {
+                    for (int i = 0; i < 6; i++) {
+                        for (int l1 = 0; l1 < 11; l1++) {
+                            Vec3 mp = vecSource.add(unit.multiply(l1, 0, l1).yRot((float) (Math.PI * 2 / 6F * i)));
+                            EGOLandmine mid = new EGOLandmine(level);
+                            mid.summoner = ego;
+                            mid.setPos(mp.x, mp.y, mp.z);
+                            mid.setLandmineType(1);
+                            level.addFreshEntity(mid);
+                            if (l1 == 5) {
+                                for (int j = 0; j < 6; j++) {
+                                    for (int l2 = 0; l2 < 7; l2++) {
+                                        Vec3 end = mp.add(unit.multiply(l2 * 0.6F, 0, l2 * 0.6F).yRot((float) (Math.PI * 2 / 6F * j + Math.PI / 6F)));
+                                        EGOLandmine landmine = new EGOLandmine(level);
+                                        landmine.summoner = ego;
+                                        landmine.setPos(end.x, end.y, end.z);
+                                        landmine.setLandmineType(j % 3);
+                                        level.addFreshEntity(landmine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-
+        builder.define(TYPE, 0);
     }
 
     @Override

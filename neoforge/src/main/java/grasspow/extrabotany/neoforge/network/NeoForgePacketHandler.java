@@ -1,6 +1,7 @@
 package grasspow.extrabotany.neoforge.network;
 
 import grasspow.extrabotany.common.network.client.PotatoChipsPack;
+import grasspow.extrabotany.common.network.client.SpawnEgoPacket;
 import grasspow.extrabotany.common.network.server.BuddhistChangePack;
 import grasspow.extrabotany.common.network.server.FlamescionStrengthenPack;
 import grasspow.extrabotany.common.network.server.LeftClickPack;
@@ -25,6 +26,7 @@ public class NeoForgePacketHandler {
         registrar.playToServer(FlamescionStrengthenPack.ID, FlamescionStrengthenPack.STREAM_CODEC, makeServerBoundHandler(FlamescionStrengthenPack::handle));
 
         registrar.playToClient(PotatoChipsPack.ID, PotatoChipsPack.STREAM_CODEC, makeClientBoundHandler(PotatoChipsPack.Handler::handle));
+        registrar.playToClient(SpawnEgoPacket.ID, SpawnEgoPacket.STREAM_CODEC, makeClientBoundHandler(SpawnEgoPacket.Handler::handle));
 
     }
 

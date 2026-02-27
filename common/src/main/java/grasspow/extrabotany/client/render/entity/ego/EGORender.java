@@ -13,15 +13,12 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 
-import javax.annotation.Nonnull;
-
 public class EGORender extends HumanoidMobRenderer<EGO, HumanoidModel<EGO>> {
     public EGORender(EntityRendererProvider.Context ctx) {
         super(ctx, new Model(ctx.bakeLayer(ModelLayers.PLAYER)), 0F);
         ArmorModels.init(ctx);
     }
 
-    @Nonnull
     @Override
     public ResourceLocation getTextureLocation(EGO mob) {
         Minecraft mc = Minecraft.getInstance();
