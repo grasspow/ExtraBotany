@@ -27,4 +27,6 @@ public class ExtraBotanyModelLayers {
         // And would be annoying to do under Forge's parallel mod loading
         return new ModelLayerLocation(exbotRL(name), layer);
     }
+
+    public static void init() {}
 }

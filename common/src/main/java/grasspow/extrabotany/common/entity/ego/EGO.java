@@ -110,14 +110,8 @@ public class EGO extends Mob {
     private static final EntityDataAccessor<Integer> STAGE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> WEAPON_TYPE = SynchedEntityData.defineId(EGO.class, EntityDataSerializers.INT);
 
-    private boolean spawnLandmines = false;
-    private boolean spawnPixies = false;
-    private boolean anyWithArmor = false;
-    private boolean aggro = false;
     private int tpDelay = 0;
-    private int mobSpawnTicks = 0;
     private int playerCount = 0;
-    private boolean hardMode = false;
     private BlockPos source = Bound.UNBOUND_POS;
     private final List<UUID> playersWhoAttacked = new ArrayList<>();
     private final ServerBossEvent bossInfo = (ServerBossEvent) new ServerBossEvent(ExtraBotanyEntities.EGO.getDescription(), BossEvent.BossBarColor.PINK, BossEvent.BossBarOverlay.PROGRESS).setCreateWorldFog(true);

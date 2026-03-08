@@ -1,7 +1,6 @@
 package grasspow.extrabotany.client.render.entity.ego;
 
 import com.mojang.authlib.GameProfile;
-import grasspow.extrabotany.client.model.armor.ArmorModels;
 import grasspow.extrabotany.common.entity.ego.EGOMinion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -17,7 +16,6 @@ public class EGOMinionRender extends HumanoidMobRenderer<EGOMinion, HumanoidMode
 
     public EGOMinionRender(EntityRendererProvider.Context ctx) {
         super(ctx, new Model(ctx.bakeLayer(ModelLayers.PLAYER)), 0F);
-        ArmorModels.init(ctx);
     }
 
     @Override

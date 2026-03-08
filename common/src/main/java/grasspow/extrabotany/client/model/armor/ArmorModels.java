@@ -41,16 +41,13 @@ public class ArmorModels {
     @Nullable
     public static ArmorModel get(ItemStack stack) {
         Item item = stack.getItem();
-        if (item instanceof ShadowWarriorArmorItem armor) {
-            return shadow_warrior.get(armor.getEquipmentSlot());
-        } else if (item instanceof GoblinsLayerArmorItem armor) {
-            return goblins_layer.get(armor.getEquipmentSlot());
-        } else if (item instanceof MaidArmorItem armor) {
-            return maid.get(armor.getEquipmentSlot());
-        } else if (item instanceof ShootingGuardianArmorItem armor) {
-            return shooting_guardian.get(armor.getEquipmentSlot());
-        }
-        // must place on the last
-        return miku.get(((MikuArmorItem) item).getEquipmentSlot());
+        return switch (item){
+            case ShadowWarriorArmorItem armor -> shadow_warrior.get(armor.getEquipmentSlot());
+            case GoblinsLayerArmorItem armor -> goblins_layer.get(armor.getEquipmentSlot());
+            case ShootingGuardianArmorItem armor -> shooting_guardian.get(armor.getEquipmentSlot());
+            case MaidArmorItem armor -> maid.get(armor.getEquipmentSlot());
+            case MikuArmorItem armor -> miku.get(armor.getEquipmentSlot());
+            default -> null;
+        };
     }
 }
